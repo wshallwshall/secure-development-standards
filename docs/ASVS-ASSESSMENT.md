@@ -10,8 +10,8 @@ applications and services -- and most of what is here transfers to any standard 
 one person cannot read it carefully in a week.
 
 > **Take a copy:**
-> [markdown](https://raw.githubusercontent.com/wshallwshall/claude-multisession/main/docs/ASVS-ASSESSMENT.md)
-> or [Word document](https://raw.githubusercontent.com/wshallwshall/claude-multisession/main/docs/standards/word/ASVS-ASSESSMENT.docx).
+> [markdown](https://raw.githubusercontent.com/wshallwshall/secure-development-standards/main/docs/ASVS-ASSESSMENT.md)
+> or [Word document](https://raw.githubusercontent.com/wshallwshall/secure-development-standards/main/docs/standards/word/ASVS-ASSESSMENT.docx).
 > [Every file, both formats](standards/OVERVIEW.md#the-files).
 
 ---
@@ -190,7 +190,7 @@ to you.
 To start, open Claude Code in the repository you want assessed and paste this:
 
 ```text
-Read https://raw.githubusercontent.com/wshallwshall/claude-multisession/main/docs/ASVS-ASSESSMENT.md
+Read https://raw.githubusercontent.com/wshallwshall/secure-development-standards/main/docs/ASVS-ASSESSMENT.md
 from the heading "The standard supplies no verdict rubric" onward, and use it as the method for
 assessing this repository against OWASP ASVS 5.0. Begin at step 1, building the pinned corpus, and
 score nothing until that corpus exists.
@@ -200,9 +200,9 @@ The first pass will not produce a score, and it should not. It builds the corpus
 hands you a percentage before that exists is the failure this document is about.
 
 New to the rest of this repository's tooling?
-[Here's what to feed to Claude Code](FEED-THIS-TO-CLAUDE-CODE.md) is the front door. For the same
+[Here's what to feed to Claude Code](https://wshallwshall.github.io/claude-multisession/FEED-THIS-TO-CLAUDE-CODE.html) is the front door. For the same
 reasoning applied to this repository's own controls -- including why it also publishes no status
-table -- see [the drift-audit case study](CASE-STUDY-drift-audit.md).
+table -- see [the drift-audit case study](https://wshallwshall.github.io/claude-multisession/CASE-STUDY-drift-audit.html).
 
 ---
 
@@ -1134,10 +1134,10 @@ Before anything is published:
 
 ## See also
 
-- [`docs/CASE-STUDY-drift-audit.md`](CASE-STUDY-drift-audit.md) -- the same reasoning applied to this
+- [`docs/CASE-STUDY-drift-audit.md`](https://wshallwshall.github.io/claude-multisession/CASE-STUDY-drift-audit.html) -- the same reasoning applied to this
   repository's own controls: why an installed copy, not a source file, is the unit of audit, and why
   that document deliberately contains no status table either.
 - [`bin/ccx-doctor.ps1`](https://github.com/wshallwshall/claude-multisession/blob/main/bin/ccx-doctor.ps1) -- prove the control can refuse; never infer that it is
   live.
-- [`docs/COORDINATION.md`](COORDINATION.md) -- claims, locks, presence, and overlap for parallel
+- [`docs/COORDINATION.md`](https://wshallwshall.github.io/claude-multisession/COORDINATION.html) -- claims, locks, presence, and overlap for parallel
   sessions.

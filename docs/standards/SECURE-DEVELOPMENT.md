@@ -1,8 +1,8 @@
 # Secure development: a starting point for your own standard
 
 > **Take a copy:**
-> [markdown](https://raw.githubusercontent.com/wshallwshall/claude-multisession/main/docs/standards/SECURE-DEVELOPMENT.md)
-> or [Word document](https://raw.githubusercontent.com/wshallwshall/claude-multisession/main/docs/standards/word/SECURE-DEVELOPMENT.docx).
+> [markdown](https://raw.githubusercontent.com/wshallwshall/secure-development-standards/main/docs/standards/SECURE-DEVELOPMENT.md)
+> or [Word document](https://raw.githubusercontent.com/wshallwshall/secure-development-standards/main/docs/standards/word/SECURE-DEVELOPMENT.docx).
 > [Every file, both formats](OVERVIEW.md#the-files).
 
 ---
@@ -300,7 +300,7 @@ and scheduled-only jobs are useful and are not coverage.
 
 Mechanics are published elsewhere: [CI and standards](../CI-AND-STANDARDS.md) covers grandfathering
 to a clean baseline and ratcheting, and the two-layer shape where a local hook gives fast feedback
-and the pipeline is the authoritative gate. [The leak gate](../LEAK-GATE.md) covers fail-closed
+and the pipeline is the authoritative gate. [The leak gate](https://wshallwshall.github.io/claude-multisession/LEAK-GATE.html) covers fail-closed
 forbidden-content scanning and the three ways a scanner lies.
 
 ### Dynamic testing: an event trigger, and a written record of what no trigger reached
@@ -371,7 +371,7 @@ number you adopt is project-set and directional. Label it that way.
 
 This is not a private-repository exemption: a repository's visibility can change, and its history
 travels when it does. The rule and its mechanics are owned by
-[the leak gate](../LEAK-GATE.md) and by *Secrets and sensitive data never enter the repository* in
+[the leak gate](https://wshallwshall.github.io/claude-multisession/LEAK-GATE.html) and by *Secrets and sensitive data never enter the repository* in
 [CI and standards](../CI-AND-STANDARDS.md).
 
 **Limit:** a path deny-list keeps a file from being read and does nothing about the same content
@@ -1118,7 +1118,7 @@ of conformance with any of them, and none of them certify anything.
 
 - [CI and standards](../CI-AND-STANDARDS.md) -- blocking versus advisory coverage, receipts, claim
   honesty, gate design, and the general metric evidence this document does not restate
-- [The leak gate](../LEAK-GATE.md) -- fail-closed secret and forbidden-content scanning, and the three
+- [The leak gate](https://wshallwshall.github.io/claude-multisession/LEAK-GATE.html) -- fail-closed secret and forbidden-content scanning, and the three
   ways a scanner lies
 - [Dependency and artifact integrity](DEPENDENCY-INTEGRITY.md) -- the consuming half of an advisory,
   per-manifest audit nets, and the pinned resolved graph
@@ -1126,7 +1126,7 @@ of conformance with any of them, and none of them certify anything.
   each item of evidence proves, and why organization-layer evidence is not software-layer evidence
 - [Running a large security-standard assessment with AI agents](../ASVS-ASSESSMENT.md) -- verdict
   vocabulary, evidence anchors, corpus pinning, and reading a movement in a score
-- [Case study: auditing a multi-session estate as one system](../CASE-STUDY-drift-audit.md) -- proving
+- [Case study: auditing a multi-session estate as one system](https://wshallwshall.github.io/claude-multisession/CASE-STUDY-drift-audit.html) -- proving
   a fix by deliberate mutation of the shipped artifact
-- [Tips and tricks](../TIPS-AND-TRICKS.md) -- section 4 on writing a guardrail, section 5 on measuring
+- [Tips and tricks](https://wshallwshall.github.io/claude-multisession/TIPS-AND-TRICKS.html) -- section 4 on writing a guardrail, section 5 on measuring
   whether it works

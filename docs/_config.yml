@@ -1,25 +1,26 @@
-# GitHub Pages configuration for the claude-multisession documentation site.
+# GitHub Pages configuration for the secure-development-standards site.
 #
 # Publishing source is /docs on the default branch, which makes THIS directory the Jekyll source
 # root. Every file the site needs -- _config.yml, _data, _layouts, assets, index.md -- has to live
 # under docs/. A _config.yml at the repository root would be ignored, and the build would still go
 # green, so treat the location of this file as load-bearing.
 
-title: claude-multisession
+title: Secure development standards
 description: >-
-  Coordination tooling for running several Claude Code sessions at once against one repository.
+  Security standards you can adopt or fork: secure development, AI-assisted development, code
+  quality, dependency integrity, human review depth, and what to ask a software vendor for.
 
 # baseurl is NOT derived from the repository name by the GitHub Pages build. It has to be set here,
 # and everything depends on it: jekyll-relative-links rewrites the intra-docs links through
 # relative_url, which prepends this value, and the layout builds every nav href and the stylesheet
 # href from it. Wrong or missing means the pages still render and every link and asset 404s.
 url: https://wshallwshall.github.io
-baseurl: /claude-multisession
+baseurl: /secure-development-standards
 
 # Used by the layout instead of site.github.*, which is empty in a local build without a token and
 # populated in production -- an instrument that answers a different question depending on where it
 # runs.
-repo_url: https://github.com/wshallwshall/claude-multisession
+repo_url: https://github.com/wshallwshall/secure-development-standards
 
 markdown: kramdown
 

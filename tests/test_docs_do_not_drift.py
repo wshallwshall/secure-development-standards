@@ -96,8 +96,8 @@ SUPERSEDED_BLUF = (
 # and both rot into a 404 the same way, so both belong in one scan -- a pattern that saw only the
 # blob form would have gone quietly blind the day the raw links were added.
 BLOB_URL = re.compile(
-    r"https://(?:github\.com/wshallwshall/claude-multisession/blob"
-    r"|raw\.githubusercontent\.com/wshallwshall/claude-multisession)/main/([^)\"'\s>]+)"
+    r"https://(?:github\.com/wshallwshall/secure-development-standards/blob"
+    r"|raw\.githubusercontent\.com/wshallwshall/secure-development-standards)/main/([^)\"'\s>]+)"
 )
 
 # The looser phrasing. All four installers test the LITERAL string "1", so "is set" promises a
@@ -160,46 +160,6 @@ class TheTestIndexNamesEveryTest(unittest.TestCase):
             listed - present,
             f"{self.INDEX.name} has rows for files that are gone: {sorted(listed - present)}. A "
             "row for a deleted test is a coverage claim with nothing behind it.",
-        )
-
-
-class TheInstallProcedureHasOneCopy(unittest.TestCase):
-    """docs/index.md owns the procedure; README.md points at it rather than repeating it.
-
-    This replaced a case that pinned the two files to identical blocks, which was the right shape
-    while both carried the commands. De-duplicating the landing pages left README with no block,
-    and that case's own empty-match guard fired rather than passing on an empty comparison. The
-    guard is kept below, moved onto the file that now owns the procedure -- which is the only file
-    it can defend, since a guard on the pointing file would fail the moment the pointing worked.
-    """
-
-    def test_the_landing_page_still_carries_the_procedure(self):
-        landing = INSTALL_COMMAND.findall(t.read(LANDING))
-        self.assertNotEqual(
-            [],
-            landing,
-            "no install commands found in docs/index.md, which is the one copy of the procedure. "
-            "Either the block moved or its shape changed; a pattern that matches nothing passes "
-            "everything, so fix the pattern -- or this file's premise about where the procedure "
-            "lives -- before trusting a green run here.",
-        )
-
-    def test_the_readme_carries_no_second_copy_that_disagrees(self):
-        readme = INSTALL_COMMAND.findall(t.read(README))
-        landing = INSTALL_COMMAND.findall(t.read(LANDING))
-
-        # Either README points (no commands) or it repeats the landing page exactly. Anything else
-        # is the divergence this file exists for. Stated as one membership test rather than a
-        # branch, so the empty case cannot slip through as an early return that reads as a pass.
-        # Its vacuous case -- both empty -- is what the sibling case above rules out.
-        self.assertIn(
-            readme,
-            ([], landing),
-            "README.md carries install commands that do not match docs/index.md.\n"
-            "README.md:\n  " + "\n  ".join(readme) + "\n"
-            "docs/index.md:\n  " + "\n  ".join(landing) + "\n"
-            "A reader follows exactly one of these. Either drop the block from README.md and point "
-            "at the landing page, or make the two character-identical in this same commit.",
         )
 
 
@@ -318,73 +278,27 @@ class OutboundLinksResolve(unittest.TestCase):
         )
 
 
-class DocClaimsMatchTheCode(unittest.TestCase):
-    def test_all_four_installers_still_test_the_literal_one(self):
-        """The doc rule below is only correct while this is."""
-        self.assertEqual(
-            4,
-            len(t.ALL_INSTALLERS),
-            "the set of installers has changed. Add the new one to ALL_INSTALLERS -- an installer "
-            "this scan does not read is one the rule is not enforced on.",
-        )
-        for installer in t.ALL_INSTALLERS:
-            self.assertRegex(
-                t.read(installer),
-                r"\$env:CLAUDECODE\s+-eq\s+['\"]1['\"]",
-                f"{installer.name} no longer tests $env:CLAUDECODE against the literal '1'. If the "
-                "test is now for presence, the docs that say `1` become the wrong ones and this "
-                "pin has it backwards -- fix the direction, do not delete the case.",
-            )
-
-    def test_no_front_door_describes_the_refusal_as_merely_set(self):
-        offenders = []
-        for path in (README, LANDING, t.REPO_ROOT / "INSTALL.md"):
-            for number, line in enumerate(t.read(path).splitlines(), start=1):
-                if CLAUDECODE_LOOSE.search(line):
-                    offenders.append(f"{path.name}:{number}: {line.strip()}")
-        self.assertEqual(
-            [],
-            offenders,
-            "a document says the installers refuse when $env:CLAUDECODE is *set*:\n"
-            + "\n".join(offenders)
-            + "\nAll four test the literal string '1'. A reader with CLAUDECODE=0 would find the "
-            "installers run. Say `1`.",
-        )
-
-
 class TheScansCanSeeWhatTheyLookFor(unittest.TestCase):
-    """Prove each instrument on a planted example. A pattern that matches nothing passes
-    everything, and all three patterns here are the kind that silently stop matching after an
-    innocuous reformat."""
+    """Prove the instrument on a planted example. A pattern that matches nothing passes
+    everything, and this one is the kind that silently stops matching after an innocuous reformat.
 
-    def test_the_install_command_pattern_matches_a_real_command(self):
-        planted = 'pwsh -NoProfile -File "$tooling/bin/ccx-doctor.ps1" -Repo $target'
-        self.assertEqual([planted], INSTALL_COMMAND.findall(planted))
+    Two sibling guards left with the split: they proved the installer-command and the loose
+    `CLAUDECODE` phrasing patterns, and both patterns belong to the toolkit repository now."""
 
     def test_the_blob_pattern_extracts_the_path_and_stops_at_the_delimiter(self):
         planted = (
-            "see [the gate](https://github.com/wshallwshall/claude-multisession/blob/main/"
-            "scripts/hooks/worktree_gate.ps1) for the rule"
+            "see [the model](https://github.com/wshallwshall/secure-development-standards/blob/main/"
+            "docs/standards/SECURE-DEVELOPMENT.md) for the rule"
         )
-        self.assertEqual(["scripts/hooks/worktree_gate.ps1"], BLOB_URL.findall(planted))
+        self.assertEqual(["docs/standards/SECURE-DEVELOPMENT.md"], BLOB_URL.findall(planted))
 
     def test_the_pattern_also_sees_the_raw_download_form(self):
         """The standards hand out raw links; a scan blind to them checks half the published URLs."""
         planted = (
             "take the [raw markdown](https://raw.githubusercontent.com/wshallwshall/"
-            "claude-multisession/main/docs/standards/CODE-QUALITY.md) instead"
+            "secure-development-standards/main/docs/standards/CODE-QUALITY.md) instead"
         )
         self.assertEqual(["docs/standards/CODE-QUALITY.md"], BLOB_URL.findall(planted))
-
-    def test_the_loose_phrasing_pattern_matches_the_wording_it_exists_to_catch(self):
-        self.assertTrue(
-            CLAUDECODE_LOOSE.search("All four installers refuse when `$env:CLAUDECODE` is set,")
-        )
-        self.assertIsNone(
-            CLAUDECODE_LOOSE.search("All four installers refuse when `$env:CLAUDECODE` is `1`,"),
-            "the pattern must not fire on the correct wording, or the fix cannot make it green.",
-        )
-
 
 class TheBlufConventionHasOneSpelling(unittest.TestCase):
     """The convention drifted three times in one evening, and every drift was green.

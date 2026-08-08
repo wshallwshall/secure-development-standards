@@ -9,9 +9,7 @@
 # which is not always the same thing -- ASVS-ASSESSMENT.md never says ASVS in its heading -- and is
 # used as the link's title attribute.
 #
-# An entry with `url` instead of `path` is an absolute link off the site. Those exist because
-# INSTALL.md and the scripts live at the repository root, outside the Jekyll source, so the site
-# cannot serve them at all.
+# An entry with `url` instead of `path` is an absolute link off the site.
 #
 # A page in a SUBDIRECTORY follows the same rule: docs/standards/FOO.md is built to
 # /standards/FOO.html. ONE FILENAME BREAKS THAT RULE, which is why the section index is called
@@ -23,133 +21,81 @@
 # always-enabled set and cannot be turned off; the two config keys that would change the behaviour,
 # readme_index.with_frontmatter and readme_index.remove_originals, are unset in _config.yml. Naming
 # the file OVERVIEW.md keeps it on the ordinary path, so its URL is predictable and page.url matches.
+#
+# ORDER IS A ROUTING DECISION, not an accident. A reader arrives wanting one of three things: to find
+# out whether any of this applies to them, to hand something to an executive, or to adopt a named
+# control. "Start here" answers the first two in three rows. Within every other group the order is
+# alphabetical, because a menu runs on recognition rather than recall and an order nobody can predict
+# is worse than one nobody chose.
 
 - group: Start here
   items:
-    - label: Overview
-      title: claude-multisession
+    - label: Start here
+      title: Security standards for teams building with AI coding assistants
       path: /
-    - label: Feed this to Claude Code
-      title: Here's what to feed to Claude Code
-      path: /FEED-THIS-TO-CLAUDE-CODE.html
-    - label: Concepts
-      title: Concepts
-      path: /CONCEPTS.html
-    # Installing sat in the "On GitHub" group, row 32 of 33, which filed the one page an installer
-    # needs behind everything they would read afterwards. It is still an off-site `url` entry -- the
-    # file is at the repository root, outside the Jekyll source, so the site cannot serve it -- but a
-    # reader looking for how to install now finds it where they look. The label says the task rather
-    # than the filename.
-    - label: Installing
-      title: "INSTALL.md: four installers, four scopes, and how to prove each is live"
-      url: https://github.com/wshallwshall/claude-multisession/blob/main/INSTALL.md
+    - label: Which standards apply to you
+      title: "Which security standards actually apply to you?"
+      path: /standards/WHICH-STANDARDS-APPLY.html
+    - label: CISO summary
+      title: The CISO summary
+      path: /standards/CISO-SUMMARY.html
 
-- group: Standards
+- group: The standards
   items:
     - label: Standards index
       title: Standards you can start from
       path: /standards/OVERVIEW.html
-    - label: CISO summary
-      title: The CISO summary
-      path: /standards/CISO-SUMMARY.html
-    - label: Secure development
-      title: "Secure development: a starting point for your own standard"
-      path: /standards/SECURE-DEVELOPMENT.html
-    - label: Which standards apply to you
-      title: "Which security standards actually apply to you?"
-      path: /standards/WHICH-STANDARDS-APPLY.html
-    - label: Standards reference
-      title: "Security standards reference: what each one issues, and what triggers it"
-      path: /standards/STANDARDS-REFERENCE.html
-    - label: What to ask a vendor
-      title: "What to ask a software vendor for, and what each answer proves"
-      path: /standards/DILIGENCE-PACKET.html
-    - label: How to adopt these
-      title: "How to adopt these"
-      path: /standards/ADOPTING-THESE.html
-    - label: Automated compliance in CI
-      title: "Automated compliance in CI: which of your rules can actually stop a change"
-      path: /standards/CI-ENFORCEMENT.html
     - label: AI-assisted development
       title: "AI-assisted development: keeping the result trustworthy"
       path: /standards/AI-ASSISTED-DEVELOPMENT.html
+    - label: Automated compliance in CI
+      title: "Automated compliance in CI: which of your rules can actually stop a change"
+      path: /standards/CI-ENFORCEMENT.html
+    - label: Code quality
+      title: Judging code quality, whoever or whatever wrote it
+      path: /standards/CODE-QUALITY.html
     - label: Dependency integrity
       title: Dependency and artifact integrity
       path: /standards/DEPENDENCY-INTEGRITY.html
     - label: Human review of code
       title: How much of AI-generated code does a human have to read?
       path: /standards/REVIEW-DEPTH.html
-    - label: Code quality
-      title: Judging code quality, whoever or whatever wrote it
-      path: /standards/CODE-QUALITY.html
+    - label: Secure development
+      title: "Secure development: a starting point for your own standard"
+      path: /standards/SECURE-DEVELOPMENT.html
+
+- group: Buying and adopting
+  items:
+    - label: How to adopt these
+      title: "How to adopt these"
+      path: /standards/ADOPTING-THESE.html
+    - label: Standards reference
+      title: "Security standards reference: what each one issues, and what triggers it"
+      path: /standards/STANDARDS-REFERENCE.html
+    - label: What to ask a vendor
+      title: "What to ask a software vendor for, and what each answer proves"
+      path: /standards/DILIGENCE-PACKET.html
+
+- group: Method
+  items:
+    - label: CI and standards
+      title: CI and standards for agent-written code
+      path: /CI-AND-STANDARDS.html
     - label: Use OWASP ASVS 5.0
       title: Running a large security-standard assessment with AI agents
       path: /ASVS-ASSESSMENT.html
 
-- group: Running sessions
-  items:
-    - label: Running multiple sessions
-      title: "Running multiple sessions"
-      path: /RUNNING-MULTIPLE-SESSIONS.html
-    - label: Worktrees
-      title: Worktrees
-      path: /WORKTREES.html
-    - label: Coordination
-      title: Coordination
-      path: /COORDINATION.html
-    - label: Steering
-      title: Steering a running session
-      path: /STEERING.html
-    - label: Session mail
-      title: "The async lane: reaching sessions the realtime channel cannot"
-      path: /SESSION-MAIL.html
-    - label: Sequence allocation
-      title: Sequence allocation
-      path: /SEQUENCE-ALLOC.html
-    - label: PRs and merges
-      title: "Landing work: PRs and merges"
-      path: /PR-AND-MERGE.html
-    - label: Pruning
-      title: Pruning worktrees
-      path: /PRUNING.html
-
-
-
-- group: Guardrails
-  items:
-    - label: Hooks
-      title: Hooks
-      path: /HOOKS.html
-    - label: Leak gate
-      title: The leak gate
-      path: /LEAK-GATE.html
-    - label: CI and standards
-      title: CI and standards for agent-written code
-      path: /CI-AND-STANDARDS.html
-    - label: Usage awareness
-      title: "Usage awareness: knowing when to stop, without lying about it"
-      path: /USAGE-AWARENESS.html
-
-- group: In practice
-  items:
-    - label: Tips and tricks
-      title: Tips and tricks
-      path: /TIPS-AND-TRICKS.html
-    - label: Drift audit case study
-      title: "Case study: auditing a multi-session estate as one system"
-      path: /CASE-STUDY-drift-audit.html
-
-- group: Contributing
-  items:
-    - label: House style
-      title: "House style: what a page here has to do"
-      path: /HOUSE-STYLE.html
-
 - group: On GitHub
   items:
+    - label: Source repository
+      title: secure-development-standards on GitHub
+      url: https://github.com/wshallwshall/secure-development-standards
+    # The toolkit these documents were written alongside and which is still their worked
+    # demonstration. It is a separate repository since the split, and these two rows are the only
+    # deliberate links out to it -- everything else that named it was repointed here.
+    - label: The toolkit
+      title: claude-multisession on GitHub
+      url: https://github.com/wshallwshall/claude-multisession
     - label: CLAUDE.md template
       title: A working agreement to copy into your own repository
       url: https://github.com/wshallwshall/claude-multisession/blob/main/CLAUDE.md.template
-    - label: Source repository
-      title: claude-multisession on GitHub
-      url: https://github.com/wshallwshall/claude-multisession

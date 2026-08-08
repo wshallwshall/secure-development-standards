@@ -14,7 +14,7 @@ have reported it if one of those had moved. A separate session then renamed a `#
 across seven pages; that one happened to have no inbound links, which nothing checked either.
 
 THE SITE'S OWN URLS COUNT AS INTERNAL, AND THEY FELL BETWEEN THE TWO CHECKERS. A link written
-`https://wshallwshall.github.io/claude-multisession/standards/STANDARDS-REFERENCE.html#some-heading`
+`https://wshallwshall.github.io/secure-development-standards/standards/STANDARDS-REFERENCE.html#some-heading`
 points at a page in this repository, but it starts with `https://` so this scan skipped it as
 external, and it is neither of the two forms `test_docs_do_not_drift.py` pins -- that file matches
 `github.com/.../blob/main/` and `raw.githubusercontent.com/.../main/`, and this is a third host. So
@@ -118,7 +118,7 @@ LINK_BEARING = (".md",)
 # comments; if either moves, this pattern stops matching and `TheServedUrlScanCanSee` goes red rather
 # than the scan silently going blind.
 SERVED_SITE = re.compile(
-    r"https://wshallwshall\.github\.io/claude-multisession(/[^)\s]*)?"
+    r"https://wshallwshall\.github\.io/secure-development-standards(/[^)\s]*)?"
 )
 
 # docs/ is the Jekyll source root, so a served path maps back onto it directly. No permalink style is
@@ -442,7 +442,7 @@ class TheScanCanActuallyBite(unittest.TestCase):
     # The served-URL form. These four are the ones that would have caught the gap: before the branch
     # above existed, every case here came back clean because the link starts with `https://`.
 
-    SERVED = "https://wshallwshall.github.io/claude-multisession/standards/ref.html"
+    SERVED = "https://wshallwshall.github.io/secure-development-standards/standards/ref.html"
 
     def test_a_missing_anchor_behind_a_served_url_is_reported(self):
         found = self._scan(

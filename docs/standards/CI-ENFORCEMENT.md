@@ -5,8 +5,8 @@ organizations cannot say which of theirs are which, and the answer is a setting 
 this afternoon.**
 
 > **Take a copy:**
-> [markdown](https://raw.githubusercontent.com/wshallwshall/claude-multisession/main/docs/standards/CI-ENFORCEMENT.md)
-> or [Word document](https://raw.githubusercontent.com/wshallwshall/claude-multisession/main/docs/standards/word/CI-ENFORCEMENT.docx).
+> [markdown](https://raw.githubusercontent.com/wshallwshall/secure-development-standards/main/docs/standards/CI-ENFORCEMENT.md)
+> or [Word document](https://raw.githubusercontent.com/wshallwshall/secure-development-standards/main/docs/standards/word/CI-ENFORCEMENT.docx).
 > [Every file, both formats](OVERVIEW.md#the-files).
 
 ---
@@ -75,7 +75,7 @@ Three things survive the sort and still catch people:
 
 - **A pass proves nothing until you have proved the check can see that class of problem.** A run
   that examined nothing and a run that found nothing look identical from outside, and nobody
-  investigates a green check ([the leak gate](../LEAK-GATE.md#the-caveat-that-matters-most)).
+  investigates a green check ([the leak gate](https://wshallwshall.github.io/claude-multisession/LEAK-GATE.html#the-caveat-that-matters-most)).
 - **A blocking, machine-enforced check can still be about nothing.** Requiring an approval passes
   every test above and establishes only that somebody clicked a button; whether anyone read
   anything is bucket 3. At least fifteen controls in this set have that shape.

@@ -62,53 +62,50 @@ jobs:
       # RECEIPTS, not assurances. Each gate below prints what it examined. A check that reports only
       # pass/fail cannot be distinguished from one that examined nothing.
       - name: ASCII gate
-        shell: pwsh
-        run: pwsh -NoProfile -File scripts/quality/check-ascii.ps1 -MaxReport 0
-
-      - name: Leak gate (structural-only unless a token source is supplied)
         shell: bash
-        env:
-          # Optional. Set repository secret CCX_FORBIDDEN_TOKENS to arm the private-name detectors.
-          # Without it the gate runs STRUCTURAL-ONLY: shape detectors armed, name detectors empty.
-          # That is a legitimate posture and the gate says so on every line of its own output -- but
-          # a green run then proves much less, so this step states it rather than letting a tick imply
-          # more than it earned.
-          CCX_TOKENS: ${{ secrets.CCX_FORBIDDEN_TOKENS }}
         run: |
           set -euo pipefail
-          if [ -n "${CCX_TOKENS:-}" ]; then
-            printf '%s\n' "$CCX_TOKENS" > "$RUNNER_TEMP/tokens.txt"
-            echo "ARMED: a token source was supplied; private-name detectors are on."
-            CCX_FORBIDDEN_TOKENS="$RUNNER_TEMP/tokens.txt" python scripts/security/scan_forbidden.py --path . --require-tokens
-            rm -f "$RUNNER_TEMP/tokens.txt"
-          else
-            echo "NOTICE: no token source configured. This run is STRUCTURAL-ONLY --"
-            echo "        shape detectors are armed, private-name detectors are NOT."
-            echo "        A pass here says nothing about private names. Supply the"
-            echo "        CCX_FORBIDDEN_TOKENS secret to arm them."
-            python scripts/security/scan_forbidden.py --path .
-          fi
-
-      - name: PowerShell parses
-        shell: pwsh
-        run: |
-          # A syntax error in a hook is invisible until the hook is invoked, and a hook that fails to
-          # load fails OPEN -- the edit proceeds and nothing reports it. Parse every shipped script.
-          $files = Get-ChildItem -Recurse -Include *.ps1 -File |
-            Where-Object { $_.FullName -notmatch '[\\/](\.git)[\\/]' }
-          "parsing $($files.Count) PowerShell file(s)"
-          $bad = 0
-          foreach ($f in $files) {
-            $errs = $null
-            [void][System.Management.Automation.Language.Parser]::ParseFile($f.FullName, [ref]$null, [ref]$errs)
-            if ($errs.Count) {
-              $bad++
-              "PARSE ERRORS in $($f.FullName):"
-              $errs | ForEach-Object { "  $($_.Extent.StartLineNumber): $($_.Message)" }
-            }
-          }
-          if ($bad) { throw "$bad file(s) failed to parse" }
-          "all parsed"
+          # HS-11 in the house style forbids non-ASCII in prose absolutely, and it is not a
+          # preference: pandoc renders a smart quote or an en dash differently from the character an
+          # author meant, and the Word copies are compared byte-derived against a rebuild. The
+          # toolkit repository enforced this with a PowerShell script under scripts/, which did not
+          # come across the split, so the check is inline here and depends on nothing but python.
+          #
+          # It PRINTS WHAT IT SCANNED. A gate that reports only pass/fail cannot be told apart from
+          # one that examined nothing, and scanning zero files is a failure here rather than a pass.
+          python - <<'EOF'
+          import pathlib, sys
+          SKIP_DIRS = {".git", "_site", "__pycache__", ".jekyll-cache", "vendor"}
+          SKIP_SUFFIX = {".docx", ".png", ".jpg", ".gif", ".ico", ".woff", ".woff2", ".pdf"}
+          scanned = 0
+          byte_total = 0
+          offenders = []
+          for path in sorted(pathlib.Path(".").rglob("*")):
+              if not path.is_file():
+                  continue
+              if any(part in SKIP_DIRS for part in path.parts):
+                  continue
+              if path.suffix.lower() in SKIP_SUFFIX:
+                  continue
+              raw = path.read_bytes()
+              if bytes([0]) in raw:
+                  continue
+              scanned += 1
+              byte_total += len(raw)
+              for n, line in enumerate(raw.splitlines(), 1):
+                  bad = [b for b in line if b > 127]
+                  if bad:
+                      offenders.append(f"{path}:{n}: {len(bad)} non-ASCII byte(s)")
+          print(f"scanned {scanned} file(s), {byte_total} byte(s)")
+          if scanned == 0:
+              sys.exit("scanned NO files. A scan that examined nothing is not a pass.")
+          if offenders:
+              print("VIOLATIONS")
+              for o in offenders[:50]:
+                  print("  " + o)
+              sys.exit(f"{len(offenders)} non-ASCII violation(s)")
+          print("VIOLATIONS: none")
+          EOF
 
       # pandoc, PINNED BY VERSION AND DIGEST. tests/test_word_copies_track_the_markdown.py rebuilds
       # every published standard and compares it against the committed Word copy, so the converter

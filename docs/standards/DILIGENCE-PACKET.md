@@ -5,8 +5,8 @@ one answers what to require of a vendor you are evaluating -- and what each answ
 proves.**
 
 > **Take a copy:**
-> [markdown](https://raw.githubusercontent.com/wshallwshall/claude-multisession/main/docs/standards/DILIGENCE-PACKET.md)
-> or [Word document](https://raw.githubusercontent.com/wshallwshall/claude-multisession/main/docs/standards/word/DILIGENCE-PACKET.docx).
+> [markdown](https://raw.githubusercontent.com/wshallwshall/secure-development-standards/main/docs/standards/DILIGENCE-PACKET.md)
+> or [Word document](https://raw.githubusercontent.com/wshallwshall/secure-development-standards/main/docs/standards/word/DILIGENCE-PACKET.docx).
 > [Every file, both formats](OVERVIEW.md#the-files).
 
 ---

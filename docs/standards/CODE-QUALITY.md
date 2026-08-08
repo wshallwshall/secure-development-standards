@@ -4,8 +4,8 @@
 finished?**
 
 > **Take a copy:**
-> [markdown](https://raw.githubusercontent.com/wshallwshall/claude-multisession/main/docs/standards/CODE-QUALITY.md)
-> or [Word document](https://raw.githubusercontent.com/wshallwshall/claude-multisession/main/docs/standards/word/CODE-QUALITY.docx).
+> [markdown](https://raw.githubusercontent.com/wshallwshall/secure-development-standards/main/docs/standards/CODE-QUALITY.md)
+> or [Word document](https://raw.githubusercontent.com/wshallwshall/secure-development-standards/main/docs/standards/word/CODE-QUALITY.docx).
 > [Every file, both formats](OVERVIEW.md#the-files).
 
 ---
@@ -598,11 +598,11 @@ are frozen and which moved, and rewrite every cross-reference in the same change
 - [CI and standards](../CI-AND-STANDARDS.md) -- the metric table with its [external] tags, judging
   tests by assertions, receipts and liveness, sibling-path enumeration, the allowlist rule for
   published artifacts, and the claim-honesty register
-- [Tips and tricks](../TIPS-AND-TRICKS.md) -- sections 4 and 5, writing a guardrail and measuring
+- [Tips and tricks](https://wshallwshall.github.io/claude-multisession/TIPS-AND-TRICKS.html) -- sections 4 and 5, writing a guardrail and measuring
   whether it works
-- [Case study: auditing a multi-session estate as one system](../CASE-STUDY-drift-audit.md) --
+- [Case study: auditing a multi-session estate as one system](https://wshallwshall.github.io/claude-multisession/CASE-STUDY-drift-audit.html) --
   proving a fix by deliberately mutating the shipped artifact
 - [Running a large security-standard assessment with AI agents](../ASVS-ASSESSMENT.md) -- verdict
   vocabularies, evidence anchors, corpus pinning, and how to read a movement in a score
-- [The leak gate](../LEAK-GATE.md) -- the three ways a scanner lies, and the blind spot no scanner
+- [The leak gate](https://wshallwshall.github.io/claude-multisession/LEAK-GATE.html) -- the three ways a scanner lies, and the blind spot no scanner
   closes

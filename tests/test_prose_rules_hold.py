@@ -211,13 +211,13 @@ class BannedConstructionsAreAbsent(unittest.TestCase):
         files = prose_files()
         self.assertGreaterEqual(
             len(files),
-            25,
+            12,
             f"the prose scan found only {len(files)} pages. The absence check above would pass "
             "against an empty corpus while measuring nothing, so this is what makes it mean "
             "anything. If the docs really did shrink this far, lower the number deliberately.",
         )
         words = sum(len(t.read(t.REPO_ROOT / f).split()) for f in files)
-        self.assertGreater(words, 50_000, f"only {words} words scanned; the corpus is ~170,000.")
+        self.assertGreater(words, 25_000, f"only {words} words scanned; the corpus is ~170,000.")
 
 
 class TheBannedPatternsCatchWhatTheyExistToCatch(unittest.TestCase):
@@ -285,14 +285,14 @@ class TheBannedPatternsCatchWhatTheyExistToCatch(unittest.TestCase):
 # These are lower than the figures in the writing plan (which counted 1,397 long sentences) because
 # that count included headings, table rows and block quotes. This one is prose only, for the same
 # reason PD-4 exists: a table row is not a sentence and shortening it is not an improvement.
-BASELINE_LONG_SENTENCES = 833       # sentences over 30 words
-BASELINE_FAT_TABLE_CELLS = 49       # table cells over 40 words
+BASELINE_LONG_SENTENCES = 362       # sentences over 30 words
+BASELINE_FAT_TABLE_CELLS = 30       # table cells over 40 words
 
 # How far below baseline a metric may drift before the test asks for the baseline to be lowered.
 # Sized to each metric rather than shared: 40 is noise against 833 and most of the way to zero
 # against 49.
-LONG_SENTENCE_SLACK = 40
-FAT_CELL_SLACK = 8
+LONG_SENTENCE_SLACK = 25
+FAT_CELL_SLACK = 6
 
 SENTENCE_SPLIT = re.compile(r"(?<=[.!?])\s+")
 
@@ -326,7 +326,7 @@ class TheReportedMetricsDoNotRegress(unittest.TestCase):
         long_sentences, fat_cells, words = _measure()
         self.assertGreater(
             words,
-            50_000,
+            25_000,
             f"the metric pass examined {words} words of prose, which is too few to have read the "
             "corpus. A measurement over nothing reports zero and reads like a pass.",
         )

@@ -3,8 +3,8 @@
 **The rest of this section tells you what to read. This page tells you what to do with it.**
 
 > **Take a copy:**
-> [markdown](https://raw.githubusercontent.com/wshallwshall/claude-multisession/main/docs/standards/ADOPTING-THESE.md)
-> or [Word document](https://raw.githubusercontent.com/wshallwshall/claude-multisession/main/docs/standards/word/ADOPTING-THESE.docx).
+> [markdown](https://raw.githubusercontent.com/wshallwshall/secure-development-standards/main/docs/standards/ADOPTING-THESE.md)
+> or [Word document](https://raw.githubusercontent.com/wshallwshall/secure-development-standards/main/docs/standards/word/ADOPTING-THESE.docx).
 > [Every file, both formats](OVERVIEW.md#the-files).
 
 ---
@@ -138,7 +138,7 @@ releases, not a prerequisite for starting.
 | Dependencies existence-verified and hash-pinned | [Dependency integrity](DEPENDENCY-INTEGRITY.md), *Pin the resolved graph, and enforce the pin at install* | | | |
 | Security scanning that blocks, plus a threat model reviewed before the code | [Secure development](SECURE-DEVELOPMENT.md), SD-5.2 to SD-5.5; SD-2.1 | | | |
 | Published artifact contains only what was declared | [Dependency integrity](DEPENDENCY-INTEGRITY.md), *The artifact contains only what you declared* | | | |
-| Secrets and restricted data kept out of the repository and its full history, backed by a fail-closed commit-time content scan | [Secure development](SECURE-DEVELOPMENT.md), SD-6.1 and SD-6.2; [the leak gate](../LEAK-GATE.md) | | | |
+| Secrets and restricted data kept out of the repository and its full history, backed by a fail-closed commit-time content scan | [Secure development](SECURE-DEVELOPMENT.md), SD-6.1 and SD-6.2; [the leak gate](https://wshallwshall.github.io/claude-multisession/LEAK-GATE.html) | | | |
 
 Two of those seven -- tests that verify behavior, and the security row entire -- are not in the
 shipped project instruction template, and both carry the verdict. Step 5 returns to that.
@@ -246,7 +246,7 @@ neither can be shown wrong, so the ranking cannot be reviewed -- only overruled.
 checkable: you can be shown to have made a check blocking before anything recorded what it examined,
 or to have written a rule saying "restricted data" before anything defined the term. The strongest
 instance is why the rule reads this way -- with no receipts, every severity ranking is unfalsifiable,
-so instrumentation comes before ranking ([Case study: a drift audit](../CASE-STUDY-drift-audit.md),
+so instrumentation comes before ranking ([Case study: a drift audit](https://wshallwshall.github.io/claude-multisession/CASE-STUDY-drift-audit.html),
 *"A control with no receipts cannot be ranked, fixed, or defended"*). A prioritization scheme that
 cannot be checked is the same defect named elsewhere as a control that cannot fail.
 
@@ -322,7 +322,7 @@ day as the rule"*).
 
 A control that exists only locally is advisory in practice regardless of intent. The ways a gate
 lies while reporting green belong to [CI and standards](../CI-AND-STANDARDS.md) and
-[the leak gate](../LEAK-GATE.md); read them there.
+[the leak gate](https://wshallwshall.github.io/claude-multisession/LEAK-GATE.html); read them there.
 
 ### What you cannot automate, and must therefore give to a person
 
@@ -351,7 +351,7 @@ steps 1 and 2 exist to remove rows, and a project instruction file written first
 aspirational, which is worse than none because the next session acts on it. The procedure and the
 mandatory stop are already published: edit the template down to what is true here, delete every rule
 the target does not actually follow, then stop and get section-by-section human confirmation
-([Here's what to feed to your AI coding assistant](../FEED-THIS-TO-CLAUDE-CODE.md), *"If they decide
+([Here's what to feed to your AI coding assistant](https://wshallwshall.github.io/claude-multisession/FEED-THIS-TO-CLAUDE-CODE.html), *"If they decide
 to proceed"*).
 
 The template's control table has exactly three columns and they are the outputs of three of the
@@ -710,5 +710,5 @@ requirements. Skip the whole table otherwise.
 | Where a project keeps its standing rules, and a table for what is live | [The `CLAUDE.md` template](https://raw.githubusercontent.com/wshallwshall/claude-multisession/main/CLAUDE.md.template) |
 | How these sit against the mainstream frameworks | [The standards reference](STANDARDS-REFERENCE.md) |
 | Gates, receipts, claim honesty, and why a check that cannot fail is not a control | [CI and standards](../CI-AND-STANDARDS.md) |
-| A fail-closed content scanner and the blind spot no scanner closes | [The leak gate](../LEAK-GATE.md) |
-| The same reasoning applied to one repository's own controls | [Case study: a drift audit](../CASE-STUDY-drift-audit.md) |
+| A fail-closed content scanner and the blind spot no scanner closes | [The leak gate](https://wshallwshall.github.io/claude-multisession/LEAK-GATE.html) |
+| The same reasoning applied to one repository's own controls | [Case study: a drift audit](https://wshallwshall.github.io/claude-multisession/CASE-STUDY-drift-audit.html) |
