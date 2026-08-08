@@ -1122,8 +1122,9 @@ of conformance with any of them, and none of them certify anything.
   ways a scanner lies
 - [Dependency and artifact integrity](DEPENDENCY-INTEGRITY.md) -- the consuming half of an advisory,
   per-manifest audit nets, and the pinned resolved graph
-- [What to ask a software vendor for](DILIGENCE-PACKET.md) -- the buyer's side of section 12, what
-  each item of evidence proves, and why organization-layer evidence is not software-layer evidence
+- [What to have ready when a buyer asks](DILIGENCE-PACKET.md) -- where section 12's outputs are
+  asked for, what each item of evidence carries, and why organization-layer evidence cannot stand in
+  for software-layer evidence
 - [Running a large security-standard assessment with AI agents](../ASVS-ASSESSMENT.md) -- verdict
   vocabulary, evidence anchors, corpus pinning, and reading a movement in a score
 - [Case study: auditing a multi-session estate as one system](https://wshallwshall.github.io/claude-multisession/CASE-STUDY-drift-audit.html) -- proving

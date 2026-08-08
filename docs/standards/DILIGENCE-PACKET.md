@@ -1,8 +1,8 @@
-# What to ask a software vendor for, and what each answer proves
+# What to have ready when a buyer asks, and what each artifact proves
 
-**The mirror of the standards map: that one answers which of these reach your own organization, this
-one answers what to require of a vendor you are evaluating -- and what each answer actually
-proves.**
+**Every serious buyer runs the same diligence, and it is a small, predictable set of documents. This
+is what to have on the shelf before anyone asks -- and, for each one, the claim it will carry and the
+claim it will not.**
 
 > **Take a copy:**
 > [markdown](https://raw.githubusercontent.com/wshallwshall/secure-development-standards/main/docs/standards/DILIGENCE-PACKET.md)
@@ -13,94 +13,99 @@ proves.**
 
 ## TLDR/BLUF
 
-**The commonest mistake in vendor diligence is reading an audit report or a certificate as an answer
-about the product.** Those instruments examine how a company governs
-itself -- its policies, its access reviews, its change management. They never open the code. A
-vendor can hold a clean report across a full twelve-month period, ship software with an
-authorization flaw in it, and have said nothing false.
+**The commonest mistake a vendor makes in diligence is offering an audit report or a certificate as
+an answer about the product.** Those instruments examine how your company governs itself -- policies,
+access reviews, change management. They never open your code. You can hold a clean report across a
+full twelve-month period, ship software with an authorization flaw in it, and have said nothing
+false. Hand that report over as product evidence and you have said something false, which is a
+different position entirely and the one that ends deals.
 
-So sort the evidence by layer -- the company, the software, the contract -- and ask three things
-before anything else:
+So sort your own evidence by layer -- the company, the software, the contract -- and have three
+things ready before the first call:
 
-1. **The scope statement** of whatever organization-layer instrument they offered. Not the
-   certificate, not the cover page. The scope alone decides whether the thing you are buying was
-   inside the examination, and for software you install and run yourself the answer is frequently
-   no.
-2. **An SBOM of what you will actually run.** For an installed product that is the released
-   artifact; for a hosted service it is the runtime production environment. A build-time source
-   manifest answers a different question.
-3. **Two dates and a name:** the last dynamic test, the last incident response exercise, and who ran
-   the test. Both dates are trivial to supply if they happened, and neither can be produced
-   retrospectively. The name decides whether you are holding an independent look or the output of
-   the vendor's own tooling.
+1. **The scope statement** of whatever organization-layer instrument you hold. Not the certificate,
+   not the cover page. A competent buyer reads the scope first, because it alone decides whether the
+   thing they are buying was inside the examination -- and for software you distribute rather than
+   host, the answer is frequently no. Say so yourself, early. It costs a paragraph now and a deal
+   later.
+2. **An SBOM of what the buyer will actually run.** For an installed product that is the released
+   artifact; for a hosted service it is the runtime production environment. Generate it from the
+   build. A hand-maintained list is a document about your intentions.
+3. **Two dates and a name:** your last dynamic test, your last incident response exercise, and who
+   ran the test. Both dates are trivial to supply if they happened, and neither can be produced
+   retrospectively -- which is exactly why they are asked for. The name decides whether you are
+   offering an independent look or the output of your own tooling.
 
-Each of the three is a document, a date or a name. None can be answered with an adjective.
+Each of the three is a document, a date or a name. None can be answered with an adjective, and a
+buyer who accepts an adjective is not the buyer whose approval is worth having.
 
 ---
 
 ## The organization layer is worth having; the failure is narrower
 
-None of this is a reason to dismiss the organization-layer instruments. What they establish -- that
+None of this is a reason to skip the organization-layer instruments. What they establish -- that
 somebody outside the company examined how it governs itself, grants access and manages change, and
 wrote down what they found -- is worth having, and a vendor holding none of them is a different risk
-entirely. The failure is narrower than that: reading a program attestation as an answer to "is this
-product secure", when no part of it asked that question.
+entirely in a buyer's eyes. The failure is narrower than that: letting a program attestation stand as
+an answer to "is this product secure", when no part of it asked that question.
 
 Statuses, versions and dates live on the reference page, each carrying the date it was checked. For
-the producer's side of the same cut, see
+the same cut stated as a rule you can hold your own process to, see
 [the organization layer is not the software layer](STANDARDS-REFERENCE.md#the-organization-layer-is-not-the-software-layer).
 
 ---
 
-## Organization layer: evidence about the company
+## Organization layer: evidence about your company
 
-Procurement already knows how to ask for these, and most are issued by a party other than the vendor
--- which is where their weight comes from, and none of that weight is about the product. One caveat
-governs the whole group: an examination or a certification has a boundary, and software you install
-and run yourself frequently falls outside it. The boundary appears in the scope statement and
-nowhere else.
+Procurement already knows how to ask for these, and most are issued by a party other than you --
+which is where their weight comes from, and none of that weight is about your product. One caveat
+governs the whole group: an examination or a certification has a boundary, and software you
+distribute frequently falls outside it. The boundary appears in the scope statement and nowhere else,
+so the scope statement is the part to have ready.
 
-| The item | What it proves | What it does not prove | What to ask |
+| The item | What it proves for you | What it will not carry | What you must be able to say |
 |---|---|---|---|
-| **SOC 2 Type I** -- an examination report, point-in-time | A licensed firm's opinion that controls were suitably designed as of one date | That any control ever operated. It observed a design, not a period of behavior, and it looked at the organization rather than the code | Why Type I rather than Type II, and when does the first Type II period end? |
-| **SOC 2 Type II** -- an examination report over a period | A licensed firm's opinion on operating effectiveness across a period, typically six to twelve months, against the Trust Services Criteria the vendor elected | That distributed software was examined; it commonly sits outside the scope boundary. The report is an attestation, not a certificate -- there is no pass mark | What did the scope cover, and what exceptions did the firm list? |
-| **ISO/IEC 27001** -- a management-system certificate | That an accredited certification body certified an information security management system for a stated scope | That a product was certified. It is not "the international SOC 2" -- that instrument is an opinion plus exceptions, this one a certificate plus a scope statement | What scope is printed on the certificate, and who accredited the body that issued it? |
-| **HITRUST CSF** -- a validated assessment of controls and environment | A third-party validated result at one of three named tiers -- e1, i1 and r2 -- which are not interchangeable | That distributable software was assessed. What is assessed is an organization's controls and environment, which can include the environment operating the software | Which tier was assessed, and what did the assessment take in? |
-| **Sector and program instruments** -- a PCI DSS validation document, a FedRAMP or StateRAMP authorization, a CJIS policy audit | That the operating environment for a named offering was assessed against that program's own rules | Anything about software you install and run yourself. Nor that a third party did the assessing: a PCI DSS self-assessment questionnaire is completed and signed by the vendor | Which offering was in scope, was it independently assessed or self-assessed, and is the offering you are buying the one that was named? |
+| **SOC 2 Type I** -- an examination report, point-in-time | A licensed firm's opinion that your controls were suitably designed as of one date | That any control ever operated. It observed a design, not a period of behavior, and it looked at your organization rather than your code | Why Type I rather than Type II, and the date the first Type II period ends |
+| **SOC 2 Type II** -- an examination report over a period | A licensed firm's opinion on operating effectiveness across a period, typically six to twelve months, against the Trust Services Criteria you elected | That your distributed software was examined; it commonly sits outside the scope boundary. The report is an attestation, not a certificate -- there is no pass mark to claim | What the scope covered, and every exception the firm listed, offered rather than waited for |
+| **ISO/IEC 27001** -- a management-system certificate | That an accredited certification body certified your information security management system for a stated scope | That your product was certified. It is not "the international SOC 2" -- that instrument is an opinion plus exceptions, this one a certificate plus a scope statement | The scope printed on the certificate, and who accredited the body that issued it |
+| **HITRUST CSF** -- a validated assessment of controls and environment | A third-party validated result at one of three named tiers -- e1, i1 and r2 -- which are not interchangeable | That your distributable software was assessed. What is assessed is your controls and environment, which can include the environment operating the software | Which tier you hold and what the assessment took in, without leaning on the tier name alone |
+| **Sector and program instruments** -- a PCI DSS validation document, a FedRAMP or StateRAMP authorization, a CJIS policy audit | That the operating environment for a named offering was assessed against that program's own rules | Anything about software a customer installs and runs themselves. Nor that a third party did the assessing: a PCI DSS self-assessment questionnaire is completed and signed by you | Which offering was in scope, whether it was independently assessed or self-assessed, and whether it is the offering being bought |
 
-Three things that trip people up here:
+Three things that will be used against you if you leave them for the buyer to find:
 
-- **An examination period that produced no exception at all is worth a question of its own.** The
-  scope passage and the exceptions passage are the report; the rest is structure.
+- **An examination period that produced no exception at all invites a question of its own.** The
+  scope passage and the exceptions passage are the report; the rest is structure. Be ready to explain
+  a clean run.
 - **A certificate scope of one office or one business unit is entirely ordinary,** and narrower than
-  a reader takes it to be. The standards publisher itself issues nothing -- the accredited body
-  does.
+  a reader takes it to be. Do not let the reader take it wider. The standards publisher itself issues
+  nothing -- the accredited body does.
 - **HITRUST sits in the same set as the program instruments, and none of them outranks the others.**
   Its two lower tiers are published as fixed core control sets while the highest is tailored and
-  risk-based, so a tier name on its own does not say how much was looked at. Ask for tier and scope,
-  never control text: the framework's text is licensed. And the body that writes a program standard
-  is often not the body that sets your validation requirement.
+  risk-based, so quoting a tier name on its own says less than it sounds like. Offer tier and scope,
+  and never circulate control text: the framework's text is licensed. The body that writes a program
+  standard is often not the body that sets your customer's validation requirement.
 
 ---
 
-## Software layer: evidence about the thing you are buying
+## Software layer: evidence about the thing you are selling
 
-Nothing in the group above examined the code or the build. These four are about the code and the
-build, and the question is always how each one was produced. Three of them the vendor writes about
-its own system, so their weight comes from the discipline behind them rather than from who issued
-them. Testing evidence is the exception and the strongest item in the group, but only in one form:
-an external assessment or a penetration test, which is the one software-layer artifact a third party
-issues. Ask for it by those names, because a vendor asked for "testing evidence" will usually hand
-over the output of its own tooling.
+Nothing in the group above examined your code or your build. These four are about the code and the
+build, and for each one the buyer's real question is how it was produced. Three of them you write
+about your own system, so their weight comes from the discipline behind them rather than from who
+issued them -- which means the discipline is the thing to be able to describe. Testing evidence is
+the exception and the strongest item in the group, but only in one form: an external assessment or a
+penetration test, the one software-layer artifact a third party issues. Expect to be asked for it by
+those names, and expect the request to be a test of whether you offer your own tooling's output
+instead.
 
-| The item | What it proves | What it does not prove | What to ask |
+| The item | What it proves for you | What it will not carry | What you must be able to say |
 |---|---|---|---|
-| **A software bill of materials** | Which components are in the build | Whether any of it is exploitable in the configuration you will run. A conforming SBOM can still be inaccurate | Is it generated by the build for the exact released artifact, or hand-maintained? |
-| **A data flow diagram** | Where data crosses a trust boundary -- which is where a control has to exist, and where a threat model becomes checkable | Anything at all, if the boundaries are not marked. Unmarked, it is a diagram rather than a security artifact | Which boundaries are marked, and which control sits on each one? |
-| **Cryptography documentation** | Which algorithms and modes are used, and where data is encrypted in transit and at rest | Key management. "AES-256" names an algorithm, not a key lifecycle | Who holds the keys, where do they live, and what happens on rotation and on revocation? |
-| **Testing evidence** | That a named class of defect was looked for, by a named method, on a named date and against a named version | The absence of anything. Static analysis and dynamic testing find different classes of defect, and neither substitutes for the other | Who ran it, and were they independent of the team that wrote the code? |
+| **A software bill of materials** | Which components are in the build | Whether any of it is exploitable in the configuration the buyer will run. A conforming SBOM can still be inaccurate | That it is generated by the build for the exact released artifact, rather than hand-maintained |
+| **A data flow diagram** | Where data crosses a trust boundary -- which is where a control has to exist, and where a threat model becomes checkable | Anything at all, if the boundaries are not marked. Unmarked, it is a diagram rather than a security artifact | Which boundaries are marked, and which control sits on each one |
+| **Cryptography documentation** | Which algorithms and modes you use, and where data is encrypted in transit and at rest | Key management. "AES-256" names an algorithm, not a key lifecycle | Who holds the keys, where they live, and what happens on rotation and on revocation |
+| **Testing evidence** | That a named class of defect was looked for, by a named method, on a named date and against a named version | The absence of anything. Static analysis and dynamic testing find different classes of defect, and neither substitutes for the other | Who ran it, and whether they were independent of the team that wrote the code |
 
-Two follow-ups worth the time:
+Two follow-ups you will be asked, so answer them unprompted:
 
 - **For testing evidence:** what was in scope, which version was tested, and what triggers the next
   run -- a change, or a date on the calendar?
@@ -108,49 +113,54 @@ Two follow-ups worth the time:
   build-time source manifest? Those answer different questions, and only one of them describes what
   is running.
 
-Producer side for three of these rows: [Secure development](SECURE-DEVELOPMENT.md) carries the data
-flow diagram and the testing regime; [Dependency integrity](DEPENDENCY-INTEGRITY.md) carries the
-SBOM, with the dated citation behind the runtime-versus-build distinction.
+Three of these rows are outputs of a process rather than documents to write at diligence time.
+[Secure development](SECURE-DEVELOPMENT.md) is where the data flow diagram and the testing regime
+come from; [Dependency integrity](DEPENDENCY-INTEGRITY.md) is where the SBOM comes from, with the
+dated citation behind the runtime-versus-build distinction. Build them there and diligence becomes a
+retrieval task.
 
 ---
 
 ## Legal instruments: evidence about who pays when it goes wrong
 
-These allocate liability; they do not establish security. A complete set of them tells you what
-happens after a failure and nothing about its likelihood. Read them for their clock definitions and
-notification paths, which is where they are weakest and always checkable.
+These allocate liability; they do not establish security, and offering them as though they do is the
+same overclaim in a third costume. A complete set tells a buyer what happens after a failure and
+nothing about its likelihood. They are read for their clock definitions and notification paths, which
+is where they are weakest and always checkable.
 
-| The item | What it proves | What it does not prove | What to ask |
+| The item | What it proves for you | What it will not carry | What you must be able to say |
 |---|---|---|---|
-| **A vulnerability remediation commitment (the SLA)** | An agreed maximum elapsed time, and a contractual remedy if it is missed | That anything is fixed faster | When does the clock start, when does it stop, and how does a reporter reach a human outside business hours? |
-| **An incident response plan** | That a written plan exists, with named roles and a notification path | That anyone has ever executed it | The date of the last exercise, and what changed as a result |
-| **Data-handling agreements** -- a data processing agreement and its sector equivalents, such as a business associate agreement | Who may process the data, for what purpose, through which subprocessors, and who must notify whom within what time | That the processing is secure. It allocates duty and liability, which is a different thing | The current subprocessor list, how you are told when it changes, and where the breach-notification clock starts |
+| **A vulnerability remediation commitment (the SLA)** | An agreed maximum elapsed time, and a contractual remedy if you miss it | That anything is fixed faster | When the clock starts, when it stops, and how a reporter reaches a human outside business hours |
+| **An incident response plan** | That a written plan exists, with named roles and a notification path | That anyone has ever executed it | The date of your last exercise, and what changed as a result |
+| **Data-handling agreements** -- a data processing agreement and its sector equivalents, such as a business associate agreement | Who may process the data, for what purpose, through which subprocessors, and who must notify whom within what time | That the processing is secure. It allocates duty and liability, which is a different thing | Your current subprocessor list, how customers are told when it changes, and where the breach-notification clock starts |
 
-Two failure points, both common:
+Two places these fail, both common and both yours to fix before anyone reads them:
 
-- **An SLA fails at the clock's start point, not at the number.** A commitment whose clock starts
-  when the vendor accepts triage is unbounded, whatever the number on it. And "patch released" is
-  not "patch deployed" -- for software you run yourself, the deployment is your side of the line.
-- **A plan with no exercise date is a document, not a capability.**
+- **An SLA fails at the clock's start point, not at the number.** A commitment whose clock starts when
+  you accept triage is unbounded, whatever the number on it -- and a buyer who reads carefully will
+  say so. "Patch released" is also not "patch deployed"; for software the customer runs, deployment is
+  their side of the line, and the agreement should say which side it is describing.
+- **A plan with no exercise date is a document, not a capability.** Run one and date it.
 
-Producer side: [Secure development](SECURE-DEVELOPMENT.md) carries the disclosure path and the
-remediation clock.
+[Secure development](SECURE-DEVELOPMENT.md) is where the disclosure path and the remediation clock
+come from.
 
 ---
 
 ## What this page does not do
 
 - **It lists at least the items a buyer commonly asks for, and is not a complete diligence list.**
-  Matching nothing here is not clearance, and producing everything here is not approval.
-- **Not legal advice.** What you are able to require is decided by a contract clause, not by a web
+  Holding everything here is not approval, and being asked for something not listed here is ordinary.
+- **Not legal advice.** What you are obliged to provide is decided by a contract clause, not by a web
   page. Nothing here has been reviewed by counsel.
 - **No assessor, tool, format or vendor is named.** The rows describe instruments, not the market
   that sells them.
 - **No status, version or edition claim appears here.** Those live on the reference page, each
   carrying the date it was checked, so a stale fact is visible as one.
 - **A complete packet is not a secure product, and a thin packet is not an insecure one.** Both are
-  evidence about what you are able to check, which is a more modest thing than either side of a
-  procurement conversation usually wants it to be.
+  evidence about what a buyer is able to check, which is a more modest thing than either side of a
+  procurement conversation usually wants it to be. Claiming more than that is the failure this whole
+  page is about.
 
 ---
 

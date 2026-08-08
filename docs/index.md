@@ -5,7 +5,8 @@
 Standards you can adopt, fork, or hand to an auditor. Every one is written to be copied whole into
 your own repository and edited, which is why each ships as markdown and as a Word file. They cover
 what to require of a team writing code with an AI assistant, how deeply a human has to read what it
-produces, what to do about dependencies you did not write, and what to ask a vendor before you buy.
+produces, what to do about dependencies you did not write, and what a buyer will ask you to
+produce.
 
 **What it costs you.** Adoption is per document and each says its own price. Nothing here is a
 product, a scanner, or a service, and nothing is sold. The expensive part is not reading these -- it
@@ -39,7 +40,7 @@ executive to brief, [the CISO summary](standards/CISO-SUMMARY.md) is the whole a
 | Judging whether a body of code is any good | [Code quality](standards/CODE-QUALITY.md) |
 | Managing code you did not write | [Dependency and artifact integrity](standards/DEPENDENCY-INTEGRITY.md) |
 | Working out which rules a pipeline can enforce | [Automated compliance in CI](standards/CI-ENFORCEMENT.md) |
-| Buying software, and asking for evidence | [What to ask a software vendor for](standards/DILIGENCE-PACKET.md) |
+| Selling software, and being asked for evidence | [What to have ready when a buyer asks](standards/DILIGENCE-PACKET.md) |
 | Adopting any of it, in an order that works | [How to adopt these](standards/ADOPTING-THESE.md) |
 
 ---
