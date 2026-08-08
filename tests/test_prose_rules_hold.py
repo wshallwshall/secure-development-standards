@@ -279,13 +279,18 @@ class TheBannedPatternsCatchWhatTheyExistToCatch(unittest.TestCase):
 # ---------------------------------------------------------------------------
 # Reported, and ratcheted. These may not get worse.
 
-# Measured on 2026-08-08 against the corpus at that commit, over 110,092 words of prose in 34 files.
+# Measured on 2026-08-08 against this repository's corpus: 54,310 words of prose in 17 files.
+#
+# MEASURE WITH THE FILES TRACKED. `prose_files()` reads `git ls-files`, so a baseline taken while a
+# new page is still untracked is a baseline that has not seen it. That happened here: the first
+# figure was 362, taken before README.md and docs/index.md were committed, and CI reported 371 on
+# the same corpus. Nine sentences, and the ratchet caught it rather than the reviewer.
 # To change one, run the test: it names the current figure and which direction it moved.
 #
 # These are lower than the figures in the writing plan (which counted 1,397 long sentences) because
 # that count included headings, table rows and block quotes. This one is prose only, for the same
 # reason PD-4 exists: a table row is not a sentence and shortening it is not an improvement.
-BASELINE_LONG_SENTENCES = 362       # sentences over 30 words
+BASELINE_LONG_SENTENCES = 371       # sentences over 30 words
 BASELINE_FAT_TABLE_CELLS = 30       # table cells over 40 words
 
 # How far below baseline a metric may drift before the test asks for the baseline to be lowered.
