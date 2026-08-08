@@ -667,9 +667,9 @@ own toolchain before repeating any of it as a claim.
   scheduled supply-chain audits, package manifests as allowlists, and what a gate does not prove
 - [The leak gate](https://wshallwshall.github.io/claude-multisession/LEAK-GATE.html) -- fail-closed content scanning before publication, and the
   permanent blind spot a scanner cannot cover
-- [What to ask a software vendor for](DILIGENCE-PACKET.md) -- the buyer's side of the inventory
-  published here, what each item proves, and why organization-layer evidence is not software-layer
-  evidence
+- [What to have ready when a buyer asks](DILIGENCE-PACKET.md) -- where the inventory published
+  here ends up, what a buyer reads it as proving, and why organization-layer evidence cannot stand in
+  for software-layer evidence
 - [Tips and tricks](https://wshallwshall.github.io/claude-multisession/TIPS-AND-TRICKS.html) -- writing a guardrail, and measuring whether it works
 - [Case study: auditing a multi-session estate as one system](https://wshallwshall.github.io/claude-multisession/CASE-STUDY-drift-audit.html) --
   proving a fix by deliberately mutating the shipped artifact

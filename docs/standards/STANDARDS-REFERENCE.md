@@ -440,7 +440,7 @@ the [SSDF publication listing](https://csrc.nist.gov/Projects/ssdf/publications)
 | If you need | Read |
 |---|---|
 | Which of these is even worth your attention, routed by situation | [Which standards apply to you](WHICH-STANDARDS-APPLY.md) |
-| What to require of a vendor you are evaluating, and what each answer proves | [What to ask a software vendor for](DILIGENCE-PACKET.md) |
+| What a buyer will ask you for, and what each artifact actually proves | [What to have ready when a buyer asks](DILIGENCE-PACKET.md) |
 | Whether your teams already do this | [The CISO summary](CISO-SUMMARY.md) |
 | The control set for AI-assisted work | [AI-assisted development](AI-ASSISTED-DEVELOPMENT.md) |
 | The process a build must satisfy, and who owns which control | [Secure development](SECURE-DEVELOPMENT.md) |
