@@ -204,8 +204,9 @@ class ALinksTextNeverWraps(unittest.TestCase):
             + "\n  ".join(failures)
             + "\n\nReflow so the whole link sits on one line. Wrapping the target instead does not\n"
             "help -- it breaks the rewrite by a second route, the page lookup. A line pushed past\n"
-            "HS-14's ~100 characters by this is the stated reason that rule allows; see\n"
-            "docs/HOUSE-STYLE.md, HS-16.",
+            "HS-14's ~100 characters by this is the stated reason that rule allows; see HS-16 in\n"
+            "the house style, which lives in the toolkit repository:\n"
+            "https://wshallwshall.github.io/claude-multisession/HOUSE-STYLE.html",
         )
 
     def test_the_plugins_own_pattern_confirms_it_would_miss_them(self):

@@ -1,9 +1,17 @@
 """The prose checker. Hard-fail where a violation is unambiguous, baselined ratchet everywhere else.
 
-WHAT THIS EXISTS FOR. `docs/HOUSE-STYLE.md` states the writing rules and nothing enforced any of
-them, so the only thing standing between the corpus and a slow drift back was whether a reviewer
-happened to remember a rule identifier. This file enforces the subset that CAN be enforced and says
-plainly which subset that is.
+WHAT THIS EXISTS FOR. The house style states the writing rules and nothing enforced any of them, so
+the only thing standing between the corpus and a slow drift back was whether a reviewer happened to
+remember a rule identifier. This file enforces the subset that CAN be enforced and says plainly
+which subset that is.
+
+WHERE THE RULES THEMSELVES LIVE, and it is not here. The sheet stayed with the toolkit in the split,
+at https://wshallwshall.github.io/claude-multisession/HOUSE-STYLE.html, and governs the prose of both
+repositories from that one copy. Every identifier this file prints -- B-5, HS-11, PD-4 -- is defined
+there and nowhere in this repository. The rules are compiled into this file as patterns, so the
+checker never reads the sheet and does not need it present to run: this suite passes in full with no
+house style in the tree, which is worth knowing before you conclude from a green run that the rules
+are reachable.
 
 THE DESIGN RULE, taken from the writing plan and not negotiable here: hard-fail ONLY where a
 violation is unambiguous and the current corpus is clean. A gate that reddens a legitimate editorial
@@ -33,10 +41,16 @@ unmistakable phrases are enforced. The one genuine violation the scan found, a c
 `begun leveraging an external framework`, was fixed in the same commit that added this file, because
 a hard-fail rule whose corpus is already red is a rule that ships disabled.
 
-THE RULE SHEET MUST BE ABLE TO QUOTE WHAT IT BANS. `docs/HOUSE-STYLE.md` lists every banned
-construction verbatim in its own tables, so a naive scan reddens the one file that defines the rules.
-The exemption is deliberately NARROW: a table row whose first cell is a rule identifier, and nothing
-else. Exempting the whole file would leave the rule sheet the only unchecked prose in the repository.
+A RULE SHEET MUST BE ABLE TO QUOTE WHAT IT BANS. The house style lists every banned construction
+verbatim in its own tables, so a naive scan reddens the one file that defines the rules. The
+exemption is deliberately NARROW: a table row whose first cell is a rule identifier, and nothing
+else. Exempting a whole file would leave the rule sheet the only unchecked prose in its repository.
+
+THAT EXEMPTION MATCHES NOTHING HERE, and it is kept anyway. The sheet it was written for is in the
+other repository, and these standards number their rules SD-5.1 rather than SD-5, never putting a
+bare identifier in a row's first cell -- measured: 266 identifiers in the corpus, 0 exempted rows.
+The checker is shared with the repository that does need it, so a divergence would cost more than an
+inert branch. Do not tidy it away on the grounds that nothing hits it.
 
 WHAT IS REPORTED RATHER THAN FAILED, and why each is not a hard fail:
 
@@ -93,8 +107,9 @@ FENCE = re.compile(r"^\s*(```|~~~)")
 def scannable_lines(text: str) -> list[tuple[int, str]]:
     """Prose lines only: no code fences, and no rule-definition rows.
 
-    The rule-row exemption is why HOUSE-STYLE.md can list "utilize" as a banned word without this
-    file reddening on it. It matches ONLY a table row whose first cell is a rule identifier.
+    The rule-row exemption is why a rule sheet can list "utilize" as a banned word without this file
+    reddening on it. It matches ONLY a table row whose first cell is a rule identifier, and in this
+    repository it matches nothing at all -- see the note in the module docstring before removing it.
     """
     out: list[tuple[int, str]] = []
     inside = False
@@ -199,7 +214,8 @@ class BannedConstructionsAreAbsent(unittest.TestCase):
         self.assertEqual(
             [],
             offenders,
-            "these pages carry a construction docs/HOUSE-STYLE.md bans:\n  "
+            "these pages carry a construction the house style bans "
+            "(https://wshallwshall.github.io/claude-multisession/HOUSE-STYLE.html):\n  "
             + "\n  ".join(offenders)
             + "\nOnly the unambiguous rules are enforced here. If you believe one of these is a false "
             "positive, that is a reason to narrow the pattern in this file and say why in the commit "

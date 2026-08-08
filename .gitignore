@@ -1,11 +1,13 @@
 # -------------------------------------------------------------------------------------------------
 # .claude/ IS DELIBERATELY NOT IGNORED.
 #
-# This repository tracks example harness settings on purpose, because "merging a hook does not
+# Example harness settings are tracked on purpose where they exist, because "merging a hook does not
 # install one" is the single most expensive lesson in this whole toolkit: a settings file nobody can
-# read is indistinguishable from one that is wired correctly. Today that is
-# .claude/settings.example.json, which shows the hand-wiring for the blanket-stage guard -- one of
-# the controls no installer covers (see docs/HOOKS.md and INSTALL.md).
+# read is indistinguishable from one that is wired correctly. NOTHING UNDER .claude/ IS TRACKED HERE
+# TODAY -- the settings example and the hooks it wires stayed with the harness, described at
+# https://wshallwshall.github.io/claude-multisession/HOOKS.html and installed per its INSTALL.md.
+# So the rule below is prospective: it states what must hold the moment a file arrives, rather than
+# describing one that is here.
 #
 # THE RULE, not a census: anything tracked under .claude/ MUST carry `.example.` in its name. The
 # harness loads settings.json and settings.local.json only, so an `.example.` file is inert by

@@ -70,6 +70,8 @@ jobs:
           # author meant, and the Word copies are compared byte-derived against a rebuild. The
           # toolkit repository enforced this with a PowerShell script under scripts/, which did not
           # come across the split, so the check is inline here and depends on nothing but python.
+          # The sheet stating HS-11 did not come across either, and is read at
+          # https://wshallwshall.github.io/claude-multisession/HOUSE-STYLE.html
           #
           # It PRINTS WHAT IT SCANNED. A gate that reports only pass/fail cannot be told apart from
           # one that examined nothing, and scanning zero files is a failure here rather than a pass.
