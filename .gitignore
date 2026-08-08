@@ -1,16 +1,17 @@
 # -------------------------------------------------------------------------------------------------
 # .claude/ IS DELIBERATELY NOT IGNORED.
 #
-# This repository tracks example harness settings on purpose, because "merging a hook does not
-# install one" is the single most expensive lesson in this whole toolkit: a settings file nobody can
-# read is indistinguishable from one that is wired correctly. Today that is
-# .claude/settings.example.json, which shows the hand-wiring for the blanket-stage guard -- one of
-# the controls no installer covers (see docs/HOOKS.md and INSTALL.md).
+# An example harness settings file is tracked on purpose where one exists, because "merging a hook
+# does not install one" is the single most expensive lesson in this whole toolkit: a settings file
+# nobody can read is indistinguishable from one that is wired correctly. NOTHING UNDER .claude/ IS
+# TRACKED HERE. The settings example and the hooks it wires stayed with the toolkit in the split, at
+# https://wshallwshall.github.io/claude-multisession/HOOKS.html and its INSTALL.md, so this header
+# described a file that has never been in this repository.
 #
-# THE RULE, not a census: anything tracked under .claude/ MUST carry `.example.` in its name. The
-# harness loads settings.json and settings.local.json only, so an `.example.` file is inert by
-# construction and cannot become a control that looks installed. The machine-local files are ignored
-# below.
+# THE RULE, not a census, and prospective rather than describing anything here today: anything
+# tracked under .claude/ MUST carry `.example.` in its name. The harness loads settings.json and
+# settings.local.json only, so an `.example.` file is inert by construction and cannot become a
+# control that looks installed. The machine-local files are ignored below.
 # -------------------------------------------------------------------------------------------------
 
 # Machine-local overrides. The convention throughout: anything with `.local.` in its name belongs to
