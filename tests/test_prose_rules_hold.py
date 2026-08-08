@@ -34,9 +34,26 @@ unmistakable phrases are enforced. The one genuine violation the scan found, a c
 a hard-fail rule whose corpus is already red is a rule that ships disabled.
 
 THE RULE SHEET MUST BE ABLE TO QUOTE WHAT IT BANS. `docs/HOUSE-STYLE.md` lists every banned
-construction verbatim in its own tables, so a naive scan reddens the one file that defines the rules.
-The exemption is deliberately NARROW: a table row whose first cell is a rule identifier, and nothing
-else. Exempting the whole file would leave the rule sheet the only unchecked prose in the repository.
+construction verbatim in its own tables. The exemption is deliberately NARROW: a table row whose
+first cell is a rule identifier, and nothing else. Exempting the whole file would leave the rule
+sheet the only unchecked prose in the repository.
+
+WHAT THE EXEMPTION ACTUALLY DOES, measured rather than assumed -- the sentence that used to sit here
+credited it with the wrong job. Its live effect is on the FAT-CELL RATCHET. `scannable_lines` is read
+by `_measure` and by nothing else, so what a rule row escapes is being counted against the 40-word
+cell baseline, which matters because a definition row quotes several banned forms and their
+replacements and runs long. The banned-construction scan never sees a table row at all: `paragraphs`
+drops every line beginning with a pipe, so the rule sheet was never at risk from that half. Neither
+is any other page, and that is a COVERAGE LIMIT rather than a feature -- a banned construction
+written inside an ordinary table cell is caught by nothing here. It is recorded on the rule sheet and
+left open, because closing it means judging a cell by a sentence rule, which is what PD-4 forbids.
+
+THE CITATION USED TO DANGLE, AND IS NOW PINNED. This file named `docs/HOUSE-STYLE.md` in four
+docstrings and in the failure message above, and `test_a_links_text_never_wraps.py` named it for
+HS-16. No such file had ever existed in this repository: `git log --all --follow` over that path
+returned nothing, because the rule sheet stayed in the toolkit repository when the standards split
+out in 282a76c. Every gate stayed green, and the only person who could find out was one who tripped a
+rule and went looking. `TheRuleSheetIsInThisRepository` below is what stops that recurring.
 
 WHAT IS REPORTED RATHER THAN FAILED, and why each is not a hard fail:
 
@@ -93,8 +110,14 @@ FENCE = re.compile(r"^\s*(```|~~~)")
 def scannable_lines(text: str) -> list[tuple[int, str]]:
     """Prose lines only: no code fences, and no rule-definition rows.
 
-    The rule-row exemption is why HOUSE-STYLE.md can list "utilize" as a banned word without this
-    file reddening on it. It matches ONLY a table row whose first cell is a rule identifier.
+    ONE CALLER, ONE EFFECT. `_measure` reads this and nothing else does, so the rule-row exemption
+    buys exactly one thing: HOUSE-STYLE.md's definition rows stay off the 40-word fat-cell ratchet.
+    They quote several banned forms and their replacements, so they run long by design. It matches
+    ONLY a table row whose first cell is a rule identifier.
+
+    It is NOT what keeps that page off the banned-construction scan, though it reads as if it were.
+    `paragraphs` drops every line beginning with a pipe, so no table row reaches that scan at all.
+    See the module docstring for why that distinction is worth writing down.
     """
     out: list[tuple[int, str]] = []
     inside = False
@@ -265,7 +288,11 @@ class TheBannedPatternsCatchWhatTheyExistToCatch(unittest.TestCase):
                     )
 
     def test_a_rule_definition_row_is_exempt_but_the_rest_of_the_page_is_not(self):
-        """HOUSE-STYLE.md must be able to name what it bans, without becoming unscannable."""
+        """HOUSE-STYLE.md must be able to name what it bans, without becoming unscannable.
+
+        The planted half. `TheRuleSheetIsInThisRepository` is the corpus half, and it is the one
+        that fails if the exemption stops having anything to exempt.
+        """
         text = "| B-5 | \"in order to\", \"utilize\" | \"to\", \"use\" |\nThe installer runs in order to help."
         lines = scannable_lines(text)
         self.assertEqual(
@@ -273,6 +300,117 @@ class TheBannedPatternsCatchWhatTheyExistToCatch(unittest.TestCase):
             [n for n, _ in lines],
             "the rule-row exemption should skip the table row and keep the prose line. Skipping "
             "more than the row would leave the rule sheet unchecked.",
+        )
+
+
+# ---------------------------------------------------------------------------
+# The rule sheet the failure messages send people to.
+
+HOUSE_STYLE = "docs/HOUSE-STYLE.md"
+
+# What counts as DEFINING a rule: the identifier as the first cell of a table row. The summary table
+# at the top of the rule sheet is deliberately keyed on what fires rather than on an identifier, so
+# it cannot satisfy this by merely listing a rule it never defines.
+DEFINITION = re.compile(r"^\|\s*`?((?:B|HS|PD)-\d+)`?\s*\|", re.M)
+
+# What counts as CITING one: a rule identifier written at a reader, in a test, a failure message or a
+# CI gate's comment. Read off the citing files rather than listed here, for the reason tests/README.md
+# gives -- a hand-written list checked against a hand-written list only proves the two lists agree.
+CITATION = re.compile(r"\b((?:B|HS|PD)-\d+)\b")
+CITING_DIRS = ("tests/", ".github/workflows/")
+CITING_SUFFIXES = (".py", ".md", ".yml")
+
+
+class TheRuleSheetIsInThisRepository(unittest.TestCase):
+    """The dangling citation this class exists for, and it is not hypothetical.
+
+    This file named `docs/HOUSE-STYLE.md` in four docstrings and in the message a developer sees when
+    B-3, B-5 or B-6 fires; `test_a_links_text_never_wraps.py` named it for HS-16; tests/README.md
+    described its role at length. No such file had ever existed here. It stayed in the toolkit
+    repository when the standards split out, and nothing noticed, because a citation in a failure
+    message is prose to every checker in this suite. The reader who found out was one who tripped a
+    rule and went looking for the sheet.
+
+    A test that cites a rule sheet is making a promise about a file. These cases keep it, in both
+    directions: the file is here, and it defines every rule this suite sends anyone to read.
+    """
+
+    def _sheet(self) -> str:
+        return t.read(t.REPO_ROOT / HOUSE_STYLE)
+
+    def test_the_rule_sheet_exists(self):
+        self.assertTrue(
+            (t.REPO_ROOT / HOUSE_STYLE).is_file(),
+            f"{HOUSE_STYLE} is missing. The failure messages in this file and in "
+            "test_a_links_text_never_wraps.py send a developer there to read the rule they just "
+            "tripped, so restore it or repoint every citation in the same commit. A message naming "
+            "a file nobody can open is worse than no message: it reads like the reader's mistake.",
+        )
+
+    def test_every_rule_the_suite_cites_has_a_definition_row(self):
+        defined = set(DEFINITION.findall(self._sheet()))
+        self.assertTrue(
+            defined,
+            f"{HOUSE_STYLE} carries no rule-definition rows at all. Either the tables were reshaped "
+            "or DEFINITION stopped matching them -- and an empty set would satisfy the comparison "
+            "below by having nothing to disagree with, so this raises first.",
+        )
+
+        cited: dict[str, set[str]] = {}
+        for relpath in tracked_files():
+            if not relpath.startswith(CITING_DIRS) or not relpath.endswith(CITING_SUFFIXES):
+                continue
+            for rule_id in CITATION.findall(t.read(t.REPO_ROOT / relpath)):
+                cited.setdefault(rule_id, set()).add(relpath)
+
+        self.assertTrue(
+            cited,
+            "no rule identifier was found in tests/ or .github/workflows/ at all. This scan has "
+            "gone blind, and a blind scan reports agreement with everything.",
+        )
+
+        undefined = sorted(set(cited) - defined)
+        self.assertEqual(
+            [],
+            undefined,
+            "these rules are cited at a reader but defined nowhere in "
+            f"{HOUSE_STYLE}:\n  "
+            + "\n  ".join(f"{r} cited by {', '.join(sorted(cited[r]))}" for r in undefined)
+            + f"\nAdd a definition row keyed on the identifier, or stop citing it. Sending someone "
+            "to a rule sheet that does not carry the rule is the same defect as sending them to a "
+            "file that does not exist -- it just fails one step later.",
+        )
+
+    def test_the_exemption_has_something_real_to_exempt(self):
+        """Without this, the exemption is a branch that runs on every line and protects nothing.
+
+        That was its exact state while the rule sheet was missing: measured over all 17 tracked
+        prose pages, RULE_ROW matched zero lines. The planted case above still passed, because it
+        builds its own two-line fixture, so nothing in the suite could tell the difference.
+        """
+        sheet = self._sheet()
+        exempted = [line for line in sheet.split("\n") if RULE_ROW.match(line)]
+        self.assertGreaterEqual(
+            len(exempted),
+            5,
+            f"RULE_ROW matches {len(exempted)} lines in {HOUSE_STYLE}. The exemption is then a "
+            "branch that costs a comparison per line and buys nothing, and the planted case above "
+            "would keep passing against its own fixture while this was true.",
+        )
+
+        # The exemption is only load-bearing if removing it would change a number. It does: a
+        # definition row quotes several banned forms and their replacements, which is what makes it
+        # exceed the same 40-word cell limit the ratchet counts.
+        would_count = [
+            line
+            for line in exempted
+            if any(len(cell.split()) > 40 for cell in line.strip().strip("|").split("|"))
+        ]
+        self.assertTrue(
+            would_count,
+            f"no rule row in {HOUSE_STYLE} exceeds 40 words in a cell, so dropping the exemption "
+            "would change nothing measurable and it should be dropped. Keep it only while a "
+            "definition row genuinely needs the room to quote what it bans.",
         )
 
 
