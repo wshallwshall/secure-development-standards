@@ -71,6 +71,12 @@ jobs:
           # toolkit repository enforced this with a PowerShell script under scripts/, which did not
           # come across the split, so the check is inline here and depends on nothing but python.
           #
+          # WHERE HS-11 IS STATED: docs/HOUSE-STYLE.md. The sheet did not come across the split
+          # either, so this gate spent its whole life naming a rule that no file in the tree
+          # defined, and a reader who wanted the rule had nowhere to go. It was brought across in
+          # 45a79ff, and test_prose_rules_hold.TheRuleSheetIsInThisRepository reads the identifiers
+          # out of THIS FILE among others and fails if any of them loses its definition again.
+          #
           # It PRINTS WHAT IT SCANNED. A gate that reports only pass/fail cannot be told apart from
           # one that examined nothing, and scanning zero files is a failure here rather than a pass.
           python - <<'EOF'
