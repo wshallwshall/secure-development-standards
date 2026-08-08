@@ -3,7 +3,8 @@
 ## TLDR/BLUF
 
 The writing rules this repository holds its own pages to. Three are enforced by a test, one by a CI
-gate, one by a link test. The rest are review items and say so.
+gate, one by a link test, and one is half-covered by tests written for other purposes. The rest are
+review items and say so.
 
 **Every rule below states which it is.** A rule nothing can fire is a preference. Reading it as more
 than that is how a review turns into an argument about taste.
@@ -28,6 +29,7 @@ identifiers are keyed to their definitions further down, one table per group.
 | [test_prose_rules_hold.py](https://github.com/wshallwshall/secure-development-standards/blob/main/tests/test_prose_rules_hold.py) | B-3, B-5, B-6 | hard fail |
 | the ASCII gate in [gates.yml](https://github.com/wshallwshall/secure-development-standards/blob/main/.github/workflows/gates.yml) | HS-11 | hard fail |
 | [test_a_links_text_never_wraps.py](https://github.com/wshallwshall/secure-development-standards/blob/main/tests/test_a_links_text_never_wraps.py) | HS-16 | hard fail |
+| [test_rule_ids_are_stable.py](https://github.com/wshallwshall/secure-development-standards/blob/main/tests/test_rule_ids_are_stable.py) and [test_the_selector_matches_the_routing_table.py](https://github.com/wshallwshall/secure-development-standards/blob/main/tests/test_the_selector_matches_the_routing_table.py), for two of the four sections it names | PD-8 | hard fail, on those two |
 | nothing directly. Both shape how the scanners read a page | HS-14, PD-4 | review |
 | nothing. Each was measured against this corpus and rejected as a gate | B-7, B-10, HS-3 | review |
 
@@ -78,6 +80,39 @@ correctly, which is the surface the change gets reviewed on.
 PD-4 is why the sentence-length measure excludes tables, headings and block quotes, and why the fat
 cell count is kept as a separate number. A long cell and a long sentence are different problems. The
 fix for one is not the fix for the other.
+
+---
+
+## Sections that look like filler and are not
+
+| Rule | The rule | Enforced |
+|---|---|---|
+| `PD-8` | four named sections read like the padding the `B` rules order deleted, and each carries something its document has nowhere else. Do not trim one to satisfy a length or opener rule | two of four |
+
+Each is named by path, because none of them looks load-bearing from the inside. The last column is
+what actually fails, which for half of them is nothing.
+
+| Section | What it carries | What fails if it goes |
+|---|---|---|
+| `docs/standards/SECURE-DEVELOPMENT.md`, `## Retired rules` | An empty table, where the emptiness is the artifact: it is where a retired identifier is recorded instead of being reused | `test_rule_ids_are_stable.py`, which raises by name when the heading is absent |
+| `docs/standards/WHICH-STANDARDS-APPLY.md`, the selector sentinel comment | The line the layout splits on to place the selector, so reformatting it drops the app off the page silently | `test_the_selector_matches_the_routing_table.py`, which pins the string on both sides |
+| `docs/standards/STANDARDS-REFERENCE.md`, the line carrying the status-check date | The one date every status in that table is scoped to, stated once there rather than repeated in every cell | nothing |
+| `docs/ASVS-ASSESSMENT.md`, `## Handing this to Claude Code` | The only marker that Part 1 ends, and the paste-ready command that starts the assessment | nothing |
+
+**The two that are pinned are not pinned by a rule about editing them.** `test_rule_ids_are_stable.py`
+needs the `## Retired rules` heading because it parses retirements out of that section. The selector
+test pins the sentinel because the layout splits on it. Both fail on a deletion, and neither tells an
+editor why the section reads thin.
+
+**The other two fail nothing, which is what this rule is for.** The status-check line is one sentence
+that looks like a stray note and scopes an entire table. The ASVS section is the sharper case. It is
+short and transitional in shape, and it is the only place the document says that everything after it
+is addressed to an agent. An editor cutting it as a throat-clear takes the boundary with it.
+
+**Why PD-8 and not the next free number.** The identifier is inherited, like the rest of the numbering
+here, and it was written for these four sections. It is cited in the toolkit's sheet, where it is now
+a tombstone recording that they left. Issuing PD-8 to a different rule later would break that citation
+to buy a tidier sequence, which this page already declines to do.
 
 ---
 
