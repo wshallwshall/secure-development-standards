@@ -1,8 +1,7 @@
 # What to have ready when a buyer asks, and what each artifact proves
 
-**Every serious buyer runs the same diligence, and it is a small, predictable set of documents. This
-is what to have on the shelf before anyone asks -- and, for each one, the claim it will carry and the
-claim it will not.**
+**Every serious buyer asks for the same small, predictable set of documents. Have them on the shelf
+before the first call, and know for each one the claim it carries and the claim it does not.**
 
 > **Take a copy:**
 > [markdown](https://raw.githubusercontent.com/wshallwshall/secure-development-standards/main/docs/standards/DILIGENCE-PACKET.md)
@@ -13,55 +12,52 @@ claim it will not.**
 
 ## TLDR/BLUF
 
-**The commonest mistake a vendor makes in diligence is offering an audit report or a certificate as
-an answer about the product.** Those instruments examine how your company governs itself -- policies,
-access reviews, change management. They never open your code. You can hold a clean report across a
-full twelve-month period, ship software with an authorization flaw in it, and have said nothing
-false. Hand that report over as product evidence and you have said something false, which is a
-different position entirely and the one that ends deals.
+**The commonest vendor mistake in diligence is offering an audit report or a certificate as an
+answer about the product.** Those instruments examine how your company governs itself -- policies,
+access reviews, change management. They never open your code. You can hold a clean twelve-month
+report, ship software with an authorization flaw in it, and have said nothing false. Offer it as
+product evidence and you have said something false -- the position that ends deals.
 
-So sort your own evidence by layer -- the company, the software, the contract -- and have three
-things ready before the first call:
+So sort your evidence by layer -- the company, the software, the contract -- and have three things
+ready before the first call:
 
 1. **The scope statement** of whatever organization-layer instrument you hold. Not the certificate,
-   not the cover page. A competent buyer reads the scope first, because it alone decides whether the
-   thing they are buying was inside the examination -- and for software you distribute rather than
-   host, the answer is frequently no. Say so yourself, early. It costs a paragraph now and a deal
-   later.
+   not the cover page. It alone decides whether the thing being bought was inside the examination,
+   and for software you distribute rather than host, the answer is frequently no. Say so yourself: a
+   paragraph now costs less than a deal later.
 2. **An SBOM of what the buyer will actually run.** For an installed product that is the released
-   artifact; for a hosted service it is the runtime production environment. Generate it from the
-   build. A hand-maintained list is a document about your intentions.
+   artifact; for a hosted service, the runtime production environment. Generate it from the build --
+   a hand-maintained list is a document about your intentions.
 3. **Two dates and a name:** your last dynamic test, your last incident response exercise, and who
-   ran the test. Both dates are trivial to supply if they happened, and neither can be produced
-   retrospectively -- which is exactly why they are asked for. The name decides whether you are
-   offering an independent look or the output of your own tooling.
+   ran the test. Both dates are trivial to supply if they happened and impossible to produce
+   retrospectively, which is why they are asked for. The name decides whether you are offering an
+   independent look or your own tooling's output.
 
-Each of the three is a document, a date or a name. None can be answered with an adjective, and a
-buyer who accepts an adjective is not the buyer whose approval is worth having.
+Each is a document, a date or a name. None can be answered with an adjective, and a buyer who
+accepts one is not the buyer whose approval is worth having.
 
 ---
 
 ## The organization layer is worth having; the failure is narrower
 
-None of this is a reason to skip the organization-layer instruments. What they establish -- that
-somebody outside the company examined how it governs itself, grants access and manages change, and
-wrote down what they found -- is worth having, and a vendor holding none of them is a different risk
-entirely in a buyer's eyes. The failure is narrower than that: letting a program attestation stand as
-an answer to "is this product secure", when no part of it asked that question.
+None of this is a reason to skip these instruments. That somebody outside the company examined how
+you govern yourself, grant access and manage change is worth establishing, and a vendor holding none
+is a different risk entirely. The failure is narrower: letting a program attestation stand as an
+answer to "is this product secure", when no part of it asked that.
 
-Statuses, versions and dates live on the reference page, each carrying the date it was checked. For
-the same cut stated as a rule you can hold your own process to, see
+Statuses, versions and dates live on the reference page, each carrying the date it was checked. The
+same cut, as a rule you can hold your own process to, is
 [the organization layer is not the software layer](STANDARDS-REFERENCE.md#the-organization-layer-is-not-the-software-layer).
 
 ---
 
 ## Organization layer: evidence about your company
 
-Procurement already knows how to ask for these, and most are issued by a party other than you --
-which is where their weight comes from, and none of that weight is about your product. One caveat
-governs the whole group: an examination or a certification has a boundary, and software you
-distribute frequently falls outside it. The boundary appears in the scope statement and nowhere else,
-so the scope statement is the part to have ready.
+Procurement already knows how to ask for these. Most are issued by someone other than you, which is
+where their weight comes from -- and none of that weight is about your product. One caveat governs
+the group: an examination or a certification has a boundary, and software you distribute frequently
+falls outside it. That boundary appears in the scope statement and nowhere else, so the scope
+statement is the part to have ready.
 
 | The item | What it proves for you | What it will not carry | What you must be able to say |
 |---|---|---|---|
@@ -77,26 +73,24 @@ Three things that will be used against you if you leave them for the buyer to fi
   scope passage and the exceptions passage are the report; the rest is structure. Be ready to explain
   a clean run.
 - **A certificate scope of one office or one business unit is entirely ordinary,** and narrower than
-  a reader takes it to be. Do not let the reader take it wider. The standards publisher itself issues
-  nothing -- the accredited body does.
-- **HITRUST sits in the same set as the program instruments, and none of them outranks the others.**
-  Its two lower tiers are published as fixed core control sets while the highest is tailored and
-  risk-based, so quoting a tier name on its own says less than it sounds like. Offer tier and scope,
-  and never circulate control text: the framework's text is licensed. The body that writes a program
-  standard is often not the body that sets your customer's validation requirement.
+  a reader takes it to be. Do not let them take it wider. The standards publisher issues nothing --
+  the accredited body does.
+- **HITRUST sits in the same set as the program instruments, and none outranks the others.** Its two
+  lower tiers are fixed core control sets, the highest is tailored and risk-based, so a tier name
+  alone says less than it sounds like: offer tier and scope. Never circulate control text, which is
+  licensed. And the body that writes a program standard is often not the body that sets your
+  customer's validation requirement.
 
 ---
 
 ## Software layer: evidence about the thing you are selling
 
-Nothing in the group above examined your code or your build. These four are about the code and the
-build, and for each one the buyer's real question is how it was produced. Three of them you write
-about your own system, so their weight comes from the discipline behind them rather than from who
-issued them -- which means the discipline is the thing to be able to describe. Testing evidence is
-the exception and the strongest item in the group, but only in one form: an external assessment or a
-penetration test, the one software-layer artifact a third party issues. Expect to be asked for it by
-those names, and expect the request to be a test of whether you offer your own tooling's output
-instead.
+Nothing above examined your code or your build. These four do, and for each the buyer's real
+question is how it was produced. Three you write about your own system, so their weight comes from
+the discipline behind them rather than from who issued them -- describe the discipline. Testing
+evidence is the exception and the strongest item here, in one form only: an external assessment or a
+penetration test, the one software-layer artifact a third party issues. Expect that request by name,
+and expect it to test whether you offer your own tooling's output instead.
 
 | The item | What it proves for you | What it will not carry | What you must be able to say |
 |---|---|---|---|
@@ -110,8 +104,8 @@ Two follow-ups you will be asked, so answer them unprompted:
 - **For testing evidence:** what was in scope, which version was tested, and what triggers the next
   run -- a change, or a date on the calendar?
 - **For a hosted platform's SBOM:** does it describe the runtime production environment, or a
-  build-time source manifest? Those answer different questions, and only one of them describes what
-  is running.
+  build-time source manifest? Those answer different questions, and only one describes what is
+  running.
 
 Three of these rows are outputs of a process rather than documents to write at diligence time.
 [Secure development](SECURE-DEVELOPMENT.md) is where the data flow diagram and the testing regime
@@ -123,10 +117,10 @@ retrieval task.
 
 ## Legal instruments: evidence about who pays when it goes wrong
 
-These allocate liability; they do not establish security, and offering them as though they do is the
-same overclaim in a third costume. A complete set tells a buyer what happens after a failure and
-nothing about its likelihood. They are read for their clock definitions and notification paths, which
-is where they are weakest and always checkable.
+These allocate liability. They do not establish security, and offering them as though they do is the
+same overclaim in a third costume: a complete set says what happens after a failure, nothing about
+its likelihood. They are read for their clock definitions and notification paths, which is where
+they are weakest and always checkable.
 
 | The item | What it proves for you | What it will not carry | What you must be able to say |
 |---|---|---|---|
@@ -136,10 +130,10 @@ is where they are weakest and always checkable.
 
 Two places these fail, both common and both yours to fix before anyone reads them:
 
-- **An SLA fails at the clock's start point, not at the number.** A commitment whose clock starts when
-  you accept triage is unbounded, whatever the number on it -- and a buyer who reads carefully will
-  say so. "Patch released" is also not "patch deployed"; for software the customer runs, deployment is
-  their side of the line, and the agreement should say which side it is describing.
+- **An SLA fails at the clock's start point, not at the number.** A clock that starts when you accept
+  triage is unbounded whatever the number on it, and a careful buyer will say so. "Patch released" is
+  also not "patch deployed": for software the customer runs, deployment is their side of the line,
+  and the agreement should say which side it means.
 - **A plan with no exercise date is a document, not a capability.** Run one and date it.
 
 [Secure development](SECURE-DEVELOPMENT.md) is where the disclosure path and the remediation clock
@@ -150,7 +144,7 @@ come from.
 ## What this page does not do
 
 - **It lists at least the items a buyer commonly asks for, and is not a complete diligence list.**
-  Holding everything here is not approval, and being asked for something not listed here is ordinary.
+  Holding everything here is not approval, and being asked for something not listed is ordinary.
 - **Not legal advice.** What you are obliged to provide is decided by a contract clause, not by a web
   page. Nothing here has been reviewed by counsel.
 - **No assessor, tool, format or vendor is named.** The rows describe instruments, not the market
@@ -158,9 +152,8 @@ come from.
 - **No status, version or edition claim appears here.** Those live on the reference page, each
   carrying the date it was checked, so a stale fact is visible as one.
 - **A complete packet is not a secure product, and a thin packet is not an insecure one.** Both are
-  evidence about what a buyer is able to check, which is a more modest thing than either side of a
-  procurement conversation usually wants it to be. Claiming more than that is the failure this whole
-  page is about.
+  evidence about what a buyer can check -- more modest than either side of a procurement
+  conversation usually wants. Claiming more is the failure this page is about.
 
 ---
 
