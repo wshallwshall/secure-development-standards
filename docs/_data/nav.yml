@@ -81,6 +81,13 @@
     - label: CI and standards
       title: CI and standards for agent-written code
       path: /CI-AND-STANDARDS.html
+    # Listed because docs/ IS the site source, so this page is built and served whether or not it
+    # appears here -- and a served page in no menu is one only a direct URL reaches. It is the rule
+    # sheet the prose gates cite by path, so the audience that needs it arrives from a failure
+    # message rather than from the sidebar; the row is for everyone else.
+    - label: House style
+      title: House style for this documentation set
+      path: /HOUSE-STYLE.html
     - label: Use OWASP ASVS 5.0
       title: Running a large security-standard assessment with AI agents
       path: /ASVS-ASSESSMENT.html
