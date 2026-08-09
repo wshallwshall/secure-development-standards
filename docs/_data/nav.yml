@@ -81,6 +81,9 @@
     - label: CI and standards
       title: CI and standards for agent-written code
       path: /CI-AND-STANDARDS.html
+    - label: House style
+      title: House style
+      path: /HOUSE-STYLE.html
     - label: Use OWASP ASVS 5.0
       title: Running a large security-standard assessment with AI agents
       path: /ASVS-ASSESSMENT.html

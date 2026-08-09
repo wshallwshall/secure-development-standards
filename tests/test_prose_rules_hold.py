@@ -18,6 +18,34 @@ was run over the corpus on 2026-08-08 and every hit was read:
   B-3  "Importantly", "It is worth noting"      5 hits,  0 genuine  -> ENFORCED, narrowed
   B-10 a heading that is a question             1 hit,   0 genuine  -> NOT ENFORCED
 
+A SECOND PASS ON 2026-08-08 added the machine-prose markers, measured the same way over the same
+corpus, and it went the same shape: the rules with an outside evidence base were already at zero
+here, and the two that fired fired only on correct prose.
+
+  HS-17 em dash, en dash, curly quotes, ellipsis   0 hits             -> ENFORCED
+  B-11 "delve", "intricate", "garner", "showcase"  0 hits             -> ENFORCED, narrowed
+  B-12 "tapestry", "amidst", "palpable", "solace"  0 hits             -> ENFORCED
+  B-13 "truly", "vastly", "remarkably"             0 hits             -> ENFORCED
+  B-15 "genuinely"                                11 hits,  0 genuine -> NOT ENFORCED
+  B-14 "not just X but Y"                          1 hit,   0 genuine -> NOT ENFORCED
+
+B-15 IS THE NEW B-7 AND IS WHY B-13 IS SPLIT. The obvious intensifier list includes "genuinely", and
+every one of its 11 hits is load-bearing -- `a package that genuinely exists`, `a run that genuinely
+processed 461 mutants`, `genuinely contested cells`. Each separates a real thing from an apparent
+one, which is the distinction those pages are about. So B-13 enforces the other six and B-15 carries
+"genuinely" as a review item, the same split B-5 made when bare "leverage" turned out to be a noun.
+
+B-11 IS NARROWED FOR THE SAME REASON. "underscore" carries the largest measured rise of any word in
+the set, and it is also the name of a character a filename rule may need to write. Only the verbal
+form is enforced, so `underscores the risk` is caught and `underscores in the filename` is not.
+
+WHAT THE EVIDENCE DOES NOT SUPPORT, recorded here because the rules above cite it. No study measures
+any Claude model; the frequency data is GPT-4o and Llama 3 on 2024-era corpora, and the transfer is
+an argument from mechanism. Word lists have low recall -- the most inflated word in the largest study
+still appears in under 5% of post-2022 abstracts -- so these rules are cheap, not coverage. And none
+of them says anything about who wrote a page: detectors misclassified 61% of essays by non-native
+English writers, and HS-18 in docs/HOUSE-STYLE.md forbids reading a hit here as authorship evidence.
+
 B-7 IS THE INSTRUCTIVE ONE AND IT IS DELIBERATELY ABSENT. The rule bans those adverbs "describing
 this project's own work". Measured, every single hit was standard technical vocabulary instead:
 `git merges both cleanly`, `a session that exits cleanly`, `an execution-alias stub that resolves
@@ -183,6 +211,30 @@ BANNED = [
         "a sentence asserting its own significance. State the fact that makes it significant.",
         re.compile(r"\bthis is (?:important|significant|critical)\b|\bthe key (?:point|thing) (?:is|here)\b|\bcannot be overstated\b|\bworth emphasi[sz]ing\b", re.I),
     ),
+    (
+        "B-11",
+        "vocabulary measured as over-represented in post-2022 machine-assisted prose. Use the plain word.",
+        re.compile(
+            r"\bdelv(?:e|es|ed|ing)\b|\bintricate(?:ly)?\b|\bmeticulous(?:ly)?\b"
+            r"|\bgarner(?:s|ed|ing)?\b|\bshowcas(?:e|es|ed|ing)\b|\bground-?breaking\b"
+            r"|\bunderscor(?:es|ing|ed)\s+(?:the|that|how|why|a|an|its|their|this|our)\b",
+            re.I,
+        ),
+    ),
+    (
+        "B-12",
+        "ornamental register borrowed from fiction. A security standard is not fiction.",
+        re.compile(
+            r"\b(?:tapestry|camaraderie|solace|palpable|fleeting|unspoken|amidst"
+            r"|unravel(?:s|led|ling|ed|ing)?)\b",
+            re.I,
+        ),
+    ),
+    (
+        "B-13",
+        "an intensifier carrying no measurement. Delete it, or give the number.",
+        re.compile(r"\b(?:truly|vastly|incredibly|remarkably|profoundly|undoubtedly)\b", re.I),
+    ),
 ]
 
 
@@ -233,6 +285,11 @@ class TheBannedPatternsCatchWhatTheyExistToCatch(unittest.TestCase):
         ("B-5", "The script will utilize the registry."),
         ("B-5", "One program has begun leveraging an external framework."),
         ("B-6", "This is important: the gate is advisory."),
+        ("B-11", "This section delves into the registry format."),
+        ("B-11", "The failure underscores the need for a second measurement."),
+        ("B-11", "An intricate, meticulously built pipeline."),
+        ("B-12", "A tapestry of controls, woven amidst the noise."),
+        ("B-13", "The result is truly remarkable."),
     ]
 
     # Every one of these appears in the corpus today, or is the near-miss the pattern must decline.
@@ -243,6 +300,14 @@ class TheBannedPatternsCatchWhatTheyExistToCatch(unittest.TestCase):
         "The highest-leverage gate to build first.",
         "A version pin does not satisfy it, and more importantly does not satisfy the property.",
         "The one question: does failing it stop the change?",
+        # B-11 is narrowed to the verb so the character keeps its name.
+        "Filenames use underscores in place of spaces.",
+        "An underscore is not a hyphen.",
+        # B-13 omits "genuinely" deliberately: 11 corpus hits, none of them filler.
+        "A package that genuinely exists, publishes files, and is years old.",
+        "A run that genuinely processed 461 mutants and reported killed = 0.",
+        # B-14 was rejected on this sentence, which is the corpus's only hit.
+        'Ask not only "does the pattern match this?" but "would anything actually break?"',
     ]
 
     def test_each_pattern_fires_on_its_planted_example(self):
@@ -273,6 +338,90 @@ class TheBannedPatternsCatchWhatTheyExistToCatch(unittest.TestCase):
             [n for n, _ in lines],
             "the rule-row exemption should skip the table row and keep the prose line. Skipping "
             "more than the row would leave the rule sheet unchecked.",
+        )
+
+
+# ---------------------------------------------------------------------------
+# HS-17. Punctuation, which is a character check rather than a word one.
+
+NON_ASCII_PUNCT = {
+    "—": "em dash",
+    "–": "en dash",
+    "‘": "curly opening quote",
+    "’": "curly apostrophe",
+    "“": "curly opening double quote",
+    "”": "curly closing double quote",
+    "…": "ellipsis character",
+}
+
+
+def lines_outside_code(text: str) -> list[tuple[int, str]]:
+    """Every line not inside a code fence.
+
+    WIDER THAN scannable_lines() ON PURPOSE. That helper also drops rule-definition rows, which is
+    right for a word scan: HOUSE-STYLE.md has to be able to write "utilize" in a table to ban it.
+    HS-17 is about CHARACTERS, and the rule sheet names them in prose rather than printing them, so
+    a rule row gets no exemption here. A page that really needs to show one puts it in a fence.
+    """
+    out: list[tuple[int, str]] = []
+    inside = False
+    for n, line in enumerate(text.split("\n"), 1):
+        if FENCE.match(line):
+            inside = not inside
+            continue
+        if not inside:
+            out.append((n, line))
+    return out
+
+
+class PunctuationStaysAscii(unittest.TestCase):
+    """HS-17. Measured at zero across the corpus before it was written, so it costs nothing to hold.
+
+    WHY THIS IS A HARD FAIL WHEN THE WORD RULES ABOVE NEEDED NARROWING. The em dash is the best
+    evidenced of the machine-prose markers -- a pre-registered study of 69,632 medRxiv preprints put
+    its prevalence in Discussion sections at 4.23% before ChatGPT and 20.30% by 2025 -- and it is
+    also the one this repository has the least use for. The corpus holds 1,175 double hyphens and
+    zero em dashes, so the house already writes this way and the gate only pins what is true.
+
+    WHAT THIS RULE IS NOT, and the distinction matters more than the rule. It is a CONSISTENCY
+    check, not a detector. That same study says outright that the mark "decides nothing about any
+    single manuscript", and its own pre-LLM baseline was about 4%, which is a floor of ordinary
+    human use. A page that carries an em dash has an inconsistent character in it and nothing more.
+    Reading a hit here as evidence about who wrote something is the error HS-18 exists to forbid.
+    """
+
+    def test_no_tracked_page_carries_non_ascii_punctuation(self):
+        offenders = []
+        for relpath in prose_files():
+            text = t.read(t.REPO_ROOT / relpath)
+            for line_no, line in lines_outside_code(text):
+                for ch, name in NON_ASCII_PUNCT.items():
+                    if ch in line:
+                        offenders.append(f"{relpath}:{line_no}: {name} ({ch!r}) -- HS-17")
+        self.assertEqual(
+            [],
+            offenders,
+            "these pages carry punctuation docs/HOUSE-STYLE.md's HS-17 does not use:\n  "
+            + "\n  ".join(offenders)
+            + "\nWrite ' -- ' for a parenthetical break and a straight quote for a quotation. If a "
+            "page genuinely has to display one of these characters, put it in a code fence, which "
+            "this scan skips.",
+        )
+
+    def test_the_scan_would_notice_one(self):
+        """The negative control. A character scan that never fires is indistinguishable from a pass."""
+        planted = "A rule — this one — that should fire."
+        found = [name for ch, name in NON_ASCII_PUNCT.items() if ch in planted]
+        self.assertEqual(["em dash"], found)
+
+    def test_a_fenced_line_is_exempt_but_a_rule_row_is_not(self):
+        text = "| `HS-17` | banned — here |\n```\nan — inside a fence\n```\n"
+        visible = [line for _, line in lines_outside_code(text)]
+        self.assertEqual(
+            1,
+            sum("—" in line for line in visible),
+            "the fence should hide its em dash and the rule row should not. Exempting rule rows "
+            "here would leave the one page that states HS-17 unable to break it.",
         )
 
 
