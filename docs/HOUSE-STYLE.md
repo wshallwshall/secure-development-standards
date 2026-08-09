@@ -32,6 +32,12 @@ identifiers are keyed to their definitions further down, one table per group.
 | [test_rule_ids_are_stable.py](https://github.com/wshallwshall/secure-development-standards/blob/main/tests/test_rule_ids_are_stable.py) and [test_the_selector_matches_the_routing_table.py](https://github.com/wshallwshall/secure-development-standards/blob/main/tests/test_the_selector_matches_the_routing_table.py), for two of the four sections it names | PD-8 | hard fail, on those two |
 | nothing directly. Both shape how the scanners read a page | HS-14, PD-4 | review |
 | nothing. Each was measured against this corpus and rejected as a gate | B-7, B-10, HS-3 | review |
+| nothing. Each names a defect a reviewer can see and no pattern can | HS-18, PD-9 | review |
+| nothing, and no review item either. Each was measured against this model's own prose and found nothing to catch | B-11, B-12, B-13, B-14, B-15, B-16 | recorded |
+
+A third result appears in that table. **Recorded** means the rule was measured and then dropped as
+both a gate and a review item, and its identifier is spent so nobody reissues it. The evidence sits
+in the section that records what was rejected.
 
 Two measured qualities are also ratcheted rather than capped: sentences over 30 words, and table
 cells over 40 words. Neither may get worse than its recorded baseline. Neither is a limit you have to
@@ -52,6 +58,13 @@ information, and each says what to write in its place.
 | `B-7` | "cleanly", "elegantly", "robustly" describing this project's own work | the behaviour those words stand in for, in terms a reader can check | no, and see below |
 | `B-10` | a heading written as a rhetorical question that the section then answers | a heading that states the answer | no, and see below |
 
+**What a corpus of this model's own prose says about B-3.** The openers in B-3's row run at 0.05 per
+1,000 words across 6.98 million words of assistant chat. In 1.6 million words of markdown the model
+wrote to disk they run at 0.01 per 1,000, which is nine hits. The construction barely reaches a
+written file, which is why B-3 is cheap to enforce. It also says the risk is text pasted in from a
+chat window rather than text composed in one. Read that as a statement about where to look, never
+about who wrote a page.
+
 ---
 
 ## Rules about form
@@ -62,12 +75,29 @@ information, and each says what to write in its place.
 | `HS-14` | wrap prose near 100 characters | no |
 | `HS-16` | a markdown link sits on ONE line, even where that pushes the line past HS-14's 100 characters. This is the stated exception to HS-14, and it is the only one | yes |
 | `HS-3` | one fact lives in one place. A second copy is not redundancy, it is the place the two will silently disagree | no |
+| `HS-18` | a lint hit is a prompt to a human reader, never evidence of who wrote a page. No rule on this page may be cited to support a claim about authorship | no |
 
 **Why HS-16 outranks HS-14.** The site is built by Jekyll, and `jekyll-relative-links` rewrites
 relative links with a regular expression whose `.` excludes a newline. A link whose text wraps is
 never rewritten. The raw `](FILE.md)` reaches the published HTML, and any `#fragment` on it addresses
 nothing. There is no 404 for a reader to report, and github.com renders the same characters
 correctly, which is the surface the change gets reviewed on.
+
+**What the measurement adds to HS-11, and what it does not.** The reason stays the rendering one
+above. The numbers only say the gate is cheap and still has work to do. This corpus holds 1,175
+double hyphens and no em dash at all, and 253 distinct prose blobs across this repository's history
+carry zero non-ASCII bytes. Against that, the em dash runs at 12.51 per 1,000 words in 1.6 million
+words of markdown this model wrote to disk. So the gate costs the house nothing and still catches
+pasted-in text. It is not a detector, and HS-18 forbids reading it as one.
+
+**Why HS-18 is a rule and not a footnote.** The evidence for it is the strongest on this page, and it
+cuts against the page itself. The control corpus behind every ratio measured here turned out to be
+94% prompts written by another instance of the same model. Cleaning the control did not rescue it.
+The turns a person actually typed are terse instructions rather than prose, so the comparison never
+had a matched register to begin with. Published detector work fails the same way. Seven tools once
+flagged 61% of essays by non-native English writers as machine-written, and a 2026 re-run of a modern
+tool still reports 23%. A pattern on this page can tell a writer that a sentence is padded. It can
+never tell a reader who typed it.
 
 ---
 
@@ -116,6 +146,26 @@ to buy a tidier sequence, which this page already declines to do.
 
 ---
 
+## Notation that looks like emphasis and is not
+
+| Rule | The rule | Enforced |
+|---|---|---|
+| `PD-9` | bold that a document defines in its own legend is notation, not emphasis. Do not unbold it to satisfy a style rule, and do not count it when measuring emphasis | no |
+
+Two of these exist today, and both were counted before the rule was written.
+`docs/standards/SECURE-DEVELOPMENT.md` gives the RFC 2119 keywords their force in a legend near the
+top of the file, and then uses them 139 times. Every one is bold and none is left plain, so the
+convention is the only thing telling a reader a requirement from a recommendation. The second is the
+bolded `Rule.` label, 114 uses across four standards, which is how a reader scanning a page finds the
+normative sentence inside it.
+
+**PD-9 exists because these are the cheapest bold to delete.** A rule capping bold would count all
+253 as hits. Stripping them is one mechanical pass with no judgment in it. That is the same trap PD-8
+records for whole sections, one level down. The measurement that produced PD-9 is in the next
+section, and it was rejected as a gate partly for this reason.
+
+---
+
 ## What was measured and then rejected
 
 Three rules are stated here and enforced by nobody. That is a decision with evidence behind it, not
@@ -137,6 +187,85 @@ for.
 **HS-3 is rejected for a different reason.** Duplication across two files is detectable, but which of
 the two copies should go is an editorial call. A test cannot make it. The duplication is reported and
 left to a human.
+
+**The candidates below failed a different test.** B-7 and B-10 were rejected because no pattern can
+see the distinction they draw. HS-3 was rejected because the fix is an editorial call. Each of those
+is an invitation to write a better pattern. The ones below are not. They were measured against a
+corpus of this model's own output and found to describe nothing that happens here, so a better
+detector would still be detecting nothing wrong. They are recorded rather than reviewed, because a
+review item a reviewer would be wrong to raise is the argument about taste this page opens by
+refusing.
+
+| Rule | The candidate | What the measurement found |
+|---|---|---|
+| `B-11` | "delve", "intricate", "meticulous", "garner", "showcase", "groundbreaking", "underscores" as a verb | 0 hits here, and 0 in every prose file this repository has ever committed. "intricate" and "meticulous" account for 20 of the 22 legitimate hits in this model's chat |
+| `B-12` | "tapestry", "camaraderie", "solace", "palpable", "fleeting", "unspoken", "amidst", "unravel" | 0 hits here and 0 in the history. Its 2 chat hits are "unspoken" and "unravel", both correct. 11 of the 15 words in these two rows have no genuine use in 34 million words |
+| `B-13` | "truly", "vastly", "incredibly", "remarkably", "profoundly", "undoubtedly" | 0 hits here and 0 in the history. 195 hits in chat and 20 in written files, none of them read, so precision is unmeasured. "truly random" is a term of art in this subject |
+| `B-14` | "not just X but Y", and the three-part list used for rhythm | 1 hit here, 0 genuine. The outside source for it did not survive verification |
+| `B-15` | "genuinely", "actually", "simply" used as filler | "genuinely" fires 11 times here and every one is doing work, as in `a package that genuinely exists` |
+| `B-16` | noun-heavy phrasing and stacked participial clauses | needs a parser. A suffix proxy puts this corpus at 34.8 nominalizations per 1,000 words, against a baseline never measured for this model |
+
+**Why the vocabulary rules were dropped rather than narrowed.** The cost case for them is real: they
+fire on nothing, so a gate would be free. The design rule above says hard-fail ONLY where a violation
+is unambiguous, which is a filter on gates and not a warrant for one. Cleanliness alone does not earn
+enforcement, and treating it as if it did is how those six rules came to be written. The reading
+settles it. In 1.6 million words of markdown this model wrote to disk, these patterns fire 28 times.
+27 of those are the draft sheet quoting its own ban list, and the 28th is correct prose. B-7 is the
+same shape and it fires 1,462 times in chat, the highest rate of any candidate here. Base rate is not
+what separates a good gate from a bad one. Precision when it fires is, and these measure zero.
+
+**The record above is a table for a reason.** An evidence paragraph naming those words in prose takes
+13 hits from the patterns proposed for them. Backticks do not help, because the scanner strips fences
+and pipe rows and never touches inline code. The same content in rule rows takes none. A page that
+cannot state its own finding in words is a page arguing with itself, and that is a second reason
+those rules are not here as gates.
+
+**The false positive B-11 can produce is one nobody may fix.** A link in this corpus can carry a
+banned word inside its URL, and one on-topic certification announcement does. HS-16 forbids wrapping
+a link, and the scanner rejoins wrapped lines anyway, so the only remedy is deleting the citation.
+Quoted standard text has the same problem: B-5's own hits in this model's files include ASVS wording
+a writer is not free to reword.
+
+**Bold density was measured and carries no identifier.** It is a measure and not a construction, and
+the two ratchets this page already names carry no identifier either. A number in the `B` series says
+a construction is banned somewhere, which invites a later reader to finish the job.
+
+The corpus held 1,544 bold spans over 18 files and 90,923 words before this section was added, which
+is 16.98 per 1,000. Every file carries some, and the per-file spread runs from 6.69 to 24.38 per
+1,000. The tightest cap that is clean today is 24.39, which sits above the rate of the register it
+would exist to detect. A hard fail is closed on the same ground that closed B-7, at ninety-six times
+the scale.
+
+**A ratchet was the serious proposal, and this history refuses it.** Take the baseline at the commit
+that added the prose checker. That is where a baseline would have been taken. Every one of the eight
+commits after it is above that line, on all bold and on the narrow in-sentence count alike. The
+sentence ratchet held green across the same eight commits. One of the reddened commits is the one
+that landed this page.
+
+Over 120 commits the in-sentence count rose 21 times, and all 21 are ordinary authoring work. The
+rate fell from 14.15 to 6.60 per 1,000 over that span with nothing enforcing it. There is no drift
+here to arrest. 76 of every 100 spans are structure rather than emphasis: 467 table cells, 381
+paragraph ledes, 322 list ledes and 26 block quotes, PD-9's 253 among them. The remaining 368 were
+read, and they are contrast markers and term definitions in normative sentences.
+
+The gap that made a ratchet tempting is stated here without a claim attached. Markdown this model
+writes to disk runs at 29.18 per 1,000 in the same page-size band, against 16.98 here. Nothing in
+that says 17 is better than 29 for a reader, and this page does not enforce a preference under a
+measurement's colours.
+
+**The word "honest" was measured and left alone.** It fires 31 times across 9 of the 18 files, and 83
+times across this repository's history. Every hit is load-bearing in a document set whose subject is
+stating limits truthfully, as in `an honest scorecard says so out loud`. It also runs at 0.35 per
+1,000 in this model's chat and 0.44 in the files it writes, so the file register is the higher one.
+That is B-7's case at twice the scale. It is recorded so the next reader who finds the word on an
+imported list does not measure it again.
+
+**One number this section does not print.** Every candidate above was first scored as a ratio against
+a control corpus of user turns. That control was 94% prompts written by another instance of the same
+model, because the scan never filtered the flag that marks them. Removing them leaves 1.67 million
+words against 26.7 million, and what remains is terse instruction rather than prose. The ratios are
+withdrawn and only absolute counts are quoted above. The finding is worth more than the ratios were,
+and HS-18 is where it is written as a rule.
 
 ---
 
@@ -186,3 +315,16 @@ evidence and give it the next free number in its series.
 
 **This page is derived from the enforcement, not the other way round.** For B-3, B-5, B-6, HS-11 and
 HS-16, the running check is the definition of record. The words here describe what those checks do.
+
+**The gaps were checked against the toolkit, and they are occupied.** The toolkit repository this
+numbering came from was read directly rather than inferred from this page. Its sheet issues B-1 to
+B-10, HS-1 to HS-16, PD-1 to PD-8 and OPEN-1 to OPEN-6, with no gaps of its own. So the next free
+number is the one above the highest issued, never the lowest unused. The gaps here are inherited
+names rather than vacancies. Its PD-6 states the rule this page follows: reword a rule freely under
+the same identifier, and allocate a new one when you change what it demands.
+
+**HS-17 is spent and must not be issued.** A superseded branch defines it as the ASCII punctuation
+rule, which is what HS-11 already demands and what the gate already runs. Two names for one rule
+split its citations, which is the defect HS-3 describes. PD-5 is spent the same way: the toolkit
+issues it for something else, and the rule that draft gave it is PD-8 pointing the other way. After
+this page, the next free numbers are B-17, HS-19 and PD-10.
