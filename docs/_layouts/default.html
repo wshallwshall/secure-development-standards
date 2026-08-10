@@ -166,30 +166,26 @@
           <a href="{{ site.repo_url }}">secure-development-standards on GitHub</a>.
         </p>
         {%- comment -%}
-          `contains ".md"` is the condition, not merely `page.path`. docs/404.html is a page with a
-          path and NO markdown behind it, so the link rendered as href="/404.html" and offered the
-          reader "the source of this page" -- which served them the rendered 404 page again. Not
-          broken, and meaningless, which is the harder kind to notice.
-        {%- endcomment -%}
-        {%- if page.path and page.path contains ".md" %}
-        {%- comment -%}
-          SAME-ORIGIN, and the reason is the whole point of the move. This used to link to
-          site.repo_url + /blob/main/docs/... -- a github.com URL, unreachable on the network this
-          site moved to Cloudflare to serve. The one reader most likely to want the raw text was the
-          one reader guaranteed not to get it.
+          THERE IS DELIBERATELY NO "VIEW THE SOURCE OF THIS PAGE" LINK HERE. It was removed on
+          2026-08-10 and should not come back without a reason that survives the measurement below.
 
-          Jekyll copies every .md to the site beside its rendered page, so the source is already
-          here on this host. Measured 2026-08-10: /ASVS-ASSESSMENT.md returns 200 and 92,327 bytes.
-          The GitHub link in the line above is kept, because it is genuinely useful to everyone else
-          and it is labelled as leaving the site -- but it is no longer the only route to the text.
+          It used to point at site.repo_url + /blob/main/docs/<page>, which was a genuinely
+          different resource from anything else on the page: the repository view, with history and
+          blame. Then it was repointed at the same-origin markdown, because a github.com URL is
+          unreachable on the network this site moved to Cloudflare to serve -- and that collapsed it
+          onto the EXACT url the "Take a copy" block at the top of each page already offers.
 
-          THIS BLOCK IS LIQUID, NOT JINJA. It shipped once as {#- ... -#}, which Liquid does not
-          recognise, so ten lines of commentary rendered into the published footer.
+          Measured: 12 of 17 pages carry that block, and on every one of them the two links resolved
+          to the same file. HS-3 -- one fact lives in one place -- is the rule that decides it.
+
+          The five without it are index, standards/OVERVIEW, STANDARDS-LANDSCAPE, HOUSE-STYLE and
+          CI-AND-STANDARDS. The first three are themselves indexes of the files in both formats, so
+          the route is the page. The last two are method pages rather than documents to adopt.
+
+          The "Take a copy" block is the better affordance in any case: it sits at the top where a
+          reader intending to fork will see it, and it offers the Word copy, which this link never
+          did.
         {%- endcomment -%}
-        <p class="footer-line">
-          <a href="{{ page.path | relative_url }}">View the source of this page</a>
-        </p>
-        {%- endif %}
       </div>
     </footer>
   </body>
