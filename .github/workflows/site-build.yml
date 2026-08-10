@@ -55,6 +55,13 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+
+    # The project name lives here ONCE and is used by every step that needs it. It also determines
+    # the published host, which docs/_config.yml writes into every page -- so the two can disagree,
+    # and a step below asserts they do not rather than leaving it to a reader.
+    env:
+      PAGES_PROJECT: secure-development-standards
+
     steps:
       # Pinned to a commit, matching gates.yml. A tag is a moving target and this file's whole
       # purpose is telling you what actually ran.
@@ -127,6 +134,65 @@ jobs:
           fi
           echo "both credentials present"
 
+      # THE MISMATCH NOTHING COULD CHECK, NOW CHECKED. The project name produces the published host,
+      # and docs/_config.yml writes that host into every page and every download link. Cloudflare
+      # will happily accept a deploy to a project whose name no document points at, and the result
+      # is a site that publishes perfectly and that every link misses.
+      - name: The project name and the published host agree
+        run: |
+          set -o pipefail
+          configured=$(sed -nE 's#^url:[ \t]*"?([^"]*)"?[ \t]*$#\1#p' docs/_config.yml | head -1)
+          expected="https://${PAGES_PROJECT}.pages.dev"
+          echo "docs/_config.yml url : $configured"
+          echo "from PAGES_PROJECT   : $expected"
+          if [ "$configured" != "$expected" ]; then
+            echo "::error::docs/_config.yml publishes '$configured' but this workflow deploys to"
+            echo "'$expected'. One of the two is wrong. Every download link in the documents is"
+            echo "written against the config value, so a deploy to the other name serves a site"
+            echo "nothing links to."
+            exit 1
+          fi
+          echo "they agree"
+
+      # CREATING THE PROJECT HERE RATHER THAN IN THE DASHBOARD. Cloudflare's newer console steers new
+      # accounts toward Workers static assets and may not offer to create a Pages project at all --
+      # and a Workers app is not something `pages deploy` can target, though it looks equivalent from
+      # the dashboard. Doing it here also means the name comes from one place.
+      #
+      # The probe distinguishes "absent" from "not allowed". A 404 and a 403 both mean "no project
+      # visible", and treating them the same would create-on-403 forever while reporting a token
+      # problem as a missing project.
+      - name: Ensure the Pages project exists
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          set -o pipefail
+          api="https://api.cloudflare.com/client/v4/accounts/${CLOUDFLARE_ACCOUNT_ID}/pages/projects/${PAGES_PROJECT}"
+          code=$(curl -sS -o /tmp/pages-probe.json -w '%{http_code}' \
+                   -H "Authorization: Bearer ${CLOUDFLARE_API_TOKEN}" "$api")
+          echo "probe of project '${PAGES_PROJECT}': HTTP $code"
+          case "$code" in
+            200)
+              echo "it already exists; creating nothing"
+              ;;
+            404)
+              echo "it does not exist; creating it"
+              npx --yes wrangler@4 pages project create "${PAGES_PROJECT}" --production-branch=main
+              ;;
+            401|403)
+              echo "::error::the API token was rejected (HTTP $code). It needs the"
+              echo "Account -> Cloudflare Pages -> Edit permission, on this account."
+              exit 1
+              ;;
+            *)
+              echo "::error::unexpected HTTP $code from the Pages API; refusing to guess what it means."
+              cat /tmp/pages-probe.json || true
+              exit 1
+              ;;
+          esac
+
       - name: Deploy to Cloudflare Pages
         if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
         # v4.0.0, resolved from the tag rather than typed. Pinned to the commit for the reason
@@ -135,13 +201,10 @@ jobs:
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          # The project name is what produces the host in docs/_config.yml. The two have to agree,
-          # and nothing here can check that -- Cloudflare accepts a deploy to a project whose name
-          # does not match any URL this repository writes.
-          command: pages deploy _site --project-name=secure-development-standards
+          command: pages deploy _site --project-name=${{ env.PAGES_PROJECT }}
 
       - name: What the site now serves
         if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
         run: |
-          echo "deployed to https://secure-development-standards.pages.dev"
+          echo "deployed to https://${PAGES_PROJECT}.pages.dev"
           echo "pages: $(find _site -name '*.html' | wc -l), raw markdown: $(find _site -name '*.md' | wc -l), word: $(find _site -name '*.docx' | wc -l)"
