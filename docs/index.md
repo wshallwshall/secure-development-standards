@@ -72,7 +72,7 @@ covers getting parallel work through a pipeline without believing things that ar
 
 ## Where these came from
 
-They were written alongside [claude-multisession](https://github.com/wshallwshall/claude-multisession),
+They were written alongside [claude-multisession](https://claude-multisession.pages.dev),
 a toolkit for running several agent sessions against one repository, and that toolkit remains their
 worked demonstration: it applies the same claim to concurrency, where every control fires on purpose
 and prints what it examined. The documents outgrew it and now live here.

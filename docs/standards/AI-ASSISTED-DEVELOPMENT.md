@@ -63,7 +63,7 @@ The smallest first step, then the rest in order. Each one is useful alone.
 
 1. **Write the floor down and enforce the two halves of it that are mechanical.** No restricted data
    or secrets to the AI coding assistant, backed by a path deny-list *and* a fail-closed commit-time
-   content scan, because a path rule cannot stop a paste. [The leak gate](https://wshallwshall.github.io/claude-multisession/LEAK-GATE.html) has a
+   content scan, because a path rule cannot stop a paste. [The leak gate](https://claude-multisession.pages.dev/LEAK-GATE.html) has a
    working scanner and its blind spots.
 2. **Adopt the one-question classification.** You do not need the whole matrix on day one; you need
    the ratchet question and the habit of recording the answer.
@@ -241,7 +241,7 @@ and [CI and standards](../CI-AND-STANDARDS.md), *"Reject code you cannot explain
 reaching the explanation is fine"*.
 
 For a working scanner, what it catches, and the class it can never catch, see
-[The leak gate](https://wshallwshall.github.io/claude-multisession/LEAK-GATE.html).
+[The leak gate](https://claude-multisession.pages.dev/LEAK-GATE.html).
 
 ### The sanctioned exception, written so it cannot widen
 
@@ -365,7 +365,7 @@ Persistent cross-session memory is for decisions, maps and conventions. Never re
 never credentials.
 
 It also lives outside the repository in most setups, which puts it outside every content gate you
-installed. See [Coordination](https://wshallwshall.github.io/claude-multisession/COORDINATION.html) for the single-writer rule when several sessions
+installed. See [Coordination](https://claude-multisession.pages.dev/COORDINATION.html) for the single-writer rule when several sessions
 share it.
 
 ### Compaction is a choice about what to keep
@@ -419,7 +419,7 @@ things: the threshold for taking manual control back, and the reason grinding in
 is the expensive failure rather than a bad suggestion.
 
 Session-level hygiene -- one logical task per session, one working tree per session, one dependency
-environment per tree -- is in [Tips and tricks](https://wshallwshall.github.io/claude-multisession/TIPS-AND-TRICKS.html) section 2.
+environment per tree -- is in [Tips and tricks](https://claude-multisession.pages.dev/TIPS-AND-TRICKS.html) section 2.
 
 ---
 
@@ -683,7 +683,7 @@ Treat a fan-out as **a permission granted for one hard task, not a quality setti
 - **Step back down as soon as the hard task is done.**
 
 Deciding whether you can afford the run at all, and why a percentage without its account is
-meaningless, is owned by [Usage awareness](https://wshallwshall.github.io/claude-multisession/USAGE-AWARENESS.html).
+meaningless, is owned by [Usage awareness](https://claude-multisession.pages.dev/USAGE-AWARENESS.html).
 
 ### Put the plan in an artifact, not in the conversation
 
@@ -696,9 +696,9 @@ in an artifact is stable across the whole run and re-readable by every agent tha
 argument supports caching completed sub-results so a resumed run does not redo them.
 
 If the fan-out is several *sessions* rather than several agents inside one session, the isolation and
-hand-off mechanics are owned by [Worktrees](https://wshallwshall.github.io/claude-multisession/WORKTREES.html) and
-[Coordination](https://wshallwshall.github.io/claude-multisession/COORDINATION.html). The identifier-collision class that every other control is blind
-to is owned by [Sequence allocation](https://wshallwshall.github.io/claude-multisession/SEQUENCE-ALLOC.html).
+hand-off mechanics are owned by [Worktrees](https://claude-multisession.pages.dev/WORKTREES.html) and
+[Coordination](https://claude-multisession.pages.dev/COORDINATION.html). The identifier-collision class that every other control is blind
+to is owned by [Sequence allocation](https://claude-multisession.pages.dev/SEQUENCE-ALLOC.html).
 
 ---
 
@@ -778,12 +778,12 @@ and the copy that drifts is always the one nobody is testing.
 
 - [CI and standards](../CI-AND-STANDARDS.md) -- gates, receipts, claim honesty, the agent-versus-human
   split, dependency verification, and judging tests and metrics
-- [The leak gate](https://wshallwshall.github.io/claude-multisession/LEAK-GATE.html) -- a fail-closed content scanner, the three ways a scanner lies,
+- [The leak gate](https://claude-multisession.pages.dev/LEAK-GATE.html) -- a fail-closed content scanner, the three ways a scanner lies,
   and the class it can never see
 - [Running a large security-standard assessment with AI agents](../ASVS-ASSESSMENT.md) -- verdict
   vocabularies, evidence anchors, and partitioning assessment work across agents
-- [Tips and tricks](https://wshallwshall.github.io/claude-multisession/TIPS-AND-TRICKS.html) -- session hygiene, writing a guardrail, and measuring
+- [Tips and tricks](https://claude-multisession.pages.dev/TIPS-AND-TRICKS.html) -- session hygiene, writing a guardrail, and measuring
   whether it works
-- [Coordination](https://wshallwshall.github.io/claude-multisession/COORDINATION.html) and [Worktrees](https://wshallwshall.github.io/claude-multisession/WORKTREES.html) -- isolation and hand-off when
+- [Coordination](https://claude-multisession.pages.dev/COORDINATION.html) and [Worktrees](https://claude-multisession.pages.dev/WORKTREES.html) -- isolation and hand-off when
   the fan-out is several sessions rather than several agents
-- [Usage awareness](https://wshallwshall.github.io/claude-multisession/USAGE-AWARENESS.html) -- deciding whether you can afford a run, honestly
+- [Usage awareness](https://claude-multisession.pages.dev/USAGE-AWARENESS.html) -- deciding whether you can afford a run, honestly
