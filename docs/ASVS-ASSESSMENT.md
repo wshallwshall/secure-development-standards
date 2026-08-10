@@ -19,43 +19,44 @@ one person cannot read it carefully in a week.
 ## TLDR/BLUF
 
 **Almost every defect this method exists to catch is an instrument answering a narrower question
-than the one you asked, and looking clean while it does it.** We scored a batch of requirements
-against condensed wording. A requirement carrying two conditions had become a summary carrying one,
-so every cell under it was honestly reasoned and still wrong, and nothing in the output said so. A
-condensed requirement, a neighbouring requirement, a search that could not have matched, a control
-that ships switched off: each produces a verdict that is internally consistent, well argued, and
-answering a question nobody asked.
+than the one you asked, and looking clean while it does it.**
 
-Fluency is what makes it stick. An agent will produce on-topic, well-structured reasoning about a
-requirement whether or not it read the requirement, whether or not the file it cites supports the
-claim, and whether or not the search it ran could have returned anything. A person who has not done
-the work usually looks like someone who has not done the work. An agent that has not done the work
-looks exactly like one that has.
+We scored a batch of requirements against condensed wording. A requirement carrying two conditions
+had become a summary carrying one. Every cell under it was honestly reasoned and still wrong, and
+nothing in the output said so.
 
-So what follows is not a scoring rubric. It is a set of forcing functions that make the difference
-between a real verdict and a fluent one mechanically visible. The order matters, because each step
-is worth little without the one above it:
+Four things produce that same shape: a condensed requirement, a neighbouring requirement, a search
+that could not have matched, a control that ships switched off. Each yields a verdict that is
+internally consistent, well argued, and answering a question nobody asked.
+
+**Fluency is what makes it stick.** An agent reasons fluently about a requirement whether or not it
+read the requirement, whether or not the file it cites supports the claim, and whether or not its
+search could have returned anything.
+
+A person who has not done the work looks like someone who has not done the work. An agent that has
+not done the work looks exactly like one that has.
+
+So what follows is not a scoring rubric. It is a set of forcing functions that tell a real verdict
+from a fluent one mechanically. The order matters: each step is worth little without the one above
+it.
 
 1. **Build the corpus first.** Hold the standard's own text locally, pinned to a version. Score
-   against a summary instead and every verdict quietly answers a narrower question than the standard
-   asked.
+   against a summary and every verdict answers a narrower question than the standard asked.
 2. **Fix the verdict vocabulary** before a single cell is scored. The standard supplies none, so two
-   sessions will each invent a reasonable one and produce verdicts nobody can reconcile afterwards.
-3. **Declare scope positively**, and argue every exclusion rather than assuming it. Scoping a
-   requirement out does not buy you the level.
-4. **Partition on both axes.** The collision that actually costs you is not two agents editing the
-   same row; it is two agents applying different unwritten rules and neither recording which.
-5. **Run the review pass.** This is where most of the wrong answers are actually caught, and it is
-   the step that gets cut when the schedule slips.
-6. **Prove the instrument's domain, not only the instrument.** Every control above asks whether a
-   check works. None of them asks whether it was pointed at the whole surface, and that is where the
-   defects that matter were sitting.
+   sessions will invent two reasonable ones and produce verdicts nobody can reconcile.
+3. **Declare scope positively**, and argue every exclusion. Scoping a requirement out does not buy
+   you the level.
+4. **Partition on both axes.** The costly collision is not two agents editing one row. It is two
+   agents applying different unwritten rules, neither recording which.
+5. **Run the review pass.** Most of the wrong answers are caught here, which is why it is the step
+   that gets cut when the schedule slips.
+6. **Prove the instrument's domain, not only the instrument.** A check can work perfectly and be
+   pointed at a quarter of the surface.
 
 **Two failures hide under one word.** A record can be *stale*: true when written, no longer
-describing the code. Or it can be *wrong*, and have been wrong on the day it was scored. Anchors,
-drift checks and re-verification cadences close the first. They barely touch the second, which is
-closed only by executing the control against what it claims to cover. Keep the two apart, or a
-programme that fixes staleness will report progress against a defect it never addressed.
+describing the code. Or it can be *wrong*, and wrong on the day it was scored. Anchors and drift
+checks close the first and barely touch the second, so a programme that fixes staleness will report
+progress against a defect it never addressed.
 
 If you take one rule from this page: **a verdict that does not quote the requirement's own words has
 not been assessed**, however well it reads.
