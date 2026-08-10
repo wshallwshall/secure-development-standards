@@ -183,14 +183,33 @@ jobs:
             exit 1
           fi
 
-          # The control. If the pattern cannot match a known-bad string, the clean result above
-          # means nothing -- and this is the exact check whose absence let the defect ship.
-          printf '<p>{#- leaked -#}</p>' > /tmp/leak-probe.html
-          if ! grep -qE '\{#|#\}' /tmp/leak-probe.html; then
-            echo "::error::the leak pattern cannot match a planted Jinja comment; it is blind."
+          # THE CONTROL, AND IT IS PLANTED IN _site RATHER THAN IN A SCRATCH FILE.
+          #
+          # The first version wrote the probe to /tmp and grepped /tmp. That proved the PATTERN
+          # could match a Jinja comment and proved nothing about the SCAN: if _site were empty,
+          # misnamed, or built somewhere else, the real scan finds nothing, the /tmp control still
+          # passes, and the step certifies a site it never read. That is the same vacuous-check
+          # shape this whole file exists to refuse, committed inside the control against it.
+          #
+          # Planting in _site and re-running the REAL command exercises the path, the --include
+          # filter and the pattern together. Anything that makes the scan blind now fails here.
+          probe="_site/.leak-control-probe.html"
+          printf '<p>{#- planted -#}</p>' > "$probe"
+          seen=$(grep -rlE '\{#|#\}|\{%-? *(comment|endcomment|raw|endraw)' _site --include='*.html' || true)
+          rm -f "$probe"
+          if [ -z "$seen" ]; then
+            echo "::error::a leak planted INSIDE _site was not found by the scan. The pattern, the"
+            echo "search path or the --include filter is wrong, so the clean result above means"
+            echo "nothing. Do not trust this run."
             exit 1
           fi
-          echo "no template syntax leaked, and the pattern was proved able to see it"
+          echo "no template syntax leaked, and the scan was proved able to see one planted in _site"
+
+          # The probe must not survive into the artifact or the deploy.
+          if [ -e "$probe" ]; then
+            echo "::error::the control probe was left behind at $probe and would be published."
+            exit 1
+          fi
 
       # Uploaded so the output can be DIFFED against the live site before anyone considers changing
       # where the site is served from. That comparison is the gate on migrating, not this run's colour.
