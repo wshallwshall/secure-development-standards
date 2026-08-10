@@ -146,7 +146,14 @@ jobs:
           # jekyll-relative-links. Absence leaves `](FILE.md)` verbatim in the HTML. Jekyll also
           # copies FILE.md to the site, so the reader gets raw markdown rather than a 404 -- the
           # failure this repository already documents as invisible from both ends.
-          raw=$(grep -rlE 'href="[A-Za-z0-9_./-]+\.md"' _site --include='*.html' || true)
+          #
+          # THE FIRST CHARACTER CLASS EXCLUDES `/` ON PURPOSE, and this cost a red main to learn.
+          # An UNREWRITTEN link is relative: href="OVERVIEW.md". A DELIBERATE same-origin link to the
+          # served source is root-relative: href="/ASVS-ASSESSMENT.md", which the footer emits so the
+          # blocked reader has a route to the raw text. The first version of this pattern could not
+          # tell them apart and reddened the commit that added the second one. Excluding `:` from the
+          # class is what keeps an absolute https://...  /x.md URL out of it as well.
+          raw=$(grep -rlE 'href="[A-Za-z0-9_.-][A-Za-z0-9_./-]*\.md"' _site --include='*.html' || true)
           if [ -n "$raw" ]; then
             echo "::error::built HTML still contains unrewritten relative .md links:"
             echo "$raw" | sed 's/^/  /'
