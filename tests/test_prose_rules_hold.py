@@ -571,7 +571,12 @@ class ABoldLedeEndsASentence(unittest.TestCase):
 # is slack a future page spends with nothing reporting it. That both survived the first review is
 # the argument for AListIsNotOneLongSentence and ABoldLedeEndsASentence being planted cases -- a
 # corpus check cannot find them, because the corpus is where the wrong number came from.
-BASELINE_LONG_SENTENCES = 262       # sentences over 30 words
+#
+# 262 -> 263 on the rebase onto #23. The extra sentence is not from this branch: four commits landed
+# on main while this was in flight, and they were reviewed against an instrument that could not see
+# a stop inside emphasis. This is what the corrected measure reports on the corpus as it now stands,
+# which is the only number a ratchet can honestly hold.
+BASELINE_LONG_SENTENCES = 263       # sentences over 30 words
 BASELINE_FAT_TABLE_CELLS = 30       # table cells over 40 words
 
 # How far below baseline a metric may drift before the test asks for the baseline to be lowered.

@@ -44,9 +44,9 @@ Two measured qualities are also ratcheted rather than capped: sentences over 30 
 cells over 40 words. Neither may get worse than its recorded baseline. Neither is a limit you have to
 write under, and the long tail of this corpus is where the engineering warnings live.
 
-**The sentence baseline moved from 371 to 262 and no sentence was edited.** Both moves were defects
-in the instrument rather than improvements to the writing, and together they were 137 of the
-original 371. More than a third of that number was measurement error.
+**The sentence baseline fell by 137 and no sentence was edited.** Both moves were defects in the
+instrument rather than improvements to the writing. More than a third of the 371 it started at was
+measurement error. The current figure is the one the test holds, not one restated here.
 
 The first was the rejoin. The checker joins wrapped lines before measuring, and it used to join a
 bullet list too, so a run of items measured as one enormous sentence. 60 of the 371 were that. The
