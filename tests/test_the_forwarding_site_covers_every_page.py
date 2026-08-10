@@ -96,6 +96,25 @@ class TheForwardingSiteCoversEveryPage(unittest.TestCase):
 
             self.assertTrue((out / ".nojekyll").exists(), ".nojekyll is what stops Jekyll eating it")
 
+            # THE CATCH-ALL answers every old URL nobody enumerated -- renamed pages, deep links,
+            # typos -- because GitHub Pages serves 404.html for anything it does not recognise.
+            # Without it those got a generic "Page not found" that never mentioned the move.
+            catch = out / "404.html"
+            self.assertTrue(catch.exists(), "no catch-all; the long tail of old URLs says nothing")
+            catch_html = catch.read_text(encoding="utf-8")
+            self.assertIn(
+                f"{dest}/404.html",
+                catch_html,
+                "the catch-all must forward to the new site's 404 page. Sending an unknown address "
+                "to a home page that returns 200 tells the reader the page exists.",
+            )
+            self.assertNotIn(
+                f'location.replace("{dest}/")',
+                catch_html,
+                "the catch-all forwards to the site root, which reports success for a page that "
+                "does not exist.",
+            )
+
             # A reader with a deep link must land on the section, not the page top. The meta
             # refresh cannot do that, which is why the script carries hash and query.
             self.assertIn("location.hash", html)

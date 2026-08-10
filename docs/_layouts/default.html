@@ -165,7 +165,13 @@
           MIT licensed.
           <a href="{{ site.repo_url }}">secure-development-standards on GitHub</a>.
         </p>
-        {%- if page.path %}
+        {%- comment -%}
+          `contains ".md"` is the condition, not merely `page.path`. docs/404.html is a page with a
+          path and NO markdown behind it, so the link rendered as href="/404.html" and offered the
+          reader "the source of this page" -- which served them the rendered 404 page again. Not
+          broken, and meaningless, which is the harder kind to notice.
+        {%- endcomment -%}
+        {%- if page.path and page.path contains ".md" %}
         {%- comment -%}
           SAME-ORIGIN, and the reason is the whole point of the move. This used to link to
           site.repo_url + /blob/main/docs/... -- a github.com URL, unreachable on the network this
