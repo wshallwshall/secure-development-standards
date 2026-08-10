@@ -99,6 +99,63 @@ jobs:
           find _site -name '*.html' | sort | sed 's/^/  /'
           echo "  total: $(find _site -name '*.html' | wc -l) html files"
 
+      # THE PLUGINS ARE CHECKED BY THEIR EFFECTS, because nothing else can see them.
+      #
+      # The step above PRINTS a page count and asserts nothing, which is most of a control and none
+      # of the protection. The failure it misses was measured in the sibling repository: drop
+      # `gem "github-pages"` from the Gemfile and the build EXITS ZERO, warns about nothing, and
+      # emits ONE page instead of seventeen. A grep over the log cannot see that -- there is nothing
+      # to grep. `plugins: []` and `--safe` do not disable them either, because the gem loads its own
+      # set through bundler and re-whitelists itself, so the obvious levers make the risk look
+      # theoretical when it is one deleted line away.
+      #
+      # Every expectation is computed from the tracked markdown, so adding a document needs no edit
+      # here. A hand-typed number would be the enumeration this repository refuses everywhere else.
+      - name: The plugins the site depends on actually ran
+        run: |
+          set -o pipefail
+          # Page SOURCES, not markdown alone: docs/404.html is a page too. `_layouts` and `_includes`
+          # are excluded because they produce no page of their own -- counting them would inflate the
+          # expectation and turn this assertion into one that can never fail.
+          expected=$(git ls-files 'docs/**/*.md' 'docs/*.md' 'docs/**/*.html' 'docs/*.html' \
+                     | grep -vE '^docs/(_layouts|_includes)/' | wc -l)
+          built=$(find _site -name '*.html' | wc -l)
+          echo "tracked page sources : $expected"
+          echo "built html pages     : $built"
+
+          # jekyll-optional-front-matter. Without it only files carrying front matter become pages,
+          # and this corpus deliberately carries none -- so its absence is a one-page site.
+          if [ "$built" -ne "$expected" ]; then
+            echo "::error::built $built pages from $expected tracked markdown files."
+            echo "jekyll-optional-front-matter did not run. The documents carry no front matter by"
+            echo "design, so without it they are not pages at all. Check that the Gemfile still"
+            echo "declares github-pages in the jekyll_plugins group."
+            exit 1
+          fi
+
+          # jekyll-titles-from-headings. Absence leaves the title empty or set to the filename,
+          # which renders fine and is wrong in every browser tab and search result.
+          if ! grep -q "<title>Running a large security-standard assessment" _site/ASVS-ASSESSMENT.html; then
+            echo "::error::the ASVS page's title did not come from its H1."
+            echo "jekyll-titles-from-headings did not run. Titles are derived, never written in"
+            echo "front matter, so this is the only thing that can notice."
+            grep -o "<title>[^<]*</title>" _site/ASVS-ASSESSMENT.html || echo "  (no title tag at all)"
+            exit 1
+          fi
+
+          # jekyll-relative-links. Absence leaves `](FILE.md)` verbatim in the HTML. Jekyll also
+          # copies FILE.md to the site, so the reader gets raw markdown rather than a 404 -- the
+          # failure this repository already documents as invisible from both ends.
+          raw=$(grep -rlE 'href="[A-Za-z0-9_./-]+\.md"' _site --include='*.html' || true)
+          if [ -n "$raw" ]; then
+            echo "::error::built HTML still contains unrewritten relative .md links:"
+            echo "$raw" | sed 's/^/  /'
+            echo "jekyll-relative-links did not run. Those links serve raw markdown to the reader."
+            exit 1
+          fi
+
+          echo "all three plugins confirmed by effect"
+
       # Uploaded so the output can be DIFFED against the live site before anyone considers changing
       # where the site is served from. That comparison is the gate on migrating, not this run's colour.
       - name: Upload the built site
@@ -201,6 +258,12 @@ jobs:
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          # PINNED, because v4 of this action defaults wranglerVersion to `latest`. Pinning the
+          # action by SHA and then letting it fetch a moving tool is most of the pin and none of the
+          # reproducibility -- the thing that actually publishes the site would still float.
+          # 4.120.1 is the version the first successful deploy used, read out of that run's log
+          # rather than chosen.
+          wranglerVersion: "4.120.1"
           command: pages deploy _site --project-name=${{ env.PAGES_PROJECT }}
 
       - name: What the site now serves

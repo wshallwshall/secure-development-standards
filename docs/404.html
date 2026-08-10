@@ -1,0 +1,40 @@
+---
+layout: default
+title: Page not found
+permalink: /404.html
+sitemap: false
+---
+
+<!--
+  WHY THIS FILE EXISTS, and it is not decoration.
+
+  Measured on 2026-08-10, the day the site moved to Cloudflare Pages: with no 404.html in the build,
+  EVERY unknown path returned HTTP 200 and the home page, byte-identical to `/`. `/404.html` did the
+  same. GitHub Pages returned a real 404 for the same request, so this was a regression introduced by
+  the move rather than a condition anyone had lived with.
+
+  Two things follow, and the second is worse than the first.
+
+  A broken link renders a plausible page and reports success. A reader following a stale link sees
+  the front page and no error, which is the failure this whole document set is about: it renders, it
+  navigates, and it silently lands the reader somewhere other than what the link promised.
+
+  And it makes status-code verification VACUOUS. A 200 stops meaning the page exists, so any check
+  asserting 200 is checking nothing -- including any check written later to confirm the forwarding
+  stubs resolve after the github.io cutover. That is a control that cannot fail, certified green.
+
+  Cloudflare Pages serves this file, with a 404 status, when a request matches no asset.
+-->
+
+<h1>Page not found</h1>
+
+<p>There is no page at this address. That usually means a link is out of date rather than that the
+document is gone.</p>
+
+<p>These standards moved in August 2026. They used to be served from
+<code>wshallwshall.github.io</code>, which is blocked on some corporate networks, and are now served
+from this host. A link written against the old address, or against a heading that has since been
+reworded, lands here.</p>
+
+<p><a href="{{ '/' | relative_url }}">Start from the index</a>, or go straight to
+<a href="{{ '/standards/OVERVIEW.html' | relative_url }}">every file, in both formats</a>.</p>
