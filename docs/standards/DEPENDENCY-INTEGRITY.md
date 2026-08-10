@@ -657,7 +657,7 @@ own toolchain before repeating any of it as a claim.
   who was compromised, and none of it is certification. State what each gate does not prove
   ([CI and standards](../CI-AND-STANDARDS.md#state-what-a-gate-does-not-prove)), and prove a gate can
   see its own failure class before crediting a green result
-  ([the leak gate](https://claude-multisession.pages.dev/LEAK-GATE.html#the-caveat-that-matters-most)).
+  ([the leak gate](https://claude-multisession.pages.dev/LEAK-GATE.html), *"The caveat that matters most"*).
 
 ---
 
