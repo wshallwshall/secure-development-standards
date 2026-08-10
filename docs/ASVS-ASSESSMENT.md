@@ -47,6 +47,15 @@ is worth little without the one above it:
    same row; it is two agents applying different unwritten rules and neither recording which.
 5. **Run the review pass.** This is where most of the wrong answers are actually caught, and it is
    the step that gets cut when the schedule slips.
+6. **Prove the instrument's domain, not only the instrument.** Every control above asks whether a
+   check works. None of them asks whether it was pointed at the whole surface, and that is where the
+   defects that matter were sitting.
+
+**Two failures hide under one word.** A record can be *stale*: true when written, no longer
+describing the code. Or it can be *wrong*, and have been wrong on the day it was scored. Anchors,
+drift checks and re-verification cadences close the first. They barely touch the second, which is
+closed only by executing the control against what it claims to cover. Keep the two apart, or a
+programme that fixes staleness will report progress against a defect it never addressed.
 
 If you take one rule from this page: **a verdict that does not quote the requirement's own words has
 not been assessed**, however well it reads.
@@ -58,20 +67,30 @@ illustrative skeleton, not a result -- every value is a placeholder:
 
 ```toml
 [cell."<chapter>.<section>.<requirement>"]
-verdict   = "partial"   # local extension; defined in the vocabulary table
-quoted    = "<the requirement's own description text, copied out of the pinned corpus>"
-version   = "<the standard version that text was pinned at>"
-rule      = "ships-off" # WHICH written rule produced this verdict
-evidence  = ["<path>:<lines>", "<path>:<lines>"]
-reviewer  = "<session>"
-scored_at = "<timestamp>"
+verdict     = "partial"   # local extension; defined in the vocabulary table
+quoted      = "<the requirement's own description text, copied out of the pinned corpus>"
+version     = "<the standard version that text was pinned at>"
+rule        = "ships-off" # WHICH written rule produced this verdict
+reviewer    = "<session>"
+scored_at   = "<timestamp>"
+verified_at = "<full commit id of the tree that was read, reachable from the mainline>"
+
+[[cell."<chapter>.<section>.<requirement>".evidence]]
+path   = "<path>"
+expect = "<the whole normalized logical line, occurring exactly once in that file>"
+line   = 0                # a hint the tool writes and nothing reads
 ```
 
-Five of those seven fields exist only so that a later reader can disagree with the verdict.
-`quoted` and `version` make it re-checkable without scoring it again from scratch; `rule` names
-which written rule produced it, so two sessions' verdicts can be compared rather than merely
-counted; `reviewer` and `scored_at` make staleness visible. A cell carrying only a grade and a file
-path is not a cheaper version of this. It is a verdict that cannot be defended.
+Most of those fields exist only so that a later reader can disagree with the verdict. `quoted` and
+`version` make it re-checkable without scoring it again from scratch. `rule` names which written
+rule produced it, so two sessions' verdicts can be compared rather than merely counted. `reviewer`
+and `scored_at` make staleness visible. `verified_at` says which tree was read, which is what every
+later reconciliation argument turns on. A cell carrying only a grade and a file path is not a
+cheaper version of this. It is a verdict that cannot be defended.
+
+**The `line` field is deliberately inert**, and the reason is the most expensive thing this method
+learned the second time round:
+[a tolerance below a uniqueness check](#a-tolerance-below-a-uniqueness-check-is-a-decaying-budget).
 
 ## What this costs you, and where it does not apply
 
@@ -582,12 +601,60 @@ check on every commit, wire it fail-closed, and **re-resolve the whole set again
 on a schedule, not on demand**. On demand means the set is only ever re-checked by someone who
 already suspects something.
 
+### A tolerance below a uniqueness check is a decaying budget
+
+The table above asks for a line and a token. The obvious way to reconcile the two is a tolerance:
+accept the token anywhere within N lines of the recorded number. That looks like the sensible middle
+between a brittle coordinate and a bare search. It is not, and the reason generalizes well past
+anchoring.
+
+**Order the two checks and the second one dies.** Suppose the resolver rejects any token occurring
+more than once in its file, before it consults the window. Every anchor reaching the window then has
+exactly one occurrence, and one occurrence is located by the token alone. The line contributes zero
+locating power. It contributes only failure power.
+
+What the window can still do is fire on displacement. So it is not a tolerance. It is a **budget
+that fills up as unrelated code moves above the citation**, and somebody eventually pays it down by
+retyping coordinates. Every one of those repairs is a commit against the record whose entire data
+effect is a set of integers, and it crowds out the assessment work it looks like.
+
+Two rules come out of that, and the second is the one worth carrying off this page:
+
+> **Displacement is not invalidation.** Report a moved anchor as advisory. Keep the fatal classes to
+> a token that is **gone**, a token that has become **ambiguous**, and a path that does not exist.
+>
+> **A green gate whose greenness was restored by hand is not evidence of health.** Report the
+> distance to failure, not the colour. A set whose worst anchor sits one line inside the window is a
+> set about to break in a batch, and the summary line will say nothing.
+
+**Do not drop the line before you strengthen the token.** Uniqueness alone is weaker in one respect.
+The window catches some genuine changes by accident of displacement, so deleting it without
+compensation is a net loss of detection. The compensation is to require `expect` to be the **whole
+logical line**, not a fragment of it. A bypass clause welded into a condition then breaks the
+anchor, which is the change you actually wanted to hear about.
+
+**Normalized logical line, not the physical one.** Join continuations and collapse runs of
+whitespace. A formatter running to a line-length limit re-wraps a statement when an identifier is
+renamed. A byte-exact physical line then becomes permanently unmatchable, and the fix becomes the
+next source of churn.
+
+**An unanchored substring match cannot see indentation.** A statement that moves inside a `try`, or
+under a new condition, still matches a token recorded with its old leading spaces. The control flow
+the cell reasoned about has changed and the check is green.
+
+The same weakness bites the reviewer. Auditing a retirement with a loose search finds the token's
+characters alive inside a function that no longer filters anything. It reads as "the anchor
+survived, so this should have been re-pointed". **Search for the exact recorded token, with a
+control that proves the probe can see anything at all.**
+
 ### What only shows up once anchors are in use
 
-**Drift is the gate working, not a defect.** The correct response to a broken anchor is to
-**re-anchor by content**: find where the thing the cell actually graded now lives, and re-read the
-surrounding lines. **Never nearest-match.** Re-pointing at whatever token happens to sit closest to
-the old line is how a citation ends up describing code the cell never assessed.
+**A broken anchor is the gate working, not a defect** -- where "broken" means the token is gone,
+rather than merely moved. The correct response is to **re-anchor by content**: find where the thing
+the cell actually graded now lives, and re-read the surrounding lines. **Never nearest-match.**
+Re-pointing at whatever token happens to sit closest to the old line is how a citation ends up
+describing code the cell never assessed. And it is the right response only for the first of the four
+causes below.
 
 **An anchor that must borrow an unrelated neighbour to be unique is fragile by construction.**
 Suppose the on-topic token is not unique, so you reach for a nearby unrelated string to disambiguate.
@@ -601,6 +668,57 @@ it claims to cite may not be as identifiable as the verdict assumes.
 silent about how *old* that reading already was, because nothing re-ran the check between the reading
 and the signature. Surface "this reading is N commits behind mainline" in the rendered view, so
 staleness is visible without anyone having to ask.
+
+### A missing token has four causes, and only one is mechanical
+
+When an anchor's token is gone, the tempting repair is to find where it went. Four different things
+produce that symptom:
+
+| Cause | What happened | Who resolves it |
+|---|---|---|
+| **Moved** | The mechanism is intact and lives elsewhere now | mechanical: re-anchor by content |
+| **Claim now false** | The mechanism changed, and the verdict no longer holds | an assessor |
+| **Retired as closed** | The token is gone because the gap it certified was **fixed** | an assessor, and it is not a re-anchor |
+| **Never read here** | The token did not exist at the commit the cell records as its base | an assessor: the provenance is wrong |
+
+The third is the dangerous one, and it is invisible from inside the repair. An anchor written to
+certify an **exclusion** -- that some guard does not run, that some path is uncovered -- stops
+resolving the moment somebody closes the gap. Re-anchoring it to the nearest occurrence points the
+cell at the code that *fixed* the problem, while the cell's own prose still narrates the problem as
+live. That is green forever, describing a condition that no longer exists: the stale-but-resolving
+anchor arriving through the repair path.
+
+So: **on a missing token the tool may list candidate locations and must never suggest one.**
+
+Write that as code with a test, rather than as a convention. Shape the fixture as the case that
+actually tempts somebody: the old token gone, and a plausible near-match on the very next line. A
+convention is what decays exactly when suspicion has lapsed.
+
+**Prefer anchoring the control over anchoring the gap.** An anchor on the assertion that a control
+covers its domain survives the fix. An anchor on the hole cannot, by construction.
+
+### An anchor is a premise; the verdict is a conclusion
+
+An anchor certifies that a token exists in a file, once. It does not certify that the control
+operates on the path the cell describes. Those are different sentences, and the record usually holds
+only the first while being read as the second.
+
+"This control operates here" is three claims wearing one sentence:
+
+| Claim | What it asserts | Instrument |
+|---|---|---|
+| **Siting** | the statement executes under the control flow the cell reasoned about | a syntactic site descriptor, derived mechanically from the file |
+| **Load-bearing** | removing the control turns a named observable red | a mutation, plus a counter-observable that must stay green |
+| **Totality** | the answer holds for every member of a domain that can grow | none -- see the next section |
+
+**Content fingerprinting closes none of them.** Hashing the cited region is a *better premise check*,
+and the premise was never the weak part. There is no object anywhere in the record for the inference
+between the premise and the conclusion, so a checker has nothing to attach to.
+
+A siting check is cheap and worth having, with one caveat that has to travel with it: most of what it
+reds will be movement, not weakening. **Write that limitation beside the check itself, not only in
+the design document.** A signal described as a defect detector in the place people read will be
+quoted as one.
 
 ### Purpose-written tests count; a scanner alone does not
 
@@ -675,6 +793,65 @@ purpose before you believe a pass**.
 
 ---
 
+## The domain is a separate claim
+
+The sharpest sentence this method has produced came from somebody auditing a test they had written
+themselves:
+
+> I checked whether the test looked at **anything**. I did not check whether it looked at
+> **everything**.
+
+Every control in the section above answers the first question. Make the check fail on purpose,
+confirm the mutation landed, run a negative control, print what you scanned. All of that can be true
+of an instrument pointed at a quarter of the surface. **The domain is its own claim and it needs its
+own evidence.**
+
+This is the class that produced live defects here, repeatedly, under green gates whose citations all
+resolved.
+
+### Derive the domain by parsing, then execute the control against every member
+
+The instrument that worked was neither a mutation nor an anchor. Derive the set the requirement
+quantifies over **from the code itself**, by parsing it rather than by reading a list somebody
+maintains. Then run the control against every member and read the results.
+
+The list is what fails. A registry, an export table, a set of names in a constant: each is a domain
+somebody wrote down once, and the next member is added without it. A parse asks the tree.
+
+A single hand-picked probe fails the same way from the other end. Where the author places the probe
+decides the answer, and an author places it where they already suspect a gap. **A probe tests the gap
+you imagined; an enumeration tests the ones you did not.**
+
+### A guard written after an incident inherits the incident's shape
+
+Watch for this sequence, because it recurred twice inside one week:
+
+1. A defect is found in production code.
+2. A test is written so it cannot happen again.
+3. The test derives its domain from a set narrower than the real surface.
+4. The next instance of the same defect walks straight through the new test.
+5. The guard written after **that** one does it again -- and its docstring asserts completeness, in a
+   measured and entirely credible voice.
+
+A completeness claim inside a checker is a claim like any other, and it inherits the authority of the
+code around it. **Prove it against an independently derived domain or delete it.** Softening it keeps
+the authority and loses the falsifiability, which is the worse of the two outcomes.
+
+### Where a value changes name, a name-based guard cannot follow it
+
+One shape accounted for several of these. A value is renamed as it crosses from one layer to the
+next: a parameter becomes a differently named setting. The guard reads the name on one side of the
+boundary; the control reads the name on the other. The guard classifies its side correctly, and the
+thing the value becomes is covered by nothing.
+
+Comparing name lists cannot fix this. A list has to be taught each rename, so it can never catch the
+next one. **Follow the value across the boundary**, not the identifier on either side of it.
+
+And record the near misses. A case that comes out clean because some unrelated rule happens to cover
+it is luck, not design. A later reader who finds it green will conclude the boundary is handled.
+
+---
+
 ## Never score against a paraphrase
 
 An agent reads the control ID and a one-line summary -- from an internal scorecard, a spreadsheet, or
@@ -721,6 +898,89 @@ re-points every ID in the scorecard at once.
 | Record the standard's **version in the scorecard itself** | The record says what it was scored against |
 | **Print the version beside any total** | A denominator change surfaces as a version change instead of as apparent progress |
 | Reference requirements **version-prefixed**, not bare | `v5.0.0-1.2.5` means something; `1.2.5` does not |
+
+---
+
+## Name the ref in the same sentence as the number
+
+Pinning the standard settles one half of provenance. The other half is the tree you scored against,
+and it goes wrong far more often, because a wrong tree produces no error anywhere.
+
+**Two readings of the same record, taken at different refs, print identically.** Same shape, same
+field names, plausible figures, and nothing in either one saying which is which. That is enough to
+make a week of careful work unreconcilable. It is also the largest cost in an exercise like this:
+not parsing the record, but adjudicating disagreements about readings of it.
+
+State it as a definition and it stops being a habit you have to remember:
+
+> **An assessment is a fact about a (cell, ref) pair.** So is a count, so is a measurement -- and so
+> is a handoff. A verdict passed to somebody else without the ref it was formed at may be applied to
+> a different cell than the one that was assessed.
+
+Where a handoff is the artifact, hand over a hash of the thing you assessed rather than a repository
+ref. Most commits will not touch the cell at all, so bouncing the write every time the mainline
+advances is noise. A hash of the cell's own evidence set answers the question that matters.
+
+### Ancestry answers a different question than "did this land"
+
+Under squash-merge a branch's own commits are never ancestors of the mainline, while its content
+sits there in full. An ancestry check therefore returns a confident no for work that merged hours
+ago, and the answer is correct for the question it was asked.
+
+**Ask the content, at a fetched remote ref.** And notice the quieter half of that sentence: a local
+ref nobody fetched is the most common wrong base of all. It resolves, it prints a number, and the
+number describes a tree nobody else can see.
+
+### Degradation is a value in the field, never a missing field
+
+Any tool that reports provenance has to report it when it cannot. Give the freshness field loud
+labelled values for *not a repository*, *no upstream*, *never fetched* and *comparison refused*. An
+omitted qualifier is exactly what produces the error, because the reader supplies a reasonable
+default and moves on.
+
+Separating two things that look like one makes the whole check cheap:
+
+> **The requirement is not freshness. It is that the freshness claim is never silent.**
+
+Once they are apart, no network is needed. How far the checkout is behind its recorded upstream, and
+how old the last fetch was, are both local reads. Either one alone would have stopped the wrong
+reading above.
+
+That settles a design question too. **A query tool must not fetch.** Fetching is its only mutating
+path, and the tool runs in a loop. Where the remote is intermittently unreachable, a fail-closed
+fetch gets the tool bypassed inside a day.
+
+### A provenance value has to resolve the same way everywhere
+
+A commit id that resolves on the machine that wrote it, and nowhere else, is not a provenance
+record. It is a property of whose disk the check ran on. Abbreviated ids do this, and so do commits
+orphaned when a branch was squashed.
+
+Require the recorded commit to be **reachable from the mainline**, written in full, and **re-pin
+rather than grant the exception**. Where a squash orphaned it, the files the cell cites are usually
+byte-identical at the squash commit, which makes the re-pin mechanical rather than an assessor's
+judgment call.
+
+### Evidence that postdates the verification it supports
+
+Check the other direction as well. A cited token that did not exist at the commit the cell records as
+its base cannot have been read there. It was added or repaired later while the recorded commit stayed
+where it was.
+
+That is not drift. Drift is the record falling behind the code. This is the record citing code that
+had not been written yet. No drift detector will ever see it, because every check runs against the
+current tree, where the token resolves.
+
+### Two readers can disagree and both be right
+
+[How to read a movement in the numbers](#how-to-read-a-movement-in-the-numbers) treats a unit change
+as one cause of a figure *moving*. The same defect fires without any movement, between two people
+reading one record at the same time: counted per cell against counted per distinct value, in-scope
+against total. Neither is wrong. The argument is unresolvable, and costs a full re-measurement, until
+somebody states the unit.
+
+So one sentence closes both halves. **Print the unit and the ref beside the figure**, in the output,
+every time. A figure that can name neither is not a measurement anyone can check.
 
 ---
 
@@ -883,6 +1143,37 @@ cells does each pending change touch?"* -- across all pending changes, regardles
 produced them. The instance above was caught by a human reading at assembly time, which is not a
 control; it is luck with a job title.
 
+### A writer that re-emits a whole entry loses a concurrent edit silently
+
+Where the tool that applies a verdict rewrites the cell's entire block, two passes writing the same
+cell do not conflict. The second rewrite drops the first. There are no conflict markers, nothing goes
+red, and the diff is thousands of near-identical lines, so nobody sees it at review either.
+
+Serialize writes per cell. Where two changes are queued against one cell, prefer **one flagged-stale
+entry over two concurrent writes**. A paragraph marked as needing revision is visible; a silently
+dropped one is not.
+
+### Compute the merge result and assert against it
+
+Where one change replaces a file wholesale and another edits the same file surgically, a
+mergeable-and-clean status is the condition under which the hazard is **invisible**. The wholesale
+side carries the lines the surgical side deleted forward as context, so a keep-both-sides resolution
+restores them with nothing to flag.
+
+Build the merged tree before merging, and assert the invariant on it rather than on either branch.
+The assertion has a shape: this constant occurs four times on the mainline and once after the
+change, and the survivor is the comment recording its removal. Keep the two changes in separate
+reviews. **A combined diff nets a removal and a reintroduction out invisibly.**
+
+### The author of a fix should not re-score the cell it closes
+
+Somebody who has just built three controls to close a cell's findings is the worst available reader
+of whether that cell now passes. Record the recusal on the cell, and note the part people get wrong:
+**it does not lapse because the cell's prose drifted under it.**
+
+The inconvenience of a stale paragraph is not a discharge of a conflict of interest. The fix is to
+route the revision, not to absorb it.
+
 ### Contested cells get parked, not forced
 
 An unresolved cell feels like an unfinished job, so somebody picks the more defensible-sounding grade
@@ -941,6 +1232,53 @@ read. Three lenses that pull apart cleanly:
 Reviewers given the same instruction converge on the same subset of defects and leave the rest
 untouched no matter how many of them you add.
 
+### Make the mutation prove it landed before you believe the verdict
+
+"Make it fail on purpose" rests entirely on the failure being caused by your mutation. Often it is
+not, and the report reads the same either way. Every one of these was observed:
+
+- An injection anchored on `\n` matched nothing in a tree checked out with CRLF line endings.
+- A shell heredoc ate the backslashes in a script whose whole subject was backslashes.
+- A search pattern collapsed under escaping, so the probe never ran and the empty output was read as
+  a clean result.
+- A path containing a colon was rewritten by the shell's own path translation, the command errored,
+  and stderr went to a null device inside a loop.
+- A "sabotage" rewrote a pattern to be *stricter* rather than looser, so the text landed and the
+  behaviour did not move.
+
+Each one produces a clean report that the instrument failed to catch the defect. That reads as an
+instrument failure and is not one, and the natural next step -- dismissing the guard -- is the
+expensive mistake. **Confirm the mutation is on disk, by digest, before reading the result**, and
+restore the file byte-exactly afterwards.
+
+### A guard that no test drives ships looking green
+
+Test the refusal *and* test that the documented escape hatch lifts it. Without the second, the flag
+can be misspelled or unwired and the refusal test still passes.
+
+Where a file holds several guards that all fail the same way, **assert the failure message names the
+thing that was refused**. A mutation that trips a neighbouring guard proves nothing about the one you
+were testing, and the exit code cannot tell them apart.
+
+### Calibrate a reproduction against a number you did not choose
+
+Before claiming a new check catches more than the old one, reproduce the old one and confirm it
+produces a figure somebody else already recorded. Without that step, "the new set catches all of
+them" is unfalsifiable -- the reproduction and the claim came from the same hand.
+
+The matching discipline: **refuse to tune to a target figure measured at a different ref.** Fitting
+to a stale number is the wrong-base error wearing different clothes.
+
+### A synthesis over parallel work must assert its own N
+
+Where several reviewers run in parallel and one dies, the summary is written from the survivors. It
+is coherent, well argued, and silent about its own coverage -- there is no gap in the prose where the
+missing one would have been.
+
+**Count the units that returned against the units dispatched, in the artifact itself.** Here the lost
+unit was the one testing the decisive case. Re-running it overturned the conclusion the synthesis had
+already reached.
+
 ### Say the per-cell cost early
 
 Per-cell verification at this rigour is expensive enough that naive extrapolation across a full
@@ -971,6 +1309,9 @@ Ordered roughly by cost. The first is the most common defect of the lot.
 | Silent `na` creep | Sensible-sounding exclusions accumulating | Mandatory rationale on the verb's subject; graded strength |
 | Inherited verdicts laundered into passes | A total that merges derived and inherited grades | `unverified` is its own bucket, excluded from pass |
 | **Stale-by-landing** | A cell asserting a defect as current, closed by the author's own fix minutes later | Re-resolve on a schedule; cells outlive their findings faster than anyone expects |
+| **A completeness claim inside a checker** | "nothing escapes this guard", in the checker's own docstring, over part of the surface | Prove it against a parsed domain, or delete it |
+| **A green restored by hand** | The gate is green because somebody retyped the coordinates last week | Report the distance to failure, never the colour |
+| **A figure with no unit and no ref** | Two correct readings that cannot be reconciled by argument | Print the unit and the ref in the same sentence |
 
 Four of those repay a longer look.
 
@@ -999,6 +1340,55 @@ search-and-fix.
 author fixes it in the same session. The record is wrong within the hour. It is only cheap because it
 is caught easily; it is worth naming because it makes the case for scheduled re-resolution better than
 any argument about drift.
+
+### Audit the controls the record leans on, not only the record
+
+An assessment accumulates checks, and the checks acquire the record's own authority without ever
+being assessed themselves.
+[Confirm the instrument can represent the claim](#confirm-the-instrument-can-represent-the-claim)
+asks whether a check *could* see the thing it reports on. The five shapes below ask a cheaper
+question that gets skipped more often: was it ever pointed at anything, and can it act when it
+fires. All five were found here, and all five were green throughout.
+
+**A capability wired to nothing.** A mode can be designed, built, reviewed, merged and documented,
+and then invoked by no job anywhere. Every claim it was built to prove is exactly as strong as it was
+before it landed. Wire it to something *before* hardening it, and **print the adoption number** --
+how many claims carry the field the mode requires -- beside every summary. Zero is a finding.
+
+**A gate that runs where the change cannot happen.** A path filter, a repository boundary or a
+trigger condition each does this. The check fires on everything except the class of change it exists
+to catch. Ask which commits could break the claim, then ask which of those commits start the job.
+
+**Exempt by directory.** An allowlist written for documentation exempted every executable file under
+a documentation path. That included the tool that writes the record, which had never been linted,
+type-checked or tested. The comment above the rule described the opposite behaviour, so an auditor
+reading the comment agreed with it and moved on. Read the pattern, not the paragraph beside it.
+
+**A control that only sees changes.** A guard reading diffs blocks a new occurrence of something and
+stays blind to the same thing already committed. That is not a defect, but its coverage claim is
+about additions only and should say so, or a reader takes a green run as a statement about the file.
+
+**A control that fires correctly and cannot act.** A detector can run on schedule, be right, and fail
+at the step that opens the remediation. The result is a red on a job nobody reads. Detection nobody
+acts on is a different defect from detection that does not happen, and it needs a different fix.
+
+Two rules follow, and both are cheap:
+
+> **Before building a control, check whether it exists and is failing.** Shipping the plausible fix
+> for a defect you have not located is worse than shipping nothing: the next reader finds a schedule
+> in place, or a filter present, and concludes the class is handled. **The fix becomes the evidence
+> that it cannot be the problem.**
+>
+> **An empty scan must not share an exit code with a clean scan.** "Nothing to report" and "nothing
+> was examined" are the same green in every tool that does not separate them, and every broken
+> control listed above was broken in exactly that way.
+
+And one that generalizes past controls entirely: **the fix that does not generalize is the one that
+comes back.**
+
+Twice here an instance was found, fixed and written up while the identical defect sat a few lines
+below the paragraph explaining it. Close the class, or state which instance you closed and which
+ones remain open.
 
 ---
 
@@ -1106,6 +1496,11 @@ Before the first cell is scored:
 - [ ] **Scope is declared positively**, and exactly **one posture** is described in prose.
 - [ ] The **scorecard exists as data**, with `rule_fired`, `reviewed_by`, `reviewed_at` fields.
 - [ ] The **anchor verifier** runs in CI and fails the build -- and you have watched it fail on purpose.
+- [ ] Every anchor's token is **unique in its file** and is the whole normalized logical line, so a
+      bypass clause welded into a condition breaks it.
+- [ ] The verifier separates **displacement (advisory)** from gone, ambiguous and missing-path (fatal),
+      and **suggests no target** when a token is gone.
+- [ ] Every recorded commit is written **in full** and is **reachable from the mainline**.
 - [ ] Cell **claims are atomic**, so two sessions cannot score the same cell.
 - [ ] **One integrator** owns every write to the record; workers emit structured verdict files.
 - [ ] A **collision detector** runs at integration over "which cells does each pending change touch".
@@ -1120,6 +1515,13 @@ Before anything is published:
       what the label means wherever it prints it.
 - [ ] Every reviewer **executed** the citations rather than reading them, and reviewers had **distinct
       lenses**.
+- [ ] Every mutation used as evidence was **confirmed on disk** before its result was read.
+- [ ] Every parallel review states **how many units returned against how many were dispatched**.
+- [ ] Every figure names its **unit and its ref**, and every freshness field carries a labelled value
+      rather than being omitted.
+- [ ] Every completeness claim written **inside a checker** was proved against a parsed domain, or
+      deleted.
+- [ ] Every capability the record leans on is **wired to something**, with its adoption number printed.
 - [ ] Every absolute ("the only", "all", "never") was either proved or weakened to "at least".
 - [ ] Impact sentences for undeployed software are in the **conditional tense**, with no score altered.
 - [ ] **Every requirement is reported**, not exceptions only -- an exceptions-only report hides the
