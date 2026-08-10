@@ -38,6 +38,33 @@ So the honest scope is: the adjacent form is pinned, the distant form is not, an
 for the distant form is not a cleverer regex but citing a stable identifier instead of a title. That
 migration has started -- `ADOPTING-THESE.md:125` now reads `[Secure development](SECURE-DEVELOPMENT.md),
 SD-5.10.`, which this pattern deliberately does not match because it needs no checking.
+
+A THIRD FORM IS NOT COVERED EITHER, AND IT ARRIVED AFTER THIS FILE WAS WRITTEN. Citations now cross
+a REPOSITORY BOUNDARY: three links into the claude-multisession site cite a heading by name, in the
+adjacent form this file pins, and NONE of them is checked here. The target is not a file in this
+repository, so `resolve()` has nothing to open.
+
+That matters more than an ordinary gap, because this file's existence is what makes them look safe.
+A reader who knows heading citations are gated will assume these are among them. They are the
+adjacent form, which is the form that IS pinned -- and the pattern never sees them, because the
+target is a URL rather than a tracked `.md`.
+
+Those citations replaced `#fragment` anchors into the same headings, deliberately, on 2026-08-10.
+Read what that did and did not buy:
+
+  an ANCHOR fails INVISIBLY -- the page still returns 200, the link still lands, and the reader
+    arrives at the top of the right page believing they are in the right section;
+  a NAME fails VISIBLY -- a renamed heading leaves a quoted title beside a link, and a human reading
+    the sentence can see the two disagree.
+
+Neither is verified. The trade was invisible-and-unchecked for visible-and-unchecked, and it is
+worth having in the file rather than only in a commit message, because "we cite headings by name
+here" reads like a control and is a convention.
+
+Checking it properly would mean fetching another site's headings over a network no test in this
+suite touches. That is refused for the reason `tests/README.md` gives about the link checks
+generally: an external host in the path of this build means their outage reddens our suite, and a
+gate that fails for reasons unrelated to the defect is one people learn to ignore.
 """
 
 from __future__ import annotations
