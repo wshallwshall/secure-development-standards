@@ -2,29 +2,21 @@
 
 ## TLDR/BLUF
 
-Standards you can adopt, fork, or hand to an auditor. Every one is written to be copied whole into
-your own repository and edited, which is why each ships as markdown and as a Word file. They cover
-what to require of a team writing code with an AI assistant, how deeply a human has to read what it
-produces, what to do about dependencies you did not write, and what a buyer will ask you to
-produce.
+**What this is.** Standards you can adopt, fork, or hand to an auditor. Each ships as markdown and
+as a Word file, written to be copied whole into your own repository and edited.
+
+**Why it matters.** A control you claim has to be one you can show firing. Several of these
+documents exist to make that difference visible.
 
 **What it costs you.** Adoption is per document and each says its own price. Nothing here is a
-product, a scanner, or a service, and nothing is sold. The expensive part is not reading these -- it
-is that a control you claim has to be one you can show firing, and several of these documents exist
-to make that difference visible.
+product, a scanner, or a service, and nothing is sold.
 
-**Not for you** if you want a certification, a compliance attestation, or a maturity score. None is
-offered and none is implied: these set a bar to hold, not a badge to present. Also not for you if you
-want a tool recommendation, because no scanner, format or assessor is named anywhere in the set.
+**Not for you** if you want a certification, an attestation, a maturity score or a tool
+recommendation. [What these are not](#what-these-are-not) says why none is offered.
 
-**The honest limit, before you spend time here.** Whether any of this binds your organization is
-decided by a clause number and by counsel, never by a web page. What these documents can do is tell
-you which questions are real and what a good answer looks like.
-
-**Start at** [which security standards actually apply to you](standards/WHICH-STANDARDS-APPLY.md),
-which routes on your situation rather than on the documents. If you already know what you are looking
-for, [the standards index](standards/OVERVIEW.md) has one row each. If you have ten minutes and an
-executive to brief, [the CISO summary](standards/CISO-SUMMARY.md) is the whole argument in two pages.
+**Where to start.** [Which security standards actually apply to you](standards/WHICH-STANDARDS-APPLY.md)
+routes on your situation rather than on the documents. [The standards index](standards/OVERVIEW.md)
+has one row each. [The CISO summary](standards/CISO-SUMMARY.md) is the argument in two pages.
 
 ---
 
@@ -42,6 +34,19 @@ executive to brief, [the CISO summary](standards/CISO-SUMMARY.md) is the whole a
 | Working out which rules a pipeline can enforce | [Automated compliance in CI](standards/CI-ENFORCEMENT.md) |
 | Selling software, and being asked for evidence | [What to have ready when a buyer asks](standards/DILIGENCE-PACKET.md) |
 | Adopting any of it, in an order that works | [How to adopt these](standards/ADOPTING-THESE.md) |
+
+---
+
+## What these are not
+
+**No certification, and no attestation.** None is offered and none is implied. These set a bar to
+hold, not a badge to present, and no maturity score comes with them.
+
+**No tool recommendation.** No scanner, format or assessor is named anywhere in the set.
+
+**No legal force.** Whether any of this binds your organization is decided by a clause number and by
+counsel, never by a web page. What these documents do is tell you which questions are real and what
+a good answer looks like.
 
 ---
 

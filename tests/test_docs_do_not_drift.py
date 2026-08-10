@@ -91,6 +91,54 @@ SUPERSEDED_BLUF = (
     r"^\*\*TL;DR\b[^*]*\*\*",
 )
 
+# PD-10. The slot vocabulary a BLUF draws its labels from, IN THIS ORDER. The set already reached
+# for these questions in three different wordings -- "What it demands" / "Where it does not apply" /
+# "Where to start" on SECURE-DEVELOPMENT, "What it costs you" / "Not for you" / "Start at" on the
+# landing page, "Why you should care" / "How to use it" on ASVS -- which is the same drift the
+# heading spelling suffered, one level down. A reader moving between fifteen documents learns the
+# shape once or not at all.
+#
+# The first and last are REQUIRED and the middle three are optional, because a router page has no
+# adoption price and saying so in an empty block is worse than omitting it. "Not for you" carries no
+# stop inside the emphasis, deliberately: it runs on into its sentence.
+BLUF_SLOTS = (
+    "**What this is.**",
+    "**Why it matters.**",
+    "**What it costs you.**",
+    "**Not for you**",
+    "**Where to start.**",
+)
+BLUF_SLOTS_REQUIRED = (BLUF_SLOTS[0], BLUF_SLOTS[-1])
+BLUF_SECTION = re.compile(r"^##\s*TLDR/BLUF\s*$", re.M)
+
+
+def bluf_body(text: str) -> str | None:
+    """The BLUF section's body, or None where the page has no BLUF."""
+    m = BLUF_SECTION.search(text)
+    if m is None:
+        return None
+    rest = text[m.end():]
+    nxt = re.search(r"^(##\s|---\s*$)", rest, re.M)
+    return (rest[: nxt.start()] if nxt else rest).strip()
+
+
+def bluf_ledes(body: str) -> tuple[list[str], list[str]]:
+    """(recognised slots in the order they appear, unrecognised bold ledes).
+
+    Only a PARAGRAPH opening in bold is a lede. A list item is not one: README opens its "What this
+    is." block with a five-item list, and the extract-a-list move that put it there must not then
+    trip the rule.
+    """
+    known: list[str] = []
+    unknown: list[str] = []
+    for para in re.split(r"\n\s*\n", body):
+        para = para.strip()
+        if not para.startswith("**"):
+            continue
+        hit = next((s for s in BLUF_SLOTS if para.startswith(s)), None)
+        (known.append(hit) if hit else unknown.append(para.split("**")[1]))
+    return known, unknown
+
 # Every outbound link into this repository's own tree, in both forms it is published in: the
 # human-readable blob view, and the raw view the standards hand out for download. Both pin `main`
 # and both rot into a 404 the same way, so both belong in one scan -- a pattern that saw only the
@@ -315,13 +363,14 @@ class TheBlufConventionHasOneSpelling(unittest.TestCase):
     spelling. It does NOT require a page to have a BLUF at all.
 
     That restraint is the point, not an omission. Requiring one would be an editorial rule about
-    what every future standard must contain, and two published pages -- WHICH-STANDARDS-APPLY.md and
-    STANDARDS-REFERENCE.md -- deliberately have no BLUF section today; each opens on a bold lede
+    what every future standard must contain, and three published pages -- CI-AND-STANDARDS.md,
+    OVERVIEW.md and STANDARDS-LANDSCAPE.md -- have no BLUF section today; each opens on a bold lede
     doing the same job unheaded. Whether they should gain one is a writing decision for whoever owns
     those pages. A test is the wrong place to make it, and a gate that fails on a legitimate
     editorial choice is one people delete.
 
-    So: have a BLUF or do not. If you have one, spell it the way the rest of the set does.
+    So: have a BLUF or do not. If you have one, spell it the way the rest of the set does -- and
+    label its blocks the way TheBlufSlotsAreAFixedVocabulary requires.
     """
 
     def test_no_page_carries_a_superseded_bluf_spelling(self):
@@ -376,6 +425,112 @@ class TheBlufConventionHasOneSpelling(unittest.TestCase):
             any(re.search(p, BLUF_HEADING, re.M) for p in SUPERSEDED_BLUF),
             "a pattern fires on the canonical heading itself, so no page could ever be made green.",
         )
+
+
+class TheBlufSlotsAreAFixedVocabulary(unittest.TestCase):
+    """PD-10. The same drift the heading spelling suffered, one level down.
+
+    THE FAILURE THIS EXISTS FOR, and it had already happened. Fifteen BLUFs answered the same five
+    questions in three different vocabularies: `What it demands` / `Where it does not apply` on
+    SECURE-DEVELOPMENT, `What it costs you` / `Not for you` / `Start at` on the landing page,
+    `Why you should care` / `How to use it` on ASVS. Every one was well written and no gate could
+    see the disagreement, because each page was internally consistent. A reader moving between
+    documents was the only instrument that could, and only by reading all fifteen.
+
+    WHAT IS PINNED. If a page has a BLUF, every bold PARAGRAPH lede in it is drawn from BLUF_SLOTS,
+    they appear in the declared order, and the first and last slots are present. Nothing here
+    requires a page to have a BLUF -- that restraint is TheBlufConventionHasOneSpelling's and it
+    still holds.
+
+    WHAT IS DELIBERATELY NOT PINNED. The middle three slots are optional. A router page has no
+    adoption price, and a block that exists to say "no cost" is the padding the `B` rules order
+    deleted. Nor is the prose inside a block checked in any way: length, tone and content are the
+    author's, and PD-4's reasoning applies -- a rule that could not tell a good block from a short
+    one would be a rule about taste.
+    """
+
+    def _pages(self) -> list[tuple[str, str]]:
+        out = []
+        for relpath in tracked_files():
+            if not relpath.endswith(".md") or "/word/" in relpath:
+                continue
+            body = bluf_body(t.read(t.REPO_ROOT / relpath))
+            if body is not None:
+                out.append((relpath, body))
+        return out
+
+    def test_every_lede_is_drawn_from_the_vocabulary(self):
+        offenders = []
+        for relpath, body in self._pages():
+            _, unknown = bluf_ledes(body)
+            offenders += [f"{relpath}: {lede!r}" for lede in unknown]
+        self.assertEqual(
+            [],
+            offenders,
+            "these BLUF blocks are labelled with something outside the slot vocabulary:\n  "
+            + "\n  ".join(offenders)
+            + "\nThe vocabulary is "
+            + ", ".join(BLUF_SLOTS)
+            + ". A sixteenth label is how fifteen pages stop sharing a shape, and the reader who "
+            "notices is the one who had to read all of them. If the block is genuinely not one of "
+            "these, it is not a summary -- move it below the BLUF under its own heading.",
+        )
+
+    def test_the_slots_appear_in_the_declared_order(self):
+        offenders = []
+        for relpath, body in self._pages():
+            known, _ = bluf_ledes(body)
+            order = [BLUF_SLOTS.index(s) for s in known]
+            if order != sorted(order):
+                offenders.append(f"{relpath}: {[s.strip('*') for s in known]}")
+        self.assertEqual(
+            [],
+            offenders,
+            "these BLUFs carry the slots out of order:\n  "
+            + "\n  ".join(offenders)
+            + "\nThe order is what a reader learns once and then relies on. Reordering one page "
+            "costs every other page's reader the shortcut.",
+        )
+
+    def test_the_required_slots_are_present(self):
+        offenders = []
+        for relpath, body in self._pages():
+            known, _ = bluf_ledes(body)
+            missing = [s for s in BLUF_SLOTS_REQUIRED if s not in known]
+            if missing:
+                offenders.append(f"{relpath}: missing {', '.join(missing)}")
+        self.assertEqual(
+            [],
+            offenders,
+            "these BLUFs are missing a required slot:\n  "
+            + "\n  ".join(offenders)
+            + "\nA summary that does not say what the page IS, or where to begin, is not doing the "
+            "job the section exists for. The middle three slots are optional; these two are not.",
+        )
+
+    def test_the_scan_actually_found_blufs(self):
+        """The empty-match guard. Three absence scans above pass trivially against no pages."""
+        pages = self._pages()
+        self.assertGreaterEqual(
+            len(pages),
+            12,
+            f"the slot scan found only {len(pages)} BLUF sections. The three cases above would all "
+            "report success while measuring nothing, so this is what makes them mean anything. If "
+            "the convention really was renamed, fix BLUF_SECTION rather than lowering this.",
+        )
+
+    def test_the_reader_declines_a_list_item_and_catches_a_stray_label(self):
+        """Planted, both directions. Without the negative half this passes against a reader that
+        recognises nothing, and without the positive half it passes against one that flags nothing.
+        """
+        good = "**What this is.** A thing.\n\n* **not a lede** a list item\n\n**Where to start.** Here."
+        known, unknown = bluf_ledes(good)
+        self.assertEqual([BLUF_SLOTS[0], BLUF_SLOTS[-1]], known)
+        self.assertEqual([], unknown, "a bulleted item was read as a block lede; README has one.")
+
+        known, unknown = bluf_ledes("**How to use it.** The old ASVS label.")
+        self.assertEqual([], known)
+        self.assertEqual(["How to use it."], unknown, "a superseded label was not caught.")
 
 
 if __name__ == "__main__":

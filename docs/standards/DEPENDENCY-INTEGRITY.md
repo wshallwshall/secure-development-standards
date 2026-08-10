@@ -11,31 +11,26 @@
 
 ## TLDR/BLUF
 
-**Two directions, one document.** *Inbound:* you import code you did not write, cannot fully audit,
-and that changes underneath you. *Outbound:* you publish a build other people install, and they need
-some way to know it is the thing you meant to send.
+**What this is.** Two directions, one document. *Inbound:* code you import, did not write, cannot
+fully audit, and that changes underneath you. *Outbound:* a build other people install, which they
+need some way to know is the thing you meant to send.
 
-Both halves share a shape, and in neither is the answer "review it harder". It is a small number of
+**Why it matters.** In neither direction is the answer "review it harder". It is a small number of
 machine-enforced controls, plus human attention spent at two or three specific moments rather than
 spread thin across everything.
 
-Inbound, those moments are adoption and each version bump: verify identity rather than mere
-existence when you add a dependency, and read the changelog and the lock delta when you bump it.
-Between them the machinery runs unattended -- pin by digest and enforce the pin at install, because
-a version pin is not a hash pin, and give every manifest one blocking audit of its own.
+**What it costs you.** A few minutes of diligence per new dependency, a review per version bump, and
+one wiring exercise per manifest.
+[What this costs you, and where it does not apply](#what-this-costs-you-and-where-it-does-not-apply)
+carries the limit that matters most: none of this detects a malicious release from a legitimate
+maintainer.
 
-Outbound, allowlist what goes into the artifact and check it *before* the upload. The upload is the
-irreversible step, and an exclusion list ships whatever nobody thought to exclude.
+**Not for you** if you publish nothing, which makes the outbound half moot, or if nobody else runs
+your software on their own host, which makes the runtime section moot as well.
 
-One moment resists automation. Whether a package is the project you meant is not a mechanical
-question: a real, years-old, canonically named package can still be the wrong one, and an AI coding
-assistant makes plausible-but-wrong names a routine hazard. That is the one place a human is
-structurally required.
-
-The honest limit, stated here rather than left to be discovered: **none of this detects a malicious
-release from a legitimate maintainer.** A compromised upstream that publishes a signed, canonically
-named, advisory-free release passes every control in this document. What the controls buy is that
-the change arrives pinned, surveilled and reviewable instead of silent.
+**Where to start.** Two moments need a human, and the first is adoption. Verify identity rather than
+mere existence when you add a dependency, because an AI coding assistant makes plausible-but-wrong
+names a routine hazard. The second is each version bump.
 
 ---
 

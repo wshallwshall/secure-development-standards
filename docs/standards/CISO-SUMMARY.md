@@ -12,27 +12,29 @@ and how to tell whether you got it.**
 
 ## TLDR/BLUF
 
-**Nothing new is going wrong with your code. There is just far more of it, arriving faster, and
-looking finished before anyone has checked it.** Injection, weak authorization, bad dependencies,
-leaked secrets -- the categories have not moved.
+**What this is.** The argument in two pages: what changes when developers build with AI assistants,
+the five questions to ask them, and what to fund.
 
-Reviewing more code is not the answer: review effort scales with the volume, and the volume is what
-moved. Three moves instead, in this order:
+**Why it matters.** Nothing new is going wrong with your code. There is far more of it, arriving
+faster, and looking finished before anyone has checked it. The categories have not moved.
 
-1. **Fund structural controls** -- checks that run on every change and whose verdict does not change
-   because the output looks finished. What counts as one is listed below.
-2. **Put a human arbiter where it cannot be skipped** -- above all where a change touches restricted
-   data or an authorization path.
-3. **Measure last, and never gate on measurement alone.**
+**What it costs you.** Structural controls, a human arbiter who cannot be skipped, and measurement
+last, in that order. [What to fund first](#what-to-fund-first) says why reversing it leaves you a
+dashboard and no controls.
 
-Then ask each control owner one question: **when did you last prove this can fail?** A gate nobody
-has ever watched go red is not evidence of anything.
+**Not for you** if you want a certification, an audit or a pass mark.
+[What this is not](#what-this-is-not) carries the four limits, including that no outside party has
+reviewed this material.
 
-**None of this certifies anything.** These documents are a bar to set. No badge comes with them.
+**Where to start.** Ask each control owner one question: **when did you last prove this can fail?**
+A gate nobody has ever watched go red is not evidence of anything.
 
 ---
 
 ## What changes with an AI coding assistant in the loop
+
+Injection, weak authorization, bad dependencies and leaked secrets are still what goes wrong. What
+moved is the volume, and review effort scales with volume rather than with risk.
 
 The five modes below are the ones this control set was written against. They are not a complete
 taxonomy and they overlap in practice. Their use is as a test on a proposed control: one that
@@ -74,6 +76,9 @@ the appearance of rigor, and the structural controls are what goes unfunded inst
 ---
 
 ## What to fund first
+
+Reviewing more code is not the answer, because the volume is what moved. Three things instead, in
+this order:
 
 1. **Structural controls that cannot be argued with**: enforced architecture and layer boundaries,
    strict type checking, dependency verification and hash pinning, blocking security scanners, and

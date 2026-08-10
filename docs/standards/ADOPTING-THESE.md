@@ -11,32 +11,34 @@
 
 ## TLDR/BLUF
 
-**The deliverable is five artifacts, not five documents read.** A marked baseline worksheet, a
-deviations register, a three-item queue, a set of checks each carrying the date somebody last
-watched it refuse something, and a project instruction file that references the other four. Each one
-either exists or it does not, which is what lets somebody other than you check whether adoption
-happened.
+**What this is.** How to adopt any of these standards, in an order that works. The deliverable is
+five artifacts, not five documents read, and each one either exists or it does not.
 
-**Do not assume you start from zero.** A team that reviews changes, runs a linter, keeps secrets out
-of the repository and pins some dependencies already satisfies parts of four of these documents.
-What you have is usually a weaker form of a named rule, so the opening pass produces a short list of
-upgrades rather than a build plan -- and that pass is read-only. It builds nothing, on purpose.
+**Why it matters.** Sequence by what enables what, not by risk and ease. Two people can rank the
+same two controls by risk and neither can be shown wrong, so such a ranking can only be overruled,
+never reviewed. What-enables-what is checkable.
 
-**Sequence by what enables what, not by risk and ease.** Two people can rank the same two controls
-by risk and neither can be shown wrong, so such a ranking can only be overruled, never reviewed.
-What-enables-what is checkable: you can be shown to have made a check blocking before anything
-recorded what it examined, or to have written a rule about "restricted data" before anything defined
-the term. It is also why instrumentation comes before ranking -- with no receipts, every severity
+**What it costs you.** Less at the start than you expect. A team that reviews changes, runs a
+linter, keeps secrets out of the repository and pins some dependencies already satisfies parts of
+four of these documents.
+
+**Not for you** as evidence of compliance. None of it confers anything, for you or for anyone
+adopting your software. A deviations register records decisions you made.
+
+**Where to start.** [The five artifacts](#the-five-artifacts), then
+[step 1](#step-1-establish-your-baseline). The opening pass is read-only. It builds nothing, on
+purpose.
+
+---
+
+## Two things that hold at every step
+
+**A blocking row nobody has watched refuse anything is indistinguishable from one that cannot refuse
+anything.** That is why instrumentation comes before ranking: with no receipts, every severity
 ranking is unfalsifiable.
 
-Two things hold at every step. A blocking row nobody has watched refuse anything is
-indistinguishable from one that cannot refuse anything. And tailoring is expected where silent
-tailoring is not, because a control that quietly left the set reads exactly like a control nobody
-got to.
-
-**None of it confers anything** -- no certification and no badge, for you or for anyone adopting
-your software. The deviations register records decisions you made; it is not evidence of compliance
-with anything.
+**Tailoring is expected where silent tailoring is not.** A control that quietly left the set reads
+exactly like a control nobody got to.
 
 ---
 

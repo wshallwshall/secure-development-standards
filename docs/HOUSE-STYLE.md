@@ -2,16 +2,26 @@
 
 ## TLDR/BLUF
 
-The writing rules this repository holds its own pages to. Three are enforced by a test, one by a CI
-gate, one by a link test, and one is half-covered by tests written for other purposes. The rest are
-review items and say so.
+**What this is.** The writing rules this repository holds its own pages to. Three are enforced by a
+test, one by a CI gate, one by a link test, and one is half-covered by tests written for other
+purposes. The rest are review items and say so.
 
-**Every rule below states which it is.** A rule nothing can fire is a preference. Reading it as more
-than that is how a review turns into an argument about taste.
+**Why it matters.** Every rule below states which it is. A rule nothing can fire is a preference,
+and reading it as more than that is how a review turns into an argument about taste.
 
-**Where the authority sits.** For an enforced rule, the pattern in the test is what runs. This page
-states the rule in words so a developer who trips one can read what it wants. If the two ever
-disagree, the pattern is what stops the commit, and this page is the defect.
+**Not for you** as evidence about who wrote a page. HS-18 forbids citing any rule here to support a
+claim about authorship, and the measurement behind that rule is the strongest on this page.
+
+**Where to start.** [What is enforced, and by what](#what-is-enforced-and-by-what), which is keyed
+on what actually fires rather than on a rule identifier.
+
+---
+
+## Where the authority sits
+
+For an enforced rule, the pattern in the test is what runs. This page states the rule in words so a
+developer who trips one can read what it wants. If the two ever disagree, the pattern is what stops
+the commit, and this page is the defect.
 
 **This page is scanned like every other.** It is tracked markdown under `docs/`, so the prose checker
 reads it. One narrow exemption exists so that it can quote what it bans, and that exemption is
@@ -29,6 +39,7 @@ identifiers are keyed to their definitions further down, one table per group.
 | [test_prose_rules_hold.py](https://github.com/wshallwshall/secure-development-standards/blob/main/tests/test_prose_rules_hold.py) | B-3, B-5, B-6 | hard fail |
 | the ASCII gate in [gates.yml](https://github.com/wshallwshall/secure-development-standards/blob/main/.github/workflows/gates.yml) | HS-11 | hard fail |
 | [test_a_links_text_never_wraps.py](https://github.com/wshallwshall/secure-development-standards/blob/main/tests/test_a_links_text_never_wraps.py) | HS-16 | hard fail |
+| [test_docs_do_not_drift.py](https://github.com/wshallwshall/secure-development-standards/blob/main/tests/test_docs_do_not_drift.py) | PD-10 | hard fail |
 | [test_rule_ids_are_stable.py](https://github.com/wshallwshall/secure-development-standards/blob/main/tests/test_rule_ids_are_stable.py) and [test_the_selector_matches_the_routing_table.py](https://github.com/wshallwshall/secure-development-standards/blob/main/tests/test_the_selector_matches_the_routing_table.py), for two of the four sections it names | PD-8 | hard fail, on those two |
 | nothing directly. Both shape how the scanners read a page | HS-14, PD-4 | review |
 | nothing. Each was measured against this corpus and rejected as a gate | B-7, B-10, HS-3, HS-19 | review |
@@ -182,6 +193,28 @@ normative sentence inside it.
 253 as hits. Stripping them is one mechanical pass with no judgment in it. That is the same trap PD-8
 records for whole sections, one level down. The measurement that produced PD-9 is in the next
 section, and it was rejected as a gate partly for this reason.
+
+---
+
+## The summary section has a fixed vocabulary
+
+| Rule | The rule | Enforced |
+|---|---|---|
+| `PD-10` | a `## TLDR/BLUF` section labels its blocks from a fixed, ordered vocabulary: "What this is", "Why it matters", "What it costs you", "Not for you", "Where to start". The first and last are required and the middle three are optional. A block that is none of these is not a summary, and belongs below the section under its own heading | yes |
+
+**This is the heading rule one level down, and the drift had already happened.** Fifteen pages
+answered the same five questions in three vocabularies. SECURE-DEVELOPMENT said "What it demands"
+and "Where it does not apply", the landing page said "What it costs you" and "Start at", ASVS said
+"Why you should care" and "How to use it". Every page was internally consistent, so nothing could
+see it. The only instrument that could was a reader who had read all fifteen.
+
+**Nothing here requires a page to have a BLUF.** Three do not, and that restraint belongs to
+`TheBlufConventionHasOneSpelling`, which records why a test is the wrong place to make that call.
+PD-10 governs the labels of a section that exists, never whether it exists.
+
+**The prose inside a block is not checked, and that is PD-4's reasoning.** A rule that could not
+tell a good block from a merely short one would be a rule about taste. What is checkable is whether
+the label is one of five strings and whether the five are in order, which is all this fires on.
 
 ---
 
@@ -365,4 +398,4 @@ the same identifier, and allocate a new one when you change what it demands.
 rule, which is what HS-11 already demands and what the gate already runs. Two names for one rule
 split its citations, which is the defect HS-3 describes. PD-5 is spent the same way: the toolkit
 issues it for something else, and the rule that draft gave it is PD-8 pointing the other way. After
-this page, the next free numbers are B-18, HS-20 and PD-10.
+this page, the next free numbers are B-18, HS-20 and PD-11.

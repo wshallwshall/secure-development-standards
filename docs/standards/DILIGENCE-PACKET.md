@@ -12,14 +12,27 @@ before the first call, and know for each one the claim it carries and the claim 
 
 ## TLDR/BLUF
 
-**The commonest vendor mistake in diligence is offering an audit report or a certificate as an
-answer about the product.** Those instruments examine how your company governs itself -- policies,
-access reviews, change management. They never open your code. You can hold a clean twelve-month
-report, ship software with an authorization flaw in it, and have said nothing false. Offer it as
-product evidence and you have said something false -- the position that ends deals.
+**What this is.** What to have ready when a buyer asks for security evidence, sorted by layer: your
+company, your software, and the contract.
 
-So sort your evidence by layer -- the company, the software, the contract -- and have three things
-ready before the first call:
+**Why it matters.** The commonest vendor mistake is offering an audit report or a certificate as an
+answer about the product. Those instruments never open your code. You can hold a clean twelve-month
+report, ship software with an authorization flaw, and have said nothing false. Offer it as product
+evidence and you have said something false.
+
+**What it costs you.** Three artifacts before the first call, each of which is a document, a date or
+a name. None can be answered with an adjective, and a buyer who accepts one is not the buyer whose
+approval is worth having.
+
+**Not for you** as legal advice. Nothing here has been reviewed by counsel, and
+[what this page does not do](#what-this-page-does-not-do) marks the rest of the boundary.
+
+**Where to start.** [The three things to have ready](#the-three-things-to-have-ready), before the
+first call rather than during it.
+
+---
+
+## The three things to have ready
 
 1. **The scope statement** of whatever organization-layer instrument you hold. Not the certificate,
    not the cover page. It alone decides whether the thing being bought was inside the examination,
@@ -32,9 +45,6 @@ ready before the first call:
    ran the test. Both dates are trivial to supply if they happened and impossible to produce
    retrospectively, which is why they are asked for. The name decides whether you are offering an
    independent look or your own tooling's output.
-
-Each is a document, a date or a name. None can be answered with an adjective, and a buyer who
-accepts one is not the buyer whose approval is worth having.
 
 ---
 
