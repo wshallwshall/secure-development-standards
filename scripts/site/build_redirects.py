@@ -140,6 +140,21 @@ def main() -> int:
         print(f"  {page:<48} -> {dest}")
         written += 1
 
+    # THE CATCH-ALL, and it covers more old URLs than the enumerated stubs do.
+    #
+    # GitHub Pages serves 404.html for any path it does not recognise, so this single file answers
+    # the entire long tail: renamed pages, deep links, anything anyone ever typed wrong. Without it
+    # an unknown old address got GitHub's generic "Page not found" with no mention that the site
+    # moved -- measured on the live forwarder before this existed.
+    #
+    # IT POINTS AT THE NEW SITE'S 404, NOT THE ROOT. Sending an unknown address to a home page that
+    # returns 200 tells the reader the page exists. It does not. The destination has to be a page
+    # that says so.
+    catch_all = f"{dest_root}/404.html"
+    (out / "404.html").write_text(stub(catch_all, "404.html"), encoding="utf-8")
+    print(f"  {'404.html (catch-all)':<48} -> {catch_all}")
+    written += 1
+
     print(f"\nwrote {written} forwarding pages into {out}")
     print(f"destination host read from {CONFIG.relative_to(REPO_ROOT).as_posix()}: {dest_root}")
     print("\nThis published nothing and changed no setting. To cut over:")
