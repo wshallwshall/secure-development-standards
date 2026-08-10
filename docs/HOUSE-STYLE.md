@@ -31,9 +31,10 @@ identifiers are keyed to their definitions further down, one table per group.
 | [test_a_links_text_never_wraps.py](https://github.com/wshallwshall/secure-development-standards/blob/main/tests/test_a_links_text_never_wraps.py) | HS-16 | hard fail |
 | [test_rule_ids_are_stable.py](https://github.com/wshallwshall/secure-development-standards/blob/main/tests/test_rule_ids_are_stable.py) and [test_the_selector_matches_the_routing_table.py](https://github.com/wshallwshall/secure-development-standards/blob/main/tests/test_the_selector_matches_the_routing_table.py), for two of the four sections it names | PD-8 | hard fail, on those two |
 | nothing directly. Both shape how the scanners read a page | HS-14, PD-4 | review |
-| nothing. Each was measured against this corpus and rejected as a gate | B-7, B-10, HS-3 | review |
+| nothing. Each was measured against this corpus and rejected as a gate | B-7, B-10, HS-3, HS-19 | review |
 | nothing. Each names a defect a reviewer can see and no pattern can | HS-18, PD-9 | review |
 | nothing, and no review item either. Each was measured against this model's own prose and found nothing to catch | B-11, B-12, B-13, B-14, B-15, B-16 | recorded |
+| nothing, and no review item either. Measured against this corpus rather than that one, with the same result | B-17 | recorded |
 
 A third result appears in that table. **Recorded** means the rule was measured and then dropped as
 both a gate and a review item, and its identifier is spent so nobody reissues it. The evidence sits
@@ -42,6 +43,23 @@ in the section that records what was rejected.
 Two measured qualities are also ratcheted rather than capped: sentences over 30 words, and table
 cells over 40 words. Neither may get worse than its recorded baseline. Neither is a limit you have to
 write under, and the long tail of this corpus is where the engineering warnings live.
+
+**The sentence baseline moved from 371 to 262 and no sentence was edited.** Both moves were defects
+in the instrument rather than improvements to the writing, and together they were 137 of the
+original 371. More than a third of that number was measurement error.
+
+The first was the rejoin. The checker joins wrapped lines before measuring, and it used to join a
+bullet list too, so a run of items measured as one enormous sentence. 60 of the 371 were that. The
+largest read as 156 words and is five links, each on its own line, each short.
+
+The second was emphasis. A stop inside bold is still a stop, and the split could not see one, so
+`**Rule.** Pick the source` measured as a single sentence rather than two. This set writes that way
+587 times. 77 of the remaining 339 were that.
+
+Neither is a curiosity, because of which fix each punished. Pulling a series into bullets is the
+ordinary remedy for length, and under the first defect it changed the count by nothing. Splitting a
+claim off as its own lede is the ordinary remedy for a fused sentence, and under the second it made
+the number worse. A measure that reddens the fix it exists to ask for is worse than no measure.
 
 ---
 
@@ -76,6 +94,7 @@ about who wrote a page.
 | `HS-16` | a markdown link sits on ONE line, even where that pushes the line past HS-14's 100 characters. This is the stated exception to HS-14, and it is the only one | yes |
 | `HS-3` | one fact lives in one place. A second copy is not redundancy, it is the place the two will silently disagree | no |
 | `HS-18` | a lint hit is a prompt to a human reader, never evidence of who wrote a page. No rule on this page may be cited to support a claim about authorship | no |
+| `HS-19` | where a sentence has an actor, put the actor at the front. The case this rule is about is a passive that names its own actor in a trailing "by" phrase, because that one can always be turned round. A passive with no actor to name is not a violation and is often the accurate form | no, and see below |
 
 **Why HS-16 outranks HS-14.** The site is built by Jekyll, and `jekyll-relative-links` rewrites
 relative links with a regular expression whose `.` excludes a newline. A link whose text wraps is
@@ -168,7 +187,7 @@ section, and it was rejected as a gate partly for this reason.
 
 ## What was measured and then rejected
 
-Three rules are stated here and enforced by nobody. That is a decision with evidence behind it, not
+Four rules are stated here and enforced by nobody. That is a decision with evidence behind it, not
 an omission. The design rule for the whole set: hard-fail ONLY where a violation is unambiguous.
 
 A gate that reddens a legitimate editorial choice is a gate people delete. Losing it also loses the
@@ -188,13 +207,31 @@ for.
 the two copies should go is an editorial call. A test cannot make it. The duplication is reported and
 left to a human.
 
-**The candidates below failed a different test.** B-7 and B-10 were rejected because no pattern can
-see the distinction they draw. HS-3 was rejected because the fix is an editorial call. Each of those
-is an invitation to write a better pattern. The ones below are not. They were measured against a
-corpus of this model's own output and found to describe nothing that happens here, so a better
-detector would still be detecting nothing wrong. They are recorded rather than reviewed, because a
-review item a reviewer would be wrong to raise is the argument about taste this page opens by
-refusing.
+**HS-19 arrived from an outside checklist and lands where B-7 landed.** Passive constructions run to
+656 here, or 10.89 per 1,000 words. Only 37 name their actor in a trailing "by" phrase, which is the
+subset a pattern could turn round without judgment. All 37 were read. Two would read better
+inverted. The rest already put the right thing first. One reads `a codebase is judged by the
+composite`, another `an advisory measurement that prints to a job log is read by nobody`. The
+remaining 619 have no actor available to front, and inventing one would be a fabrication. `No
+scanner, format or assessor is named anywhere in the set` names nobody because nobody is named. So
+the wide pattern is wrong 619 times, and the narrow one is wrong 35 times out of 37.
+
+**The rule sheet is the second-heaviest page on that measure**, at 21.56 per 1,000 across 64 hits.
+The one page above it carries four hits and is too short for its rate to say anything. This is
+recorded rather than fixed. HS-19 is a review item, and a page that measures itself and then quietly
+edits to a better number is doing the thing PD-8 warns about.
+
+**The candidates below failed a different test.** B-7, B-10 and HS-19 were rejected because no
+pattern can see the distinction they draw. HS-3 was rejected because the fix is an editorial call.
+Each of those is an invitation to write a better pattern. The ones below are not. They were measured
+against a corpus of this model's own output and found to describe nothing that happens here, so a
+better detector would still be detecting nothing wrong. They are recorded rather than reviewed,
+because a review item a reviewer would be wrong to raise is the argument about taste this page opens
+by refusing.
+
+**B-17 is the exception to that sourcing, and it reached the same place.** It came from an outside
+editing checklist rather than this model's habits, and was measured here. The same checklist named
+two forms already held here: one is B-5 and enforced, the other is B-15 and already recorded.
 
 | Rule | The candidate | What the measurement found |
 |---|---|---|
@@ -204,6 +241,7 @@ refusing.
 | `B-14` | "not just X but Y", and the three-part list used for rhythm | 1 hit here, 0 genuine. The outside source for it did not survive verification |
 | `B-15` | "genuinely", "actually", "simply" used as filler | "genuinely" fires 11 times here and every one is doing work, as in `a package that genuinely exists` |
 | `B-16` | noun-heavy phrasing and stacked participial clauses | needs a parser. A suffix proxy puts this corpus at 34.8 nominalizations per 1,000 words, against a baseline never measured for this model |
+| `B-17` | "very", "just" and "really" deleted as filler, and "that" deleted wherever it can go | the first three fire 18 times across 60,831 words. Every hit was read and every one is load-bearing, as in `the very next re-run passed` and `not just the pointer`. The third has no hits at all. "that" fires 992 times. 12 have the shape of a deletable complementizer, and reading those 12 leaves 4: the rest are demonstratives and subject relatives the proxy miscaught, as in `recorded that judgment once` |
 
 **Why the vocabulary rules were dropped rather than narrowed.** The cost case for them is real: they
 fire on nothing, so a gate would be free. The design rule above says hard-fail ONLY where a violation
@@ -327,4 +365,4 @@ the same identifier, and allocate a new one when you change what it demands.
 rule, which is what HS-11 already demands and what the gate already runs. Two names for one rule
 split its citations, which is the defect HS-3 describes. PD-5 is spent the same way: the toolkit
 issues it for something else, and the rule that draft gave it is PD-8 pointing the other way. After
-this page, the next free numbers are B-17, HS-19 and PD-10.
+this page, the next free numbers are B-18, HS-20 and PD-10.

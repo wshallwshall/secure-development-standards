@@ -106,6 +106,10 @@ def prose_files() -> list[str]:
 RULE_ROW = re.compile(r"^\|\s*`?(?:B|HS|PD|OPEN|SD|CP)-\d+`?\s*\|")
 FENCE = re.compile(r"^\s*(```|~~~)")
 
+# A list item's marker, including a task-list checkbox. Matched so that an item can START a unit of
+# prose and so the marker itself is not counted as a word. See `paragraphs` for what this fixes.
+LIST_ITEM = re.compile(r"^\s*(?:[-*+]|\d+[.)])\s+(?:\[[ xX]\]\s+)?")
+
 
 def scannable_lines(text: str) -> list[tuple[int, str]]:
     """Prose lines only: no code fences, and no rule-definition rows.
@@ -140,6 +144,20 @@ def paragraphs(text: str) -> list[tuple[str, list[tuple[int, int]]]]:
     BEGIN with a wrapped "importantly" looks like a sentence opener when it is the middle of one.
     Both were observed before this was rewritten.
 
+    A LIST ITEM STARTS ITS OWN UNIT, and that is the second half of the same defect. The rejoin above
+    is indiscriminate, so a bullet list became ONE blob and the sentence split then read the run of
+    items as a single enormous sentence. Measured before this was fixed: 60 of the 363 sentences over
+    30 words were rejoined list runs, and 17 of the 64 over 43 words. The largest was 156 words and
+    is five links in `SECURE-DEVELOPMENT.md`, each on its own line, each perfectly short.
+
+    That is worse than a wrong number, because the fix the length reads as asking for is the fix that
+    made it. Pulling a series out of a sentence into bullets is the standard remedy, and under the old
+    rejoin it moved the words from one blob into the same blob and changed the count by nothing.
+
+    Continuation lines still belong to their item -- HS-14 wraps at 100 characters and a long item
+    wraps like anything else -- so only a line that BEGINS an item flushes. The marker is stripped
+    because `"- a dependency".split()` counts the hyphen as a word, which inflates every item by one.
+
     Tables are excluded here and counted separately -- a table row is not prose and PD-4 protects it.
     """
     out: list[tuple[str, list[tuple[int, int]]]] = []
@@ -170,6 +188,10 @@ def paragraphs(text: str) -> list[tuple[str, list[tuple[int, int]]]]:
         stripped = line.strip()
         if inside or not stripped or stripped.startswith(("|", "#", ">")) or RULE_ROW.match(line):
             flush()
+            continue
+        if LIST_ITEM.match(line):
+            flush()
+            current.append((n, LIST_ITEM.sub("", line, count=1)))
             continue
         current.append((n, line))
     flush()
@@ -414,6 +436,113 @@ class TheRuleSheetIsInThisRepository(unittest.TestCase):
         )
 
 
+class AListIsNotOneLongSentence(unittest.TestCase):
+    """The rejoin defect this suite already recorded once, in its other half.
+
+    `paragraphs` exists because a line-based scan reported ZERO sentences over 30 words: HS-14 wraps
+    prose, so no LINE is ever long. The rejoin fixed that and introduced the mirror defect, which
+    stood for two months. Rejoining indiscriminately turns a bullet list into one blob, and the
+    sentence split then reads a run of items as one sentence. It reported 156 words for five links
+    that sit on five lines.
+
+    Both halves fail the same way from the outside -- a number that looks measured and is not -- and
+    a corpus check cannot tell the difference, because the corpus is where the wrong number came
+    from. So these are planted.
+    """
+
+    def test_each_item_in_a_list_is_measured_on_its_own(self):
+        text = "- the first item\n- the second item\n- the third item"
+        units = [joined for joined, _ in paragraphs(text)]
+        self.assertEqual(
+            ["the first item", "the second item", "the third item"],
+            units,
+            "a bullet list rejoined into one unit is what made 60 of the old 371 long sentences. "
+            "Each item is prose on its own and is measured on its own.",
+        )
+
+    def test_a_wrapped_item_stays_one_unit(self):
+        """The half that must NOT split, or the fix trades one wrong number for another."""
+        text = "- an item long enough that HS-14 wraps it near a hundred\n  characters, as it does here"
+        units = [joined for joined, _ in paragraphs(text)]
+        self.assertEqual(1, len(units), f"a wrapped item split into {len(units)} units: {units}")
+        self.assertIn("characters, as it does here", units[0])
+
+    def test_the_marker_is_not_counted_as_a_word(self):
+        joined = paragraphs("- a dependency inventory")[0][0]
+        self.assertEqual(
+            3,
+            len(joined.split()),
+            f"{joined!r} counts the list marker as a word, which inflates every item by one.",
+        )
+
+    def test_a_run_of_short_items_is_not_a_long_sentence(self):
+        """The end-to-end shape, written the way the corpus writes it."""
+        text = "\n".join(f"- item number {n} carrying six words" for n in range(1, 9))
+        longest = max(
+            len(sentence.split())
+            for joined, _ in paragraphs(text)
+            for sentence in SENTENCE_SPLIT.split(joined)
+        )
+        self.assertLess(
+            longest,
+            31,
+            f"eight six-word items measured as a {longest}-word sentence. That is the artifact, and "
+            "it punishes the page that already extracted its list.",
+        )
+
+    def test_a_checkbox_item_is_a_list_item(self):
+        """ASVS-ASSESSMENT.md is largely task lists, so this is corpus shape, not a curiosity."""
+        units = [joined for joined, _ in paragraphs("- [ ] the first check\n- [x] the second check")]
+        self.assertEqual(["the first check", "the second check"], units)
+
+
+class ABoldLedeEndsASentence(unittest.TestCase):
+    """The third instrument defect in the same family, and the largest of them.
+
+    This set writes a paragraph as `**A claim.** The evidence for it.` -- 587 times, `**Rule.**`
+    alone 115 of them. The stop sits INSIDE the emphasis, so the character before the space is `*`
+    and a naive split never fired. Every one of those paragraphs measured its lede and its next
+    sentence as a single sentence, and 77 of the 339 long sentences were that.
+
+    PLANTED, for the reason the class above gives: the corpus produced the wrong number, so it
+    cannot be the thing that detects the wrong number. The negative cases matter as much as the
+    positive ones -- widening a split is how a measure starts reporting improvement it did not earn.
+    """
+
+    def test_a_bold_lede_and_its_sentence_are_two_sentences(self):
+        got = SENTENCE_SPLIT.split("**Rule.** Pick the source of record for each fact.")
+        self.assertEqual(["**Rule.**", "Pick the source of record for each fact."], got)
+
+    def test_a_whole_sentence_in_italic_ends_where_it_ends(self):
+        got = SENTENCE_SPLIT.split("*Revised.* The source material said otherwise.")
+        self.assertEqual(["*Revised.*", "The source material said otherwise."], got)
+
+    def test_a_colon_lede_is_not_a_sentence_boundary(self):
+        """38 of these exist. A colon lede introduces what follows rather than closing a thought."""
+        text = "**Control not met:** independent review of every change."
+        self.assertEqual([text], SENTENCE_SPLIT.split(text))
+
+    def test_an_ordinary_sentence_still_splits(self):
+        got = SENTENCE_SPLIT.split("The gate is advisory. Nothing stops the commit.")
+        self.assertEqual(["The gate is advisory.", "Nothing stops the commit."], got)
+
+    def test_emphasis_inside_a_sentence_is_not_a_boundary(self):
+        text = "A rule the **prose checker** enforces is one a developer can read."
+        self.assertEqual([text], SENTENCE_SPLIT.split(text))
+
+    def test_the_fused_pair_is_no_longer_measured_as_one_sentence(self):
+        """End to end, at the length the ratchet actually counts."""
+        lede = "**A claim stated in a lede that runs to a dozen words or so here.**"
+        rest = "The evidence for it, which also runs to about a dozen words here."
+        longest = max(len(s.split()) for s in SENTENCE_SPLIT.split(f"{lede} {rest}"))
+        self.assertLess(
+            longest,
+            31,
+            f"a lede plus its sentence measured as {longest} words. That is the artifact: neither "
+            "half is long and the pair is only long because the split could not see the stop.",
+        )
+
+
 # ---------------------------------------------------------------------------
 # Reported, and ratcheted. These may not get worse.
 
@@ -428,7 +557,21 @@ class TheRuleSheetIsInThisRepository(unittest.TestCase):
 # These are lower than the figures in the writing plan (which counted 1,397 long sentences) because
 # that count included headings, table rows and block quotes. This one is prose only, for the same
 # reason PD-4 exists: a table row is not a sentence and shortening it is not an improvement.
-BASELINE_LONG_SENTENCES = 371       # sentences over 30 words
+#
+# 371 -> 339 -> 262 on 2026-08-10, AND NOT ONE SENTENCE WAS EDITED TO EARN EITHER MOVE. Both were
+# defects in this file rather than improvements to the corpus, and both inflated the same number:
+#
+#   371 -> 339   `paragraphs` rejoined a bullet list into one blob, so the split read a run of
+#                items as a single long sentence. 60 of the 371 were that.
+#   339 -> 262   `SENTENCE_SPLIT` could not see a stop inside emphasis, so `**Rule.** Pick the
+#                source` measured as one sentence rather than two. 77 of the 339 were that.
+#
+# Together they were 137 of the original 371, so more than a third of the baseline was instrument
+# error. Each is lowered here rather than banked as headroom: slack bought by fixing the measurement
+# is slack a future page spends with nothing reporting it. That both survived the first review is
+# the argument for AListIsNotOneLongSentence and ABoldLedeEndsASentence being planted cases -- a
+# corpus check cannot find them, because the corpus is where the wrong number came from.
+BASELINE_LONG_SENTENCES = 262       # sentences over 30 words
 BASELINE_FAT_TABLE_CELLS = 30       # table cells over 40 words
 
 # How far below baseline a metric may drift before the test asks for the baseline to be lowered.
@@ -437,7 +580,21 @@ BASELINE_FAT_TABLE_CELLS = 30       # table cells over 40 words
 LONG_SENTENCE_SLACK = 25
 FAT_CELL_SLACK = 6
 
-SENTENCE_SPLIT = re.compile(r"(?<=[.!?])\s+")
+# A BOLD LEDE ENDS A SENTENCE, and the naive form of this could not see that. `**Rule.** Pick the
+# source` puts the stop INSIDE the emphasis, so the character before the space is `*` and the split
+# never fired. The lede fused to the sentence after it and the pair was measured as one. That shape
+# is not a curiosity here: `**Rule.**` alone appears 115 times, and 587 bold ledes end in a stop.
+#
+# The italic branch is separate and earns its place at 16 hits -- `*Revised.*`, `*This is not a
+# pass.*` -- each a whole sentence in italic. There is NO underscore branch, because `__bold__` and
+# `_italic_` fire zero times here and a branch that protects nothing is one this suite deletes.
+#
+# A COLON LEDE MUST NOT SPLIT, and 38 of them would be wrong to: `**Control not met:** independent`
+# introduces what follows rather than closing a thought. Splitting only on `.!?` declines them for
+# free. The other near-neighbour is an abbreviation inside emphasis -- a bold `**e.g.**` would split
+# mid-sentence -- so every emphasis run of three words or fewer ending in a stop was read before
+# this widened. All 57 distinct forms are lede labels. The corpus has no such abbreviation today.
+SENTENCE_SPLIT = re.compile(r"(?<=[.!?])\s+|(?<=[.!?]\*)\s+|(?<=[.!?]\*\*)\s+")
 
 
 def _measure() -> tuple[int, int, int]:
