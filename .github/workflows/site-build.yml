@@ -174,7 +174,23 @@ jobs:
           # example in {% raw %}, so `${{ join(needs.*.result, ',') }}` legitimately reaches the
           # HTML. Banning them would redden correct content, which is how a gate gets deleted.
           # What is banned is syntax that is never valid here and can only mean "not processed".
-          leaked=$(grep -rlE '\{#|#\}|\{%-? *(comment|endcomment|raw|endraw)' _site --include='*.html' || true)
+          # ONE VARIABLE NAMES THE TREE, so the assertion below and the scan cannot disagree about
+          # which directory was read. Two literals would let one be corrected and the other not.
+          SITE=_site
+          LEAK='\{#|#\}|\{%-? *(comment|endcomment|raw|endraw)'
+
+          # THE SCAN MUST HAVE SCANNED SOMETHING. A grep over a missing, empty or mistyped tree
+          # returns nothing and reads exactly like a clean site. This is what makes the clean
+          # result below mean anything, and it costs one find.
+          scanned=$(find "$SITE" -name '*.html' 2>/dev/null | wc -l)
+          echo "html files scanned for template leaks: $scanned"
+          if [ "$scanned" -eq 0 ]; then
+            echo "::error::the leak scan found no HTML under '$SITE'. It therefore scanned nothing,"
+            echo "and a clean result from it is not evidence. Fix the path before trusting the run."
+            exit 1
+          fi
+
+          leaked=$(grep -rlE "$LEAK" "$SITE" --include='*.html' || true)
           if [ -n "$leaked" ]; then
             echo "::error::unrendered template syntax reached the published HTML:"
             echo "$leaked" | sed 's/^/  /'
@@ -183,33 +199,33 @@ jobs:
             exit 1
           fi
 
-          # THE CONTROL, AND IT IS PLANTED IN _site RATHER THAN IN A SCRATCH FILE.
+          # AND THE PATTERN MUST BE ABLE TO SEE ONE, proved off-tree.
           #
-          # The first version wrote the probe to /tmp and grepped /tmp. That proved the PATTERN
-          # could match a Jinja comment and proved nothing about the SCAN: if _site were empty,
-          # misnamed, or built somewhere else, the real scan finds nothing, the /tmp control still
-          # passes, and the step certifies a site it never read. That is the same vacuous-check
-          # shape this whole file exists to refuse, committed inside the control against it.
+          # This control has been wrong twice, in opposite directions, and both are worth recording
+          # because the second was the fix for the first.
           #
-          # Planting in _site and re-running the REAL command exercises the path, the --include
-          # filter and the pattern together. Anything that makes the scan blind now fails here.
-          probe="_site/.leak-control-probe.html"
+          # It first wrote the probe to a scratch file and grepped the scratch file. That proved the
+          # PATTERN and nothing about the SCAN -- a misdirected scan passed. So it was changed to
+          # plant the probe INSIDE the tree and re-run the real command, which proved both.
+          #
+          # The sibling migration then pointed out what that bought: a run killed between planting
+          # and cleanup ships the probe, and the upload step here is `if: always()`, so it would
+          # reach the artifact. Guarding that took an absence assertion and a live 404 check --
+          # three mechanisms to protect one control.
+          #
+          # This version needs none of them. The scanned-something assertion above catches the
+          # misdirected scan, which is what planting in the tree was for, and it writes nothing
+          # anywhere near the publishable output. The probe is only ever a pattern test now, which
+          # is all a probe should have been.
+          probe="${RUNNER_TEMP:-/tmp}/leak-pattern-probe.html"
           printf '<p>{#- planted -#}</p>' > "$probe"
-          seen=$(grep -rlE '\{#|#\}|\{%-? *(comment|endcomment|raw|endraw)' _site --include='*.html' || true)
+          if ! grep -qE "$LEAK" "$probe"; then
+            echo "::error::the leak pattern cannot match a planted Jinja comment, so it is blind and"
+            echo "the clean result above is vacuous."
+            exit 1
+          fi
           rm -f "$probe"
-          if [ -z "$seen" ]; then
-            echo "::error::a leak planted INSIDE _site was not found by the scan. The pattern, the"
-            echo "search path or the --include filter is wrong, so the clean result above means"
-            echo "nothing. Do not trust this run."
-            exit 1
-          fi
-          echo "no template syntax leaked, and the scan was proved able to see one planted in _site"
-
-          # The probe must not survive into the artifact or the deploy.
-          if [ -e "$probe" ]; then
-            echo "::error::the control probe was left behind at $probe and would be published."
-            exit 1
-          fi
+          echo "no template syntax leaked; $scanned files scanned and the pattern proved able to see one"
 
       # Uploaded so the output can be DIFFED against the live site before anyone considers changing
       # where the site is served from. That comparison is the gate on migrating, not this run's colour.
