@@ -657,7 +657,7 @@ own toolchain before repeating any of it as a claim.
   who was compromised, and none of it is certification. State what each gate does not prove
   ([CI and standards](../CI-AND-STANDARDS.md#state-what-a-gate-does-not-prove)), and prove a gate can
   see its own failure class before crediting a green result
-  ([the leak gate](https://wshallwshall.github.io/claude-multisession/LEAK-GATE.html#the-caveat-that-matters-most)).
+  ([the leak gate](https://claude-multisession.pages.dev/LEAK-GATE.html#the-caveat-that-matters-most)).
 
 ---
 
@@ -665,11 +665,11 @@ own toolchain before repeating any of it as a claim.
 
 - [CI and standards](../CI-AND-STANDARDS.md) -- dependency verification, install-site locking,
   scheduled supply-chain audits, package manifests as allowlists, and what a gate does not prove
-- [The leak gate](https://wshallwshall.github.io/claude-multisession/LEAK-GATE.html) -- fail-closed content scanning before publication, and the
+- [The leak gate](https://claude-multisession.pages.dev/LEAK-GATE.html) -- fail-closed content scanning before publication, and the
   permanent blind spot a scanner cannot cover
 - [What to have ready when a buyer asks](DILIGENCE-PACKET.md) -- where the inventory published
   here ends up, what a buyer reads it as proving, and why organization-layer evidence cannot stand in
   for software-layer evidence
-- [Tips and tricks](https://wshallwshall.github.io/claude-multisession/TIPS-AND-TRICKS.html) -- writing a guardrail, and measuring whether it works
-- [Case study: auditing a multi-session estate as one system](https://wshallwshall.github.io/claude-multisession/CASE-STUDY-drift-audit.html) --
+- [Tips and tricks](https://claude-multisession.pages.dev/TIPS-AND-TRICKS.html) -- writing a guardrail, and measuring whether it works
+- [Case study: auditing a multi-session estate as one system](https://claude-multisession.pages.dev/CASE-STUDY-drift-audit.html) --
   proving a fix by deliberately mutating the shipped artifact

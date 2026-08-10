@@ -24,7 +24,7 @@ edited down to your setting before it is useful.
 | **Secure development** -- a starting point for your own standard, covering the process a build must satisfy from the threat model to the release gate, and what you may claim once it does | [page](SECURE-DEVELOPMENT.md) | [.md](https://secure-development-standards.pages.dev/standards/SECURE-DEVELOPMENT.md) | [.docx](https://secure-development-standards.pages.dev/standards/word/SECURE-DEVELOPMENT.docx) |
 | **Use OWASP ASVS 5.0** -- assessing a codebase against a large standard | [page](../ASVS-ASSESSMENT.md) | [.md](https://secure-development-standards.pages.dev/ASVS-ASSESSMENT.md) | [.docx](https://secure-development-standards.pages.dev/standards/word/ASVS-ASSESSMENT.docx) |
 | This overview | -- | [.md](https://secure-development-standards.pages.dev/standards/OVERVIEW.md) | [.docx](https://secure-development-standards.pages.dev/standards/word/OVERVIEW.docx) |
-| **A `CLAUDE.md` template** -- `CLAUDE.md` is the file Claude Code reads at the start of every session, so it is where a project's standing rules live. This one is a starting point. | -- | [CLAUDE.md.template](https://raw.githubusercontent.com/wshallwshall/claude-multisession/main/CLAUDE.md.template) | -- |
+| **A `CLAUDE.md` template** -- `CLAUDE.md` is the file Claude Code reads at the start of every session, so it is where a project's standing rules live. This one is a starting point. | -- | [CLAUDE.md.template](https://claude-multisession.pages.dev/CLAUDE.md.template) | -- |
 
 **Markdown is best for sharing with AI. Word is best for sharing with humans.**
 
@@ -61,7 +61,7 @@ Code reads a file called `CLAUDE.md` at the start of every session. That makes `
 a project keeps its standing rules.
 
 The
-[template above](https://raw.githubusercontent.com/wshallwshall/claude-multisession/main/CLAUDE.md.template)
+[template above](https://claude-multisession.pages.dev/CLAUDE.md.template)
 carries a table for exactly that: which of these controls exist here, and when each was last proven
 able to fail. A standard that no such file references is a document, not a practice.
 
@@ -128,10 +128,10 @@ These documents link out rather than restate, and so should you when you adapt t
 - [CI and standards for agent-written code](../CI-AND-STANDARDS.md) owns claim honesty, judging
   tests and metrics, why a check that cannot fail is not a control, and the split between what the
   agent decides and what you decide. It is the largest overlap by far.
-- [The leak gate](https://wshallwshall.github.io/claude-multisession/LEAK-GATE.html) owns pre-publication content scanning, the three ways a scanner
+- [The leak gate](https://claude-multisession.pages.dev/LEAK-GATE.html) owns pre-publication content scanning, the three ways a scanner
   lies, and the blind spot no scanner can close.
 - [Running a large security-standard assessment with AI agents](../ASVS-ASSESSMENT.md) owns verdict
   vocabularies, evidence anchors a machine can re-check, pinning a standard's corpus, and how to
   read a movement in a score.
-- [Tips and tricks](https://wshallwshall.github.io/claude-multisession/TIPS-AND-TRICKS.html) sections 4 and 5 own the hands-on version of writing a
+- [Tips and tricks](https://claude-multisession.pages.dev/TIPS-AND-TRICKS.html) sections 4 and 5 own the hands-on version of writing a
   guardrail and proving it can see what it claims to.

@@ -231,9 +231,9 @@ The first pass will not produce a score, and it should not. It builds the corpus
 hands you a percentage before that exists is the failure this document is about.
 
 New to the rest of this repository's tooling?
-[Here's what to feed to Claude Code](https://wshallwshall.github.io/claude-multisession/FEED-THIS-TO-CLAUDE-CODE.html) is the front door. For the same
+[Here's what to feed to Claude Code](https://claude-multisession.pages.dev/FEED-THIS-TO-CLAUDE-CODE.html) is the front door. For the same
 reasoning applied to this repository's own controls -- including why it also publishes no status
-table -- see [the drift-audit case study](https://wshallwshall.github.io/claude-multisession/CASE-STUDY-drift-audit.html).
+table -- see [the drift-audit case study](https://claude-multisession.pages.dev/CASE-STUDY-drift-audit.html).
 
 ---
 
@@ -761,7 +761,7 @@ control of the same class that must still match something. If the positive contr
 absence claim is void regardless of what the negative pattern returned.
 
 **This repository has a worked example of the same principle applied to guardrails.**
-[`bin/ccx-doctor.ps1`](https://github.com/wshallwshall/claude-multisession/blob/main/bin/ccx-doctor.ps1) does not ask whether a control is installed. It fires
+[`bin/ccx-doctor.ps1`](https://claude-multisession.pages.dev/bin/ccx-doctor.ps1) does not ask whether a control is installed. It fires
 crafted input at the *installed* copy and **requires it to refuse**. It also pairs every attack with
 a negative control -- an ordinary action the same control must **allow** -- because a script that
 refuses everything is not a working guard either.
@@ -1115,7 +1115,7 @@ every session wants to edit does not survive parallel work, whatever the merge t
 atomic rather than advisory-by-convention.
 
 This repository's
-[`scripts/coord/claim.ps1`](https://github.com/wshallwshall/claude-multisession/blob/main/scripts/coord/claim.ps1) is the working pattern. A claim is taken by
+[`scripts/coord/claim.ps1`](https://claude-multisession.pages.dev/scripts/coord/claim.ps1) is the working pattern. A claim is taken by
 **exclusively creating** a file, which is an atomic filesystem operation, so two sessions cannot both
 believe they hold the same key. Its free-text key form exists for exactly the case an assessment
 generates: work that has no ticket number and that nobody thought to coordinate.
@@ -1123,9 +1123,9 @@ generates: work that has no ticket number and that nobody thought to coordinate.
 Claims do not expire, because an auto-expiring claim silently re-opens the race it exists to prevent.
 `-List` reports each holder's **liveness** rather than the claim's age. The numbered form is
 enforced at commit time by
-[`scripts/hooks/claim_check.py`](https://github.com/wshallwshall/claude-multisession/blob/main/scripts/hooks/claim_check.py). The sequence-number analogue,
+[`scripts/hooks/claim_check.py`](https://claude-multisession.pages.dev/scripts/hooks/claim_check.py). The sequence-number analogue,
 for allocating identifiers atomically instead of by grepping for the next free one, is
-[`scripts/coord/alloc.ps1`](https://github.com/wshallwshall/claude-multisession/blob/main/scripts/coord/alloc.ps1).
+[`scripts/coord/alloc.ps1`](https://claude-multisession.pages.dev/scripts/coord/alloc.ps1).
 
 **Identical inputs, written down.** Every session gets the same three things, and gets them as files
 rather than as instructions in a prompt:
@@ -1548,10 +1548,10 @@ Before anything is published:
 
 ## See also
 
-- [`docs/CASE-STUDY-drift-audit.md`](https://wshallwshall.github.io/claude-multisession/CASE-STUDY-drift-audit.html) -- the same reasoning applied to this
+- [`docs/CASE-STUDY-drift-audit.md`](https://claude-multisession.pages.dev/CASE-STUDY-drift-audit.html) -- the same reasoning applied to this
   repository's own controls: why an installed copy, not a source file, is the unit of audit, and why
   that document deliberately contains no status table either.
-- [`bin/ccx-doctor.ps1`](https://github.com/wshallwshall/claude-multisession/blob/main/bin/ccx-doctor.ps1) -- prove the control can refuse; never infer that it is
+- [`bin/ccx-doctor.ps1`](https://claude-multisession.pages.dev/bin/ccx-doctor.ps1) -- prove the control can refuse; never infer that it is
   live.
-- [`docs/COORDINATION.md`](https://wshallwshall.github.io/claude-multisession/COORDINATION.html) -- claims, locks, presence, and overlap for parallel
+- [`docs/COORDINATION.md`](https://claude-multisession.pages.dev/COORDINATION.html) -- claims, locks, presence, and overlap for parallel
   sessions.
