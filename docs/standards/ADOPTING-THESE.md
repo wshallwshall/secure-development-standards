@@ -3,8 +3,8 @@
 **The rest of this section tells you what to read. This page tells you what to do with it.**
 
 > **Take a copy:**
-> [markdown](https://raw.githubusercontent.com/wshallwshall/secure-development-standards/main/docs/standards/ADOPTING-THESE.md)
-> or [Word document](https://raw.githubusercontent.com/wshallwshall/secure-development-standards/main/docs/standards/word/ADOPTING-THESE.docx).
+> [markdown](https://secure-development-standards.pages.dev/standards/ADOPTING-THESE.md)
+> or [Word document](https://secure-development-standards.pages.dev/standards/word/ADOPTING-THESE.docx).
 > [Every file, both formats](OVERVIEW.md#the-files).
 
 ---

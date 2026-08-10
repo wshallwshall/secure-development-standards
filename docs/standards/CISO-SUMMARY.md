@@ -4,8 +4,8 @@
 and how to tell whether you got it.**
 
 > **Take a copy:**
-> [markdown](https://raw.githubusercontent.com/wshallwshall/secure-development-standards/main/docs/standards/CISO-SUMMARY.md)
-> or [Word document](https://raw.githubusercontent.com/wshallwshall/secure-development-standards/main/docs/standards/word/CISO-SUMMARY.docx).
+> [markdown](https://secure-development-standards.pages.dev/standards/CISO-SUMMARY.md)
+> or [Word document](https://secure-development-standards.pages.dev/standards/word/CISO-SUMMARY.docx).
 > [Every file, both formats](OVERVIEW.md#the-files).
 
 ---

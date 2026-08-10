@@ -8,8 +8,8 @@ situation rather than around the documents, and carrying an interactive selector
 That page routes and holds no rows; this one holds the rows and the argument.
 
 > **Take a copy:**
-> [markdown](https://raw.githubusercontent.com/wshallwshall/secure-development-standards/main/docs/standards/STANDARDS-REFERENCE.md)
-> or [Word document](https://raw.githubusercontent.com/wshallwshall/secure-development-standards/main/docs/standards/word/STANDARDS-REFERENCE.docx).
+> [markdown](https://secure-development-standards.pages.dev/standards/STANDARDS-REFERENCE.md)
+> or [Word document](https://secure-development-standards.pages.dev/standards/word/STANDARDS-REFERENCE.docx).
 > [Every file, both formats](OVERVIEW.md#the-files).
 
 ---
@@ -29,7 +29,7 @@ Three things to hold while reading any row:
    twelve months before that date, and some will have changed since. Re-check anything you intend
    to rely on; each row says how.
 3. **"At least these."** This is not a complete map of the landscape and does not claim to be.
-   [What the routing page did not assess](https://wshallwshall.github.io/secure-development-standards/standards/WHICH-STANDARDS-APPLY.html#what-this-page-did-not-assess)
+   [What the routing page did not assess](https://secure-development-standards.pages.dev/standards/WHICH-STANDARDS-APPLY.html#what-this-page-did-not-assess)
    names what is missing on purpose -- do not read its silence as coverage. That link is written out
    in full because a relative one is dead in a downloaded Word file.
 

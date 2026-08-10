@@ -3,8 +3,8 @@
 **Trusting what you did not write, and controlling what you ship.**
 
 > **Take a copy:**
-> [markdown](https://raw.githubusercontent.com/wshallwshall/secure-development-standards/main/docs/standards/DEPENDENCY-INTEGRITY.md)
-> or [Word document](https://raw.githubusercontent.com/wshallwshall/secure-development-standards/main/docs/standards/word/DEPENDENCY-INTEGRITY.docx).
+> [markdown](https://secure-development-standards.pages.dev/standards/DEPENDENCY-INTEGRITY.md)
+> or [Word document](https://secure-development-standards.pages.dev/standards/word/DEPENDENCY-INTEGRITY.docx).
 > [Every file, both formats](OVERVIEW.md#the-files).
 
 ---

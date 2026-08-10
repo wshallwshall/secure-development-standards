@@ -1,8 +1,8 @@
 # Secure development: a starting point for your own standard
 
 > **Take a copy:**
-> [markdown](https://raw.githubusercontent.com/wshallwshall/secure-development-standards/main/docs/standards/SECURE-DEVELOPMENT.md)
-> or [Word document](https://raw.githubusercontent.com/wshallwshall/secure-development-standards/main/docs/standards/word/SECURE-DEVELOPMENT.docx).
+> [markdown](https://secure-development-standards.pages.dev/standards/SECURE-DEVELOPMENT.md)
+> or [Word document](https://secure-development-standards.pages.dev/standards/word/SECURE-DEVELOPMENT.docx).
 > [Every file, both formats](OVERVIEW.md#the-files).
 
 ---

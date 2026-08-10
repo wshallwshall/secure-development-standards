@@ -4,8 +4,8 @@
 before the first call, and know for each one the claim it carries and the claim it does not.**
 
 > **Take a copy:**
-> [markdown](https://raw.githubusercontent.com/wshallwshall/secure-development-standards/main/docs/standards/DILIGENCE-PACKET.md)
-> or [Word document](https://raw.githubusercontent.com/wshallwshall/secure-development-standards/main/docs/standards/word/DILIGENCE-PACKET.docx).
+> [markdown](https://secure-development-standards.pages.dev/standards/DILIGENCE-PACKET.md)
+> or [Word document](https://secure-development-standards.pages.dev/standards/word/DILIGENCE-PACKET.docx).
 > [Every file, both formats](OVERVIEW.md#the-files).
 
 ---

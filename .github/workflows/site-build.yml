@@ -1,4 +1,15 @@
-# Build the site and say what happened. IT DOES NOT DEPLOY ANYTHING.
+# Build the site, say what happened, and -- since 2026-08-10 -- deploy it to Cloudflare Pages.
+#
+# THE "IT DOES NOT DEPLOY ANYTHING" HEADER THAT USED TO SIT HERE IS GONE, deliberately and in the
+# same commit that made it false. A comment describing the opposite of what the file does is the
+# defect this repository keeps finding in other people's CI, and the version of it that survives
+# longest is the one that was true when written.
+#
+# WHY THIS FILE IS NOW THE LIVE PATH. github.io is blocked by the readership's corporate network
+# under the same category rule that blocks github.com, so GitHub Pages could not serve the audience
+# these documents are written for. The site moved to Cloudflare Pages. The build below is unchanged
+# and is still the instrument described further down; deployment was added beneath it rather than
+# replacing it, so the log survives the move.
 #
 # WHY THIS FILE EXISTS. GitHub Pages builds this site from `main` `/docs` today, and its only
 # diagnostic is the string "Page build failed." with no line, no file and no log. On 2026-08-06 ten
@@ -10,10 +21,13 @@
 # A build system whose sole output is "it failed" is the exact defect the documents in this repo are
 # about. This workflow replaces one bit with a log.
 #
-# WHAT IT DOES NOT DO, and this is deliberate for now:
-#   * It does not deploy. `build_type` stays `legacy`, so GitHub still serves what it builds itself.
-#     This runs BESIDE the live path rather than replacing it.
-#   * It therefore cannot break the site. The worst outcome is a red check on a pull request.
+# WHAT CHANGED WHEN IT BECAME THE LIVE PATH. It can now break the published site, which the earlier
+# version explicitly could not. Two things bound that:
+#   * Deployment runs only on `main`, never on a pull request. A PR still gets the build and the log
+#     and touches nothing published.
+#   * The deploy step FAILS LOUDLY when its credentials are absent rather than skipping. A skipped
+#     deploy prints green beside the passes and reads as a site that updated, which is the exact
+#     failure mode the paragraph above says this file exists to end.
 #
 # WHY THAT ORDER. The site depends on plugins that GitHub's safe mode supplies unconditionally. Under
 # a build we control they come from the Gemfile instead, and a plugin that is not declared does not
@@ -87,3 +101,47 @@ jobs:
           name: site-${{ github.sha }}
           path: _site
           retention-days: 7
+
+      # DEPLOY. `main` only -- a pull request builds and reports and publishes nothing.
+      #
+      # The credential check is its own step and it EXITS 1. GitHub renders a missing secret as an
+      # empty string, so without this the wrangler call would run with no account and either fail
+      # with a message about the wrong thing or, worse, be skipped by a condition and print green.
+      # "Not configured" and "deployed" must not share a colour.
+      - name: Refuse to deploy without credentials
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          missing=""
+          [ -n "$CLOUDFLARE_API_TOKEN" ]  || missing="$missing CLOUDFLARE_API_TOKEN"
+          [ -n "$CLOUDFLARE_ACCOUNT_ID" ] || missing="$missing CLOUDFLARE_ACCOUNT_ID"
+          if [ -n "$missing" ]; then
+            echo "::error::cannot deploy; missing repository secret(s):$missing"
+            echo "The site is served from Cloudflare Pages. Create the project and a token with the"
+            echo "Cloudflare Pages:Edit permission, then add both secrets to this repository."
+            echo "This step fails rather than skipping, because a skipped deploy reads as a"
+            echo "successful one and the published site would silently stop updating."
+            exit 1
+          fi
+          echo "both credentials present"
+
+      - name: Deploy to Cloudflare Pages
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+        # v4.0.0, resolved from the tag rather than typed. Pinned to the commit for the reason
+        # gates.yml gives: a tag is a moving target and this file's purpose is saying what ran.
+        uses: cloudflare/wrangler-action@ebbaa1584979971c8614a24965b4405ff95890e0
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          # The project name is what produces the host in docs/_config.yml. The two have to agree,
+          # and nothing here can check that -- Cloudflare accepts a deploy to a project whose name
+          # does not match any URL this repository writes.
+          command: pages deploy _site --project-name=secure-development-standards
+
+      - name: What the site now serves
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+        run: |
+          echo "deployed to https://secure-development-standards.pages.dev"
+          echo "pages: $(find _site -name '*.html' | wc -l), raw markdown: $(find _site -name '*.md' | wc -l), word: $(find _site -name '*.docx' | wc -l)"
