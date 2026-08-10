@@ -1,9 +1,22 @@
 """Generate the forwarding site that replaces the old GitHub Pages content.
 
-WHY THIS EXISTS AS A GENERATOR AND NOT AS COMMITTED HTML. The site moved off github.io because that
-host is blocked by the readership's network. Old URLs are in circulation -- in Word copies people
-have downloaded, in other repositories, in anything anyone bookmarked -- and a bare 404 tells that
-reader nothing. So the old address keeps serving, and every page forwards to its counterpart.
+WHO THIS SERVES, AND WHO IT CANNOT. Read this before describing it as a mitigation, because the two
+audiences are easy to confuse and only one of them is helped.
+
+These stubs are hosted ON GITHUB PAGES. The reader this whole move was made for -- the one whose
+network blocks GitHub -- CANNOT LOAD THEM. For that reader an old link fails exactly as it did
+before: no redirect, no explanation, and not even the page that would have told them where the site
+went. This forwarder is worth building for everyone else holding an old URL, and it is not a fix for
+the blocked reader. Nothing hosted on the blocked host can be.
+
+What does reach the blocked reader is the new site itself, which serves the markdown sources and the
+Word copies beside the rendered pages on its own origin. That is where a "take a copy" link has to
+point; a raw.githubusercontent URL is unreachable for exactly the audience most likely to want it.
+
+WHY THIS EXISTS AS A GENERATOR AND NOT AS COMMITTED HTML. Old URLs are in circulation -- in Word
+copies people have downloaded, in other repositories, in anything anyone bookmarked -- and a bare 404
+tells that reader nothing. So the old address keeps serving, and every page forwards to its
+counterpart.
 
 The destination host is read from docs/_config.yml rather than typed here, for the same reason
 tests/test_internal_links_resolve.py reads it: a second copy of an address is the place the two
