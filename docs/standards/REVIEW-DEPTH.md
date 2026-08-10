@@ -12,29 +12,24 @@ code, and the one where a wrong answer is expensive in both directions.**
 
 ## TLDR/BLUF
 
-**Every answer that fails here is a quantity -- some share of the code a human reads.** A percentage
-cannot be assigned to the change in front of you, so "review 30 percent" means the easy 30 percent,
-and no evidence separates a team that did it from one that says it did. Depth is not a share of the
-code to divide up. It is a decision, taken per change, before the code exists.
+**What this is.** How deeply a human reads what an assistant produces, decided per change before the
+code exists rather than as a share of the codebase.
 
-So resolve every change to a tier before work starts, and do three things:
+**Why it matters.** Every answer that fails here is a quantity. A percentage cannot be assigned to
+the change in front of you, so "review 30 percent" means the easy 30 percent, and no evidence
+separates a team that did it from one that says it did.
 
-1. **Ask what the change touches.** Restricted data, an authorization path, or something a customer
-   depends on? Unknown counts as yes, and so does not knowing whether the change reaches beyond the
-   local machine. That answer sets the tier -- *Exploratory*, *Guarded*, *Governed* or *Regulated
-   release* -- and with it the depth, from a skim on a throwaway to every changed line reconciled
-   against a written intent that predates it. It also outranks size: a one-line change to an
-   authorization path is not a one-line-change review.
-2. **Override the tier on two conditions.** A security seam you have to own -- at least
-   authentication, authorization, cryptography, a network bind guard -- and any change you have no
-   way to verify. Either one takes every line whatever the tier said.
-3. **Hold one floor under all of it.** Reject code you cannot explain, even if it works. This is the
-   rule that has to survive every other dial being turned down under deadline pressure, which is
-   why it is one sentence.
+**What it costs you.** A tier resolved for every change before work starts, and a floor that has to
+survive every other dial being turned down under deadline pressure.
+[What this costs you, and where it does not apply](#what-this-costs-you-and-where-it-does-not-apply)
+is explicit.
 
-Each of the three is decidable before the code exists, and two reviewers running them against the
-same change get the same answer. **None of it certifies anything** -- this is a bar to set and hold,
-not an attestation to present.
+**Not for you** as an attestation. None of it certifies anything. This is a bar to set and hold, not
+something to present.
+
+**Where to start.** Ask what the change touches, where unknown counts as yes. That sets the tier and
+with it the depth, and it outranks size: a one-line change to an authorization path is not a
+one-line-change review.
 
 ---
 

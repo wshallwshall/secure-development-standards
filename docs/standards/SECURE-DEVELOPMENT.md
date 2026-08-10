@@ -9,22 +9,24 @@
 
 ## TLDR/BLUF
 
-This is a starting point for your own secure development standard, not a standard to comply with
-and not a compliance attestation: copy it, cut what your project does not have, and publish the
-result under your own name.
+**What this is.** A starting point for your own secure development standard, not a standard to
+comply with and not a compliance attestation. Copy it, cut what your project does not have, and
+publish the result under your own name.
 
-- **What it demands.** Checks that block every change and no author can waive. A written threat
-  model per trust boundary, before the code. Every unmet requirement dated, signed, and carrying
-  the event that ends it. No green pipeline is a verdict.
-- **What it costs.** Calendar time, controls you must not claim because you do not own them, and
-  two gaps no internal pipeline closes: third-party source review and
-  [penetration testing](#15-independent-external-verification). No code ships with this.
-- **Where it does not apply.** Throwaway work, and anything you operate rather than produce.
-  Building to this confers nothing on you or on an adopter.
-- **Where to start.** [Section 1](#1-shared-responsibility-write-the-split-down-first), the
-  ownership split, then the data-class table under it.
-  [Adapting this to your project](#adapting-this-to-your-project) says what you may change freely;
-  [In one table](#in-one-table) is the summary.
+**Why it matters.** No green pipeline is a verdict. What this demands instead is checks that block
+every change and no author can waive, a written threat model per trust boundary before the code, and
+every unmet requirement dated, signed and carrying the event that ends it.
+
+**What it costs you.** Calendar time, controls you must not claim because you do not own them, and
+two gaps no internal pipeline closes: third-party source review and
+[penetration testing](#15-independent-external-verification). No code ships with this.
+
+**Not for you** on throwaway work, or on anything you operate rather than produce. Building to this
+confers nothing on you or on an adopter.
+
+**Where to start.** [Section 1](#1-shared-responsibility-write-the-split-down-first), the ownership
+split, then the data-class table under it.
+[Adapting this to your project](#adapting-this-to-your-project) says what you may change freely.
 
 ---
 

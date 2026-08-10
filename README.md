@@ -8,20 +8,24 @@ own repository and edited, which is why each one ships as markdown and as a Word
 
 ## TLDR/BLUF
 
-Standards you can adopt, fork, or hand to an auditor. They cover what to require of a team writing
-code with an AI assistant, how deeply a human has to read what it produces, what to do about
-dependencies you did not write, which rules a pipeline can actually enforce, and what to ask a vendor
-before you buy.
+**What this is.** Standards you can adopt, fork, or hand to an auditor. Five areas:
 
-**Not for you** if you want a certification, a maturity score, or a tool recommendation. None is
-offered and none is implied: these set a bar to hold, not a badge to present. No scanner, format or
-assessor is named anywhere in the set.
+* what to require of a team writing code with an AI assistant
+* how deeply a human has to read what it produces
+* what to do about dependencies you did not write
+* which rules a pipeline can actually enforce
+* what to ask a vendor before you buy
 
-**Start at** [which security standards actually apply to you](docs/standards/WHICH-STANDARDS-APPLY.md),
-which routes on your situation rather than on the documents. If you already know what you want,
-[the standards index](docs/standards/OVERVIEW.md) has one row each and links every file in both
-formats. For an executive, [the CISO summary](docs/standards/CISO-SUMMARY.md) is the argument in two
-pages.
+**Why it matters.** A claim is worth what its receipt is worth and nothing more.
+[The claim these share](#the-claim-these-share) is the argument the whole set rests on.
+
+**Not for you** if you want a certification, a maturity score, or a tool recommendation. These set a
+bar to hold, not a badge to present, and no scanner, format or assessor is named anywhere in the set.
+
+**Where to start.** [Which security standards actually apply to you](docs/standards/WHICH-STANDARDS-APPLY.md)
+routes on your situation rather than on the documents.
+[The standards index](docs/standards/OVERVIEW.md) has one row each and links every file in both
+formats. [The CISO summary](docs/standards/CISO-SUMMARY.md) is the argument in two pages.
 
 ## The claim these share
 

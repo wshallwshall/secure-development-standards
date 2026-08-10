@@ -11,28 +11,24 @@ actually needs.**
 
 ## TLDR/BLUF
 
-**Nothing here is always-on except a short floor. Everything else is a dial that the change's risk
-tier sets.** That is what keeps a heavy process from being ignored wholesale: a one-line fix carries
-no release-grade ceremony, and the standard says so in writing rather than leaving people to decide
-it informally.
+**What this is.** A control set for AI-assisted work in which nothing is always-on except a short
+floor. Everything else is a dial that the change's risk tier sets.
 
-One question classifies most changes. Does any code path in it touch -- or protect -- regulated or
-otherwise restricted data in production, and if you cannot yet prove it never will, the answer is
-yes. That resolves to the strictest tier on its own. Blast radius only breaks ties below it.
+**Why it matters.** One line must not blur: **a gate is a deterministic check with an exit code, and
+the model never certifies its own output.** An AI-run review is advisory input a human arbitrates,
+and the moment it counts as a gate the rest of the structure is decorative.
 
-Under every tier sits a floor that never scales down, because each item's reason has nothing to do
-with blast radius: no restricted data and no secrets reach the assistant, everything it reads is
-data rather than instructions, code nobody can explain is discarded, and the tooling itself is
-vetted -- it is a supply-chain surface that no dependency gate inspects.
+**What it costs you.** The tier resolver is a human checklist with no automatic detector, and the
+adversarial pass is wrong for most work.
+[What this costs you, and where it does not apply](#what-this-costs-you-and-where-it-does-not-apply)
+is explicit about both.
 
-One line is the one not to blur. **A gate is a deterministic check with an exit code, and the model
-never certifies its own output.** An AI-run review is advisory input that a human arbitrates. Most
-agent-assisted processes lose exactly here, and the moment an AI review counts as a gate, the rest
-of the structure is decorative.
+**Not for you** if you want hooks, prompts, configuration or a product name. This page ships none of
+them, confers no certification, and makes no speed claim.
 
-Having no second reviewer is a documented deviation with named compensating controls and an end
-condition -- not a clean pass ([when there is no second
-reviewer](#when-there-is-no-second-reviewer)).
+**Where to start.** One question classifies most changes: does any code path in it touch or protect
+restricted data in production? If you cannot yet prove it never will, the answer is yes, and that
+resolves to the strictest tier on its own.
 
 ## What this costs you, and where it does not apply
 

@@ -12,28 +12,22 @@ finished?**
 
 ## TLDR/BLUF
 
-**The rubric judges the artifact, so nothing in it turns on who typed the lines.** It was written
-for a repository where much of the code came from an AI coding assistant across parallel sessions,
-and it would read the same way for code written entirely by hand.
+**What this is.** Eleven signals for judging a body of code, in two tiers weighted unequally. The
+rubric judges the artifact, so nothing in it turns on who typed the lines.
 
-Eleven signals answer the question, in two tiers weighted unequally. **Tier 1 carries the verdict:**
-six structural properties a machine can check and that are hard to fake -- enforced architecture
-boundaries, strict type checking, tests that assert real values rather than mock choreography,
-dependency integrity, blocking security scanning alongside a written threat model, and a published
-artifact containing only what was declared. **Tier 2 only starts conversations:** mutation testing,
-coverage visibility, duplication, lint breadth and complexity triage inform a reviewer and certify
-nothing.
+**Why it matters.** **Do not certify quality, and do not fail a build, on any single number** --
+not line coverage, not lines of code, not cyclomatic complexity, not static-analysis severity
+counts. The verdict is the composite, never one row.
 
-The rule that holds the two apart is hard, and it is the one most often broken. **Do not certify
-quality, and do not fail a build, on any single number** -- not line coverage, not lines of code,
-not cyclomatic complexity, not static-analysis severity counts. Any of them may be surfaced as
-advisory triage that a human arbitrates; none of them may be the gate. The verdict is the composite,
-never one row.
+**What it costs you.** Pipeline minutes, and the attention to read advisory output nobody is obliged
+to act on. Three of the eleven rows are owned by a companion document rather than restated here.
 
-Two things this deliberately withholds. It supplies **no thresholds**: the published evidence
-establishes that single metrics fail and validates no cutoff, so any number you use is one you set
-and have to defend. And where merges cannot be blocked, Tier 1 degrades from a set of controls to a
-checklist -- which an honest scorecard says out loud rather than scoring around.
+**Not for you** if you want thresholds or a grade. It validates no cutoff, confers no certification,
+and where merges cannot be blocked Tier 1 degrades from a set of controls to a checklist.
+
+**Where to start.** [The rubric: two tiers, weighted unequally](#the-rubric-two-tiers-weighted-unequally).
+Tier 1 carries the verdict with six structural properties a machine can check. Tier 2 only starts
+conversations.
 
 ---
 

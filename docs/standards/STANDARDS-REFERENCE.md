@@ -16,12 +16,24 @@ That page routes and holds no rows; this one holds the rows and the argument.
 
 ## TLDR/BLUF
 
-**This is a reference to consult, not a document to read through.** One row per document: what it
-issues, what triggers it, its status with the date that was checked, and a check you can run
-yourself. If you do not yet know which of these is worth your attention, you are on the wrong page
--- start at [which standards apply to you](WHICH-STANDARDS-APPLY.md).
+**What this is.** A reference to consult, not a document to read through. One row per document: what
+it issues, what triggers it, its status with the date that was checked, and a check you can run
+yourself.
 
-Three things to hold while reading any row:
+**Why it matters.** The tables come first and everything after them explains the cuts, so a reader
+who came here to look one thing up is not made to read an argument first. Those sections are the
+part worth reading once.
+
+**Not for you** as a statement about what binds your organization. A clause number decides that,
+applying to your situation is not the same thing as binding you, and nothing here is legal advice.
+
+**Where to start.** [Three things to hold while reading any row](#three-things-to-hold-while-reading-any-row).
+If you do not yet know which of these documents is worth your attention, you are on the wrong page:
+start at [which standards apply to you](WHICH-STANDARDS-APPLY.md).
+
+---
+
+## Three things to hold while reading any row
 
 1. **Every status was checked on 2026-08-06**, stated once here rather than repeated in every cell.
    Where a cell says "the check date", it means that one.
@@ -33,9 +45,6 @@ Three things to hold while reading any row:
    names what is missing on purpose -- do not read its silence as coverage. That link is written out
    in full because a relative one is dead in a downloaded Word file.
 
-**Nothing here says any of it binds your organization.** A clause number decides that, applying to
-your situation is not the same thing as binding you, and nothing here is legal advice.
-
 **Sorted by who each document makes demands of**, which is the most stable fact about it: status,
 trigger and enforcement machinery change constantly, and the audience almost never does. The column
 asks whose conduct a document's sentences purport to govern, not whether anything obliges you to
@@ -44,13 +53,11 @@ on their own. The last section is the one whose documents govern no one's conduc
 define the terms other documents are written in, so it is named for what they are used for instead.
 Every item appears in exactly one table.
 
-**The tables come first, and everything after them explains the cuts.**
-[Who a document is addressed to](#who-a-document-is-addressed-to),
+The sections below the tables are
+[who a document is addressed to](#who-a-document-is-addressed-to),
 [the organization layer is not the software layer](#the-organization-layer-is-not-the-software-layer),
 [how these actually arrive](#how-these-actually-arrive) and
-[why every status carries a date](#why-every-status-carries-a-date) sit below the rows rather than
-above them, so a reader who came here to look one thing up is not made to read an argument first.
-They are the part worth reading once.
+[why every status carries a date](#why-every-status-carries-a-date).
 
 ---
 

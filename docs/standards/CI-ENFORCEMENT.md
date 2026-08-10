@@ -13,18 +13,31 @@ this afternoon.**
 
 ## TLDR/BLUF
 
-**One question separates a control from a report: does failing it stop the change?** A tool
-inventory, a dashboard and a scan that runs overnight and emails somebody all describe work being
-done. None of them is a rule being enforced. Which checks can stop a change is a setting in your
-pipeline rather than a property of the tools, and it is routinely different from what the people
-accountable for it believe.
+**What this is.** Which rules a pipeline can actually enforce, sorted by one question: does failing
+it stop the change?
 
-Sorted that way, most of a compliance program does not automate. Of the roughly 150 controls this
-document set asks for, about five in six would not stop anything: most need human judgment that no
-configuration supplies, and the rest describe work a machine could decide that nobody has wired to
-a block.
+**Why it matters.** A tool inventory, a dashboard and a scan that runs overnight all describe work
+being done. None of them is a rule being enforced. Which checks can stop a change is a setting in
+your pipeline, and it is routinely different from what the people accountable for it believe.
 
-Three things to do, in order. None of them needs a project:
+**What it costs you.** What automation buys is narrower than the pitch: a class of failure stops
+recurring, and reviewer hours move off mechanical findings onto judgment. Fund it on those two, and
+on the arithmetic in [what it buys you, and what it costs](#what-it-buys-you-and-what-it-costs).
+
+**Not for you** if you want the cost-avoidance multiple or the delivery-speed claim. Neither
+survives contact with its sources, and this page says so rather than repeating them.
+
+**Where to start.** [Three things to do, in order](#three-things-to-do-in-order). None of them needs
+a project.
+
+---
+
+## Three things to do, in order
+
+Sorted by the one question above, most of a compliance program does not automate. Of the roughly 150
+controls this document set asks for, about five in six would not stop anything: most need human
+judgment that no configuration supplies, and the rest describe work a machine could decide that
+nobody has wired to a block.
 
 1. **Get the list of checks that can stop a change, read from today's configuration** rather than
    from anyone's memory or from a list of tools you own.
@@ -33,17 +46,10 @@ Three things to do, in order. None of them needs a project:
 3. **Find out who can push a change through when a check is red**, whether every use is logged, and
    whether anyone reads the log. Overrides are on by default in most setups.
 
-What automation buys is narrower than the pitch: a class of failure stops recurring without anyone
-remembering to look for it, and reviewer hours move off mechanical findings onto judgment. Fund it
-on those two. The cost-avoidance multiple you have heard quoted does not survive contact with its
-sources, and neither does the delivery-speed claim -- [what it buys you, and what it
-costs](#what-it-buys-you-and-what-it-costs).
-
-Two ways through the rest of this page. Accountable for security: [the one
-question](#the-one-question-does-failing-it-stop-the-change), then [what to
-ask](#what-to-ask-and-what-a-good-answer-sounds-like). Running the team and justifying the spend:
-start with the arithmetic in [what it buys you, and what it
-costs](#what-it-buys-you-and-what-it-costs).
+Two ways through the rest of this page. Accountable for security:
+[the one question](#the-one-question-does-failing-it-stop-the-change), then
+[what to ask](#what-to-ask-and-what-a-good-answer-sounds-like). Running the team and justifying the
+spend: start with [what it buys you, and what it costs](#what-it-buys-you-and-what-it-costs).
 
 ---
 

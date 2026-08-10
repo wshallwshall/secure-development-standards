@@ -21,13 +21,23 @@ one person cannot read it carefully in a week.
 **What this is.** A working method for assessing a codebase against a large security standard with
 agents doing the bulk of the scoring, and leaving every verdict re-checkable.
 
-**Why you should care.** You answer for the result. The expensive outcome is not a low score. It is
-a clean-looking one that has to be re-run cell by cell, weeks later, once the first verdict is found
+**Why it matters.** You answer for the result. The expensive outcome is not a low score. It is a
+clean-looking one that has to be re-run cell by cell, weeks later, once the first verdict is found
 not to hold.
 
-**How to use it.** The first half is yours: the decisions to settle before any scoring starts. From
+**What it costs you.** A pinned corpus before any scoring, a verdict vocabulary settled in advance,
+and a review pass that is the first thing cut when the schedule slips.
+
+**Not for you** if you want a scoring rubric. This is a set of forcing functions that tell a real
+verdict from a fluent one mechanically, and it reports no results of its own.
+
+**Where to start.** The first half is yours: the decisions to settle before any scoring starts. From
 [Handing this to Claude Code](#handing-this-to-claude-code) on, the page is addressed to the agent
 and carries a paste-ready command. Build the pinned corpus first, and score nothing until it exists.
+
+---
+
+## Why a fluent verdict is the defect
 
 **Almost every defect this method exists to catch is an instrument answering a narrower question
 than the one you asked, and looking clean while it does it.**
@@ -47,9 +57,11 @@ search could have returned anything.
 A person who has not done the work looks like someone who has not done the work. An agent that has
 not done the work looks exactly like one that has.
 
-So what follows is not a scoring rubric. It is a set of forcing functions that tell a real verdict
-from a fluent one mechanically. The order matters: each step is worth little without the one above
-it.
+---
+
+## The six forcing functions
+
+The order matters: each step is worth little without the one above it.
 
 1. **Build the corpus first.** Hold the standard's own text locally, pinned to a version. Score
    against a summary and every verdict answers a narrower question than the standard asked.
