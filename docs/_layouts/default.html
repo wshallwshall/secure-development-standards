@@ -166,17 +166,20 @@
           <a href="{{ site.repo_url }}">secure-development-standards on GitHub</a>.
         </p>
         {%- if page.path %}
-        {#-
+        {%- comment -%}
           SAME-ORIGIN, and the reason is the whole point of the move. This used to link to
-          {{ site.repo_url }}/blob/main/docs/... -- a github.com URL, which is unreachable on the
-          network this site moved to Cloudflare to serve. The one reader most likely to want the
-          raw text was the one reader guaranteed not to get it.
+          site.repo_url + /blob/main/docs/... -- a github.com URL, unreachable on the network this
+          site moved to Cloudflare to serve. The one reader most likely to want the raw text was the
+          one reader guaranteed not to get it.
 
           Jekyll copies every .md to the site beside its rendered page, so the source is already
           here on this host. Measured 2026-08-10: /ASVS-ASSESSMENT.md returns 200 and 92,327 bytes.
           The GitHub link in the line above is kept, because it is genuinely useful to everyone else
           and it is labelled as leaving the site -- but it is no longer the only route to the text.
-        -#}
+
+          THIS BLOCK IS LIQUID, NOT JINJA. It shipped once as {#- ... -#}, which Liquid does not
+          recognise, so ten lines of commentary rendered into the published footer.
+        {%- endcomment -%}
         <p class="footer-line">
           <a href="{{ page.path | relative_url }}">View the source of this page</a>
         </p>

@@ -163,6 +163,35 @@ jobs:
 
           echo "all three plugins confirmed by effect"
 
+          # NO TEMPLATE SYNTAX REACHES THE READER.
+          #
+          # This shipped: a comment written as {#- ... -#} -- Jinja syntax, which Liquid does not
+          # recognise -- so ten lines of internal commentary rendered into the published footer of
+          # every page. The build was green, the page count was right, the title was right, and the
+          # links were right. Every check above passes on a page with commentary printed in it.
+          #
+          # `{{` and `{%` are NOT banned outright: docs/CI-AND-STANDARDS.md wraps a GitHub Actions
+          # example in {% raw %}, so `${{ join(needs.*.result, ',') }}` legitimately reaches the
+          # HTML. Banning them would redden correct content, which is how a gate gets deleted.
+          # What is banned is syntax that is never valid here and can only mean "not processed".
+          leaked=$(grep -rlE '\{#|#\}|\{%-? *(comment|endcomment|raw|endraw)' _site --include='*.html' || true)
+          if [ -n "$leaked" ]; then
+            echo "::error::unrendered template syntax reached the published HTML:"
+            echo "$leaked" | sed 's/^/  /'
+            echo "Liquid comments are {% comment %}...{% endcomment %}. Jinja's {# ... #} is not"
+            echo "recognised and renders verbatim to the reader."
+            exit 1
+          fi
+
+          # The control. If the pattern cannot match a known-bad string, the clean result above
+          # means nothing -- and this is the exact check whose absence let the defect ship.
+          printf '<p>{#- leaked -#}</p>' > /tmp/leak-probe.html
+          if ! grep -qE '\{#|#\}' /tmp/leak-probe.html; then
+            echo "::error::the leak pattern cannot match a planted Jinja comment; it is blind."
+            exit 1
+          fi
+          echo "no template syntax leaked, and the pattern was proved able to see it"
+
       # Uploaded so the output can be DIFFED against the live site before anyone considers changing
       # where the site is served from. That comparison is the gate on migrating, not this run's colour.
       - name: Upload the built site
