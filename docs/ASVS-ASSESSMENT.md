@@ -18,6 +18,17 @@ one person cannot read it carefully in a week.
 
 ## TLDR/BLUF
 
+**What this is.** A working method for assessing a codebase against a large security standard with
+agents doing the bulk of the scoring, and leaving every verdict re-checkable.
+
+**Why you should care.** You answer for the result. The expensive outcome is not a low score. It is
+a clean-looking one that has to be re-run cell by cell, weeks later, once the first verdict is found
+not to hold.
+
+**How to use it.** The first half is yours: the decisions to settle before any scoring starts. From
+[Handing this to Claude Code](#handing-this-to-claude-code) on, the page is addressed to the agent
+and carries a paste-ready command. Build the pinned corpus first, and score nothing until it exists.
+
 **Almost every defect this method exists to catch is an instrument answering a narrower question
 than the one you asked, and looking clean while it does it.**
 
