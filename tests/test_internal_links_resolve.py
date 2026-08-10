@@ -14,7 +14,8 @@ have reported it if one of those had moved. A separate session then renamed a `#
 across seven pages; that one happened to have no inbound links, which nothing checked either.
 
 THE SITE'S OWN URLS COUNT AS INTERNAL, AND THEY FELL BETWEEN THE TWO CHECKERS. A link written
-`https://wshallwshall.github.io/secure-development-standards/standards/STANDARDS-REFERENCE.html#some-heading`
+`<site url>/standards/STANDARDS-REFERENCE.html#some-heading` -- the host comes from
+`docs/_config.yml` and is deliberately not typed here, see SERVED_SITE below --
 points at a page in this repository, but it starts with `https://` so this scan skipped it as
 external, and it is neither of the two forms `test_docs_do_not_drift.py` pins -- that file matches
 `github.com/.../blob/main/` and `raw.githubusercontent.com/.../main/`, and this is a third host. So
@@ -114,11 +115,39 @@ LINK_BEARING = (".md",)
 # matches `github.com/.../blob/main/` and `raw.githubusercontent.com/.../main/`, neither of which is
 # this host. So these fell between the two checkers and nothing looked at them. See the docstring.
 #
-# `url` + `baseurl` from docs/_config.yml. Both are load-bearing there and pinned by that file's own
-# comments; if either moves, this pattern stops matching and `TheServedUrlScanCanSee` goes red rather
-# than the scan silently going blind.
+# `url` + `baseurl`, READ FROM docs/_config.yml rather than typed here.
+#
+# THIS COMMENT USED TO DESCRIBE A FILE THAT DID NOT EXIST, and the 2026-08-10 move off GitHub Pages
+# is what surfaced it. The pattern was a hardcoded literal naming the old host, and this comment
+# claimed it came from `_config.yml` and that a guard called `TheServedUrlScanCanSee` would go red if
+# the URL moved. That class was never written -- it appears nowhere in this repository. So when the
+# site URL actually changed, the pattern kept matching the OLD host on links that had not been
+# re-pointed yet, the suite stayed green, and nothing anywhere observed the move.
+#
+# Deriving it is what makes the original promise true. A hand-typed copy of a value that lives in
+# another file is a second source of truth, which is the defect HS-3 names.
+def _site_config(key: str) -> str:
+    """One top-level scalar out of docs/_config.yml, without a YAML dependency.
+
+    Raises rather than returning a default. A missing key here would build a pattern matching
+    something like `https:///`, which matches nothing and turns every served-URL check into a scan
+    over zero links -- a pass that has checked nothing.
+    """
+    text = t.read(t.REPO_ROOT / "docs" / "_config.yml")
+    m = re.search(rf"^{re.escape(key)}:[ \t]*(.*?)[ \t]*$", text, re.M)
+    if m is None:
+        raise AssertionError(
+            f"docs/_config.yml has no top-level `{key}:`. This test builds the served-URL pattern "
+            "from that file on purpose; it will not fall back to a typed-in default, because a "
+            "wrong pattern here reports zero links and reads exactly like a clean run."
+        )
+    return m.group(1).strip().strip('"').strip("'")
+
+
+SITE_URL = _site_config("url")
+SITE_BASEURL = _site_config("baseurl")
 SERVED_SITE = re.compile(
-    r"https://wshallwshall\.github\.io/secure-development-standards(/[^)\s]*)?"
+    re.escape(SITE_URL + SITE_BASEURL) + r"(/[^)\s]*)?"
 )
 
 # docs/ is the Jekyll source root, so a served path maps back onto it directly. No permalink style is
@@ -360,6 +389,83 @@ def anchors_into_split_headings(paths: list[Path]) -> list[str]:
     return failures
 
 
+def served_asset_source(target: str) -> Path | None:
+    """The repository file behind a served-site URL that is NOT a rendered page.
+
+    `served_url_source` resolves only `.html`, on the stated ground that an asset has no headings to
+    check. That was true and it left a hole: every "Take a copy" download -- the raw `.md` and the
+    `.docx` beside it -- matched no checker at all. 51 of them were re-pointed at a new host in a
+    single commit on 2026-08-10 with nothing able to say whether one named a real file.
+    """
+    m = SERVED_SITE.fullmatch(target)
+    if not m:
+        return None
+    path = (m.group(1) or "/").lstrip("/")
+    if path == "" or path.endswith("/") or path.endswith(".html"):
+        return None
+    return t.REPO_ROOT / SITE_SOURCE_ROOT / path
+
+
+class ServedSiteLinksAreActuallyScanned(unittest.TestCase):
+    """The served-URL pattern can see the corpus, and the assets it names exist."""
+
+    def _served_targets(self) -> list[tuple[Path, str]]:
+        found = []
+        for path in tracked_markdown():
+            _, body = parse(t.read(path))
+            for _, line in body:
+                for target in INLINE_LINK.findall(line):
+                    if SERVED_SITE.fullmatch(target.partition("#")[0]):
+                        found.append((path, target))
+        return found
+
+    def test_the_served_url_scan_can_see(self):
+        """The guard SERVED_SITE's comment promised for months and never had.
+
+        A pattern built from a config value that has since moved matches nothing, reports nothing,
+        and passes. That is exactly what happened when the site left GitHub Pages: the pattern was a
+        hardcoded literal, it kept matching the old host on documents not yet re-pointed, and the
+        whole suite stayed green through a change of address.
+        """
+        found = self._served_targets()
+        self.assertGreater(
+            len(found),
+            20,
+            f"SERVED_SITE matched {len(found)} links across the corpus, too few to be reading it. "
+            f"The pattern is built from `url` + `baseurl` in docs/_config.yml, currently "
+            f"'{SITE_URL}{SITE_BASEURL}'. If the site moved and the documents did not follow, this "
+            "is the check that is meant to say so rather than pass having scanned nothing.",
+        )
+
+    def test_every_served_asset_names_a_file_that_exists(self):
+        misses = [
+            f"  {path.relative_to(t.REPO_ROOT).as_posix()} -> {target}"
+            for path, target in self._served_targets()
+            if (src := served_asset_source(target.partition("#")[0])) is not None
+            and not src.exists()
+        ]
+        self.assertEqual(
+            [],
+            misses,
+            "a served-site link names a file this repository does not ship:\n"
+            + "\n".join(misses)
+            + "\n\nThese are the 'Take a copy' downloads. They are absolute on purpose: "
+            "jekyll-relative-links rewrites a relative `](FILE.md)` to the RENDERED PAGE, so the "
+            "relative form silently serves HTML where a raw file was meant.",
+        )
+
+    def test_the_asset_check_can_fail(self):
+        """Without this, the pair above passes on a corpus whose asset links are all page links."""
+        base = f"{SITE_URL}{SITE_BASEURL}"
+        self.assertIsNone(served_asset_source(f"{base}/standards/CODE-QUALITY.html"))
+        self.assertIsNone(served_asset_source("https://example.invalid/x.docx"))
+        bogus = served_asset_source(f"{base}/standards/word/NO-SUCH-DOCUMENT.docx")
+        self.assertIsNotNone(bogus, "a served .docx URL must resolve to a path to be checkable")
+        self.assertFalse(bogus.exists(), "the fabricated control names a file that must not exist")
+        real = served_asset_source(f"{base}/standards/word/CODE-QUALITY.docx")
+        self.assertTrue(real.exists(), "the positive control must still resolve, or the check is blind")
+
+
 class TheTwoRenderersAgreeOnEveryAnchorWritten(unittest.TestCase):
     """No anchor may name a heading containing `--`. See the docstring for the measurement.
 
@@ -442,7 +548,9 @@ class TheScanCanActuallyBite(unittest.TestCase):
     # The served-URL form. These four are the ones that would have caught the gap: before the branch
     # above existed, every case here came back clean because the link starts with `https://`.
 
-    SERVED = "https://wshallwshall.github.io/secure-development-standards/standards/ref.html"
+    # Built from the same config-derived value the scanner uses, so this fixture cannot pin a host
+    # the scanner has stopped looking for. Typing it out is what let the 2026-08-10 move go unnoticed.
+    SERVED = f"{SITE_URL}{SITE_BASEURL}/standards/ref.html"
 
     def test_a_missing_anchor_behind_a_served_url_is_reported(self):
         found = self._scan(

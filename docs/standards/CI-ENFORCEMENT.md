@@ -5,8 +5,8 @@ organizations cannot say which of theirs are which, and the answer is a setting 
 this afternoon.**
 
 > **Take a copy:**
-> [markdown](https://raw.githubusercontent.com/wshallwshall/secure-development-standards/main/docs/standards/CI-ENFORCEMENT.md)
-> or [Word document](https://raw.githubusercontent.com/wshallwshall/secure-development-standards/main/docs/standards/word/CI-ENFORCEMENT.docx).
+> [markdown](https://secure-development-standards.pages.dev/standards/CI-ENFORCEMENT.md)
+> or [Word document](https://secure-development-standards.pages.dev/standards/word/CI-ENFORCEMENT.docx).
 > [Every file, both formats](OVERVIEW.md#the-files).
 
 ---

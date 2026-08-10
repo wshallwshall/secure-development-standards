@@ -10,8 +10,8 @@ applications and services -- and most of what is here transfers to any standard 
 one person cannot read it carefully in a week.
 
 > **Take a copy:**
-> [markdown](https://raw.githubusercontent.com/wshallwshall/secure-development-standards/main/docs/ASVS-ASSESSMENT.md)
-> or [Word document](https://raw.githubusercontent.com/wshallwshall/secure-development-standards/main/docs/standards/word/ASVS-ASSESSMENT.docx).
+> [markdown](https://secure-development-standards.pages.dev/ASVS-ASSESSMENT.md)
+> or [Word document](https://secure-development-standards.pages.dev/standards/word/ASVS-ASSESSMENT.docx).
 > [Every file, both formats](standards/OVERVIEW.md#the-files).
 
 ---
@@ -221,7 +221,7 @@ to you.
 To start, open Claude Code in the repository you want assessed and paste this:
 
 ```text
-Read https://raw.githubusercontent.com/wshallwshall/secure-development-standards/main/docs/ASVS-ASSESSMENT.md
+Read https://secure-development-standards.pages.dev/ASVS-ASSESSMENT.md
 from the heading "The standard supplies no verdict rubric" onward, and use it as the method for
 assessing this repository against OWASP ASVS 5.0. Begin at step 1, building the pinned corpus, and
 score nothing until that corpus exists.

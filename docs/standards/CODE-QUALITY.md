@@ -4,8 +4,8 @@
 finished?**
 
 > **Take a copy:**
-> [markdown](https://raw.githubusercontent.com/wshallwshall/secure-development-standards/main/docs/standards/CODE-QUALITY.md)
-> or [Word document](https://raw.githubusercontent.com/wshallwshall/secure-development-standards/main/docs/standards/word/CODE-QUALITY.docx).
+> [markdown](https://secure-development-standards.pages.dev/standards/CODE-QUALITY.md)
+> or [Word document](https://secure-development-standards.pages.dev/standards/word/CODE-QUALITY.docx).
 > [Every file, both formats](OVERVIEW.md#the-files).
 
 ---

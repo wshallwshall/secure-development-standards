@@ -14,8 +14,24 @@ description: >-
 # and everything depends on it: jekyll-relative-links rewrites the intra-docs links through
 # relative_url, which prepends this value, and the layout builds every nav href and the stylesheet
 # href from it. Wrong or missing means the pages still render and every link and asset 404s.
-url: https://wshallwshall.github.io
-baseurl: /secure-development-standards
+# MOVED OFF GITHUB PAGES 2026-08-10. Corporate networks that block github.com commonly block
+# *.github.io under the same category rule, and this readership's does, so the published site was
+# unreachable for the audience it is written for. Cloudflare Pages serves from a project root, so
+# baseurl is now empty where it used to carry the repository name.
+#
+# THE HOST IS REPEATED IN THE DOCUMENTS, which is the known cost of this arrangement. Every "Take a
+# copy" line writes this host absolutely, because jekyll-relative-links rewrites a relative
+# `](FILE.md)` to the RENDERED PAGE and the whole point of those links is the raw file. Changing the
+# host therefore means changing it here AND in every document, in one commit.
+#
+# *.pages.dev IS ANOTHER SHARED FREE SUBDOMAIN, and the same category rule that caught github.io can
+# catch it. It was chosen with that known. A domain you control is the durable answer, and moving to
+# one is this line plus a find-and-replace, not another migration.
+#
+# tests/test_internal_links_resolve.py READS THESE TWO VALUES rather than copying them, and reds if
+# the documents stop agreeing with them.
+url: https://secure-development-standards.pages.dev
+baseurl: ""
 
 # Used by the layout instead of site.github.*, which is empty in a local build without a token and
 # populated in production -- an instrument that answers a different question depending on where it

@@ -5,8 +5,8 @@ like nothing going wrong, which control neutralizes each one, and how much rigor
 actually needs.**
 
 > **Take a copy:**
-> [markdown](https://raw.githubusercontent.com/wshallwshall/secure-development-standards/main/docs/standards/AI-ASSISTED-DEVELOPMENT.md)
-> or [Word document](https://raw.githubusercontent.com/wshallwshall/secure-development-standards/main/docs/standards/word/AI-ASSISTED-DEVELOPMENT.docx).
+> [markdown](https://secure-development-standards.pages.dev/standards/AI-ASSISTED-DEVELOPMENT.md)
+> or [Word document](https://secure-development-standards.pages.dev/standards/word/AI-ASSISTED-DEVELOPMENT.docx).
 > [Every file, both formats](OVERVIEW.md#the-files).
 
 ## TLDR/BLUF
