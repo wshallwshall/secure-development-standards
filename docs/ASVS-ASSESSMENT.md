@@ -31,9 +31,10 @@ and a review pass that is the first thing cut when the schedule slips.
 **Not for you** if you want a scoring rubric. This is a set of forcing functions that tell a real
 verdict from a fluent one mechanically, and it reports no results of its own.
 
-**Where to start.** The first half is yours: the decisions to settle before any scoring starts. From
-[Handing this to Claude Code](#handing-this-to-claude-code) on, the page is addressed to the agent
-and carries a paste-ready command. Build the pinned corpus first, and score nothing until it exists.
+**Where to start.** The opening sections are yours: the decisions to settle before any scoring
+starts. From [Handing this to Claude Code](#handing-this-to-claude-code) on, the page is addressed
+to the agent and carries a paste-ready command. Build the pinned corpus first, and score nothing
+until it exists.
 
 ---
 
@@ -41,10 +42,6 @@ and carries a paste-ready command. Build the pinned corpus first, and score noth
 
 **Almost every defect this method exists to catch has one shape: the question that got answered was
 narrower than the question you asked.**
-
-We scored a batch of requirements against condensed wording. A requirement carrying two conditions
-had become a summary carrying one. Every cell under it was honestly reasoned and still wrong, and
-nothing in the output said so.
 
 Four things produce that same shape: a condensed requirement, a neighbouring requirement, a search
 that could not have matched, a control that ships switched off. Each yields a verdict that is
@@ -86,8 +83,8 @@ not been assessed**, however well it reads.
 
 ## What one scored cell looks like
 
-Every forcing function above is a claim about record-keeping, so here is the shape itself. This is an
-illustrative skeleton, not a result -- every value is a placeholder:
+Most of the forcing functions above are claims about record-keeping, so here is the shape itself.
+This is an illustrative skeleton, not a result -- every value is a placeholder:
 
 ```toml
 [cell."<chapter>.<section>.<requirement>"]
@@ -102,18 +99,23 @@ verified_at = "<full commit id of the tree that was read, reachable from the mai
 [[cell."<chapter>.<section>.<requirement>".evidence]]
 path   = "<path>"
 expect = "<the whole normalized logical line, occurring exactly once in that file>"
-line   = 0                # a hint the tool writes and nothing reads
+line   = 0                # a hint; never used to locate the token
 ```
 
 Most of those fields exist only so that a later reader can disagree with the verdict. `quoted` and
 `version` make it re-checkable without scoring it again from scratch. `rule` names which written
-rule produced it, so two sessions' verdicts can be compared rather than merely counted. `reviewer`
-and `scored_at` make staleness visible. `verified_at` says which tree was read, which is what every
-later reconciliation argument turns on. A cell carrying only a grade and a file path is not a
-cheaper version of this. It is a verdict that cannot be defended.
+rule produced it, so two sessions' verdicts can be compared rather than merely counted. Its domain
+is a step number from the decision procedure, or the name of a rule written outside it. `ships-off`
+above is the second form: a `partial` cell names which of that grade's three shapes fired. A
+`needs-review` cell names the rule that applies after the sequence has run. `reviewer` and
+`scored_at` make staleness visible. `verified_at` is a commit id and not a time, whatever the `_at`
+suggests. It says which tree was read, which is what every later reconciliation argument turns on.
+A cell carrying only a grade and a file path is not a cheaper version of this. It is a verdict that
+cannot be defended.
 
-**The `line` field is deliberately inert**, and the reason is the most expensive thing this method
-learned the second time round:
+**The `line` field never locates the token.** The anchor verifier reads it only to report
+displacement, which is advisory. The reason is the most expensive thing this method learned the
+second time round:
 [a tolerance below a uniqueness check](#a-tolerance-below-a-uniqueness-check-is-a-decaying-budget).
 
 ## What this costs you, and where it does not apply
@@ -126,18 +128,13 @@ learned the second time round:
   stands, run the assessment against that system -- do not read someone's published summary of
   theirs. Publishing the method invites scrutiny of the reasoning; publishing the register invites
   something else.
-- **It confers no certification, and neither does ASVS.** OWASP publishes the standard; no body
-  assesses you against it. Nor is a level a score: there is no partial credit and no percentage.
-- **It quotes no price and no duration, on purpose.** Per-cell verification at this rigour is
-  expensive enough that naive extrapolation across a full standard will shock whoever is paying for
-  it, so establish your number early -- by timing a pilot section of your own, not by taking one
-  from a page that has never seen your codebase. A figure printed here would be wrong for you and
-  would get planned against anyway.
-- **The savings are real but they come from one place: batching by shared precondition.** One
-  applicability investigation can serve an entire section, and one posture question can settle a
-  dozen cells. They never come from cutting rigour on a cell, because an unearned verdict is the
-  whole defect this exercise exists to prevent. A cheaper assessment that produces unearned passes
-  has not saved anything; it has bought a document that reads like an assessment.
+- **It confers no certification, and neither does ASVS.** OWASP publishes the standard and
+  certifies nobody against it. Nor is a level a score: there is no partial credit and no percentage.
+- **It quotes no price and no duration, on purpose.** Establish your number early -- by timing a
+  pilot section of your own, not by taking one from a page that has never seen your codebase. A
+  figure printed here would be wrong for you and would get planned against anyway.
+  [Say the per-cell cost early](#say-the-per-cell-cost-early) carries the cost argument and the one
+  place savings come from.
 - **The ASVS summary in the next section is orientation, not the thing you assess against.** If your
   level definitions come from this page rather than from the pinned text, you have already made the
   mistake this document exists to prevent.
@@ -215,14 +212,17 @@ verdict can name the requirement it answered and be re-read against it later. Th
 what lets a later pass detect that the standard moved under you, which a summary cannot do at all.
 
 The full mechanics are in
-[Never score against a paraphrase](#never-score-against-a-paraphrase) and
-[Pin the corpus](#pin-the-corpus-and-stamp-the-version-on-every-number):
+[Never score against a paraphrase](#never-score-against-a-paraphrase),
+[Pin the corpus](#pin-the-corpus-and-stamp-the-version-on-every-number) and
+[Confirm the instrument can represent the claim](#confirm-the-instrument-can-represent-the-claim):
 
 * how to pin
 * what to stamp on every number
 * why a section name in the corpus is checkable where chapter prose is not
 
-Read those two before starting, not when something goes wrong.
+Read those three before starting, not when something goes wrong. All three sit past the Part 1
+boundary, in the half addressed to the agent. Cross it on purpose: the corpus is your work item,
+and its mechanics are written there.
 
 ---
 
@@ -233,29 +233,32 @@ that will do the bulk of the scoring:
 
 * the vocabulary
 * the decision procedure
+* the positive scope declaration
+* the domain claim, which needs its own evidence
+* the corpus mechanics
 * the partitioning
 * the review pass
 * the traps that produce clean-looking wrong answers
 
-It is a working method, not a
-description of one, which is why its register changes from here -- it is addressed to the agent, not
-to you.
+It is a working method, not a description of one, which is why its register changes from here -- it
+is addressed to the agent, not to you.
 
 To start, open Claude Code in the repository you want assessed and paste this:
 
 ```text
 Read https://secure-development-standards.pages.dev/ASVS-ASSESSMENT.md
 from the heading "The standard supplies no verdict rubric" onward, and use it as the method for
-assessing this repository against OWASP ASVS 5.0. Begin at step 1, building the pinned corpus, and
+assessing this repository against OWASP ASVS 5.0. Begin by building the pinned corpus, and
 score nothing until that corpus exists.
 ```
 
 The first pass will not produce a score, and it should not. It builds the corpus. Anything that
 hands you a percentage before that exists is the failure this document is about.
 
-New to the rest of this repository's tooling?
+New to [claude-multisession](https://claude-multisession.pages.dev), the toolkit these documents
+came out of?
 [Here's what to feed to Claude Code](https://claude-multisession.pages.dev/FEED-THIS-TO-CLAUDE-CODE.html) is the front door. For the same
-reasoning applied to this repository's own controls -- including why it also publishes no status
+reasoning applied to that toolkit's own controls -- including why it also publishes no status
 table -- see [the drift-audit case study](https://claude-multisession.pages.dev/CASE-STUDY-drift-audit.html).
 
 ---
@@ -266,6 +269,10 @@ ASVS 5.0's assessment guidance is *deliberately non-prescriptive*. It supplies s
 evidence expectations, and a reporting obligation -- and **no verdict rubric**. It names verified,
 exception, and non-applicable-with-rationale. The words most assessors actually reach for --
 "partial", "not implemented" -- appear nowhere in it.
+
+**An exceptions-only report hides the denominator.** The obligation is to report every requirement,
+not the exceptions only. A reader given exceptions alone cannot tell a thorough assessment from a
+shallow one.
 
 **The gap is invisible until several agents work in parallel.** Each one arrives at a cell with a
 reasonable, unwritten rule in its head, and each produces a defensible verdict. The same requirement
@@ -284,9 +291,10 @@ mechanically visible.
 ### Hold the standard's own text locally, pinned by version
 
 You need the standard's actual text, held locally, pinned by version. If your project does not hold
-it, obtaining it is step zero of the assessment, not an optimization -- see
-[pin the corpus](#pin-the-corpus-and-stamp-the-version-on-every-number). Everything downstream
-depends on an assessor being able to quote the requirement it is judging.
+it, obtaining it is the first work item, not an optimization -- see
+[pin the corpus](#pin-the-corpus-and-stamp-the-version-on-every-number). It runs before the
+decision procedure below, not as a step inside it. Everything downstream depends on an assessor
+being able to quote the requirement it is judging.
 
 ---
 
@@ -350,7 +358,7 @@ precisely because nobody else has one.
 |---|---|---|
 | `pass` | The requirement's **verb** is satisfied by a **shipped default**, or by a gate that **refuses to start** when the precondition is absent | yes (*verified*) |
 | `fail` | **No implementing control exists in any configuration** | yes (*exception*) |
-| `na` | The requirement does not apply on the declared scope. **A written rationale is mandatory** | yes -- and the rationale is the one hard obligation the standard imposes |
+| `na` | The requirement does not apply on the declared scope. **A written rationale is mandatory** | yes -- and the rationale is a hard obligation the standard imposes |
 | `partial` | A control exists but ships off, warns where the requirement says refuse, or covers only part of the in-scope surface | local extension |
 | `needs-review` | Examined, but genuinely contested or blocked on a decision | local extension |
 | `unverified` | **Not re-derived against the requirement's own text.** The cell carries a verdict from an earlier pass that reasoned from a paraphrase | local extension |
@@ -363,10 +371,10 @@ Cells carrying an inherited grade look identical to freshly derived ones in a sp
 a verdict in them. Merge them into a headline and you publish an average over judgments, some of
 which were never made against the actual requirement. It renders like a measurement and is not one.
 
-So give it a **distinct verdict value** and **exclude it from any pass total**. Report *verified* and
-*not-yet-re-verified* as two numbers rather than one. Report **survey progress** -- how much of the
-set has been read against the pinned text -- as its own figure, and say on every verdict total that
-it covers examined cells only.
+So give it a **distinct verdict value** and **exclude it from any pass total**. Report *re-derived
+against the pinned text* and *not yet re-derived* as two numbers rather than one. Neither number is
+a pass count. Report **survey progress** -- how much of the set has been read against the pinned
+text -- as its own figure, and say on every verdict total that it covers examined cells only.
 
 **The word itself was the bug.** The state meant *"inherited from an earlier assessment and never
 re-read against the standard's own text"*. It was read as *"nobody has ever looked at this"*.
@@ -392,8 +400,8 @@ as never-read, which is the same confusion implemented in code.
 against a restatement -- then calling them "never examined" overstates the deficit and misdescribes
 what has to happen next.
 
-The honest phrasing is *"N verified against the pinned requirement text; M carry verdicts not yet
-re-verified against it."* Overstating a deficit gets corrected, and the correction costs you
+The honest phrasing is *"N re-derived against the pinned requirement text; M carry verdicts not yet
+re-derived against it."* Overstating a deficit gets corrected, and the correction costs you
 credibility on everything you got right.
 
 ### "It can be configured" is never a pass
@@ -490,8 +498,8 @@ mode; a retired two-posture split is exactly how it happens.
 what is bound where -- and score everything against it. Where a documented opt-in would change the
 answer, record the delta as a **residual on the cell**, never as a second column.
 
-A good unit is small enough that one agent can hold the requirement text, one implementing code path,
-and one evidence pointer in a single context window.
+A good unit, one **cell**, is small enough that one agent can hold the requirement text, one
+implementing code path, and one evidence pointer in a single context window.
 
 ---
 
@@ -656,7 +664,7 @@ that fills up as unrelated code moves above the citation**, and somebody eventua
 retyping coordinates. Every one of those repairs is a commit against the record whose entire data
 effect is a set of integers, and it crowds out the assessment work it looks like.
 
-Two rules come out of that, and the second is the one worth carrying off this page:
+Two rules come out of that, and the second is the one worth carrying past anchoring:
 
 > **Displacement is not invalidation.** Report a moved anchor as advisory. Keep the fatal classes to
 > a token that is **gone**, a token that has become **ambiguous**, and a path that does not exist.
@@ -787,7 +795,8 @@ the same class must still match something, and a stated reintroduction must stil
 If the positive control goes quiet or the reintroduction stops tripping the pattern, the absence
 claim is void regardless of what the negative pattern returned.
 
-**This repository has a worked example of the same principle applied to guardrails.**
+**The claude-multisession toolkit has a worked example of the same principle applied to
+guardrails.** It is a separate repository, so the path below is not in the tree you are assessing.
 [`bin/ccx-doctor.ps1`](https://claude-multisession.pages.dev/bin/ccx-doctor.ps1) does not ask whether a control is installed. It fires
 crafted input at the *installed* copy and **requires it to refuse**. It also pairs every attack with
 a negative control -- an ordinary action the same control must **allow** -- because a script that
@@ -893,10 +902,10 @@ it is luck, not design. A later reader who finds it green will conclude the boun
 
 ## Never score against a paraphrase
 
-An agent reads the control ID and a one-line summary -- from an internal scorecard, a spreadsheet, or
-an earlier assessment -- and then reasons about the code from that. It feels exactly like
-verification: code was read, a verdict was written, a citation exists. But the verb being tested is a
-**restatement**, and restatements drift toward what the project already does.
+An agent reads the requirement ID and a one-line summary -- from an internal scorecard, a
+spreadsheet, or an earlier assessment -- and then reasons about the code from that. It feels exactly
+like verification: code was read, a verdict was written, a citation exists. But the verb being tested
+is a **restatement**, and restatements drift toward what the project already does.
 
 Verdicts derived this way survive multiple assessment cycles, because every later pass inherits the
 same paraphrase. The failure compounds in a second way too. A paraphrase can outlive the requirement
@@ -1046,7 +1055,7 @@ Stability reads as "nothing to see". Several anchors across several cells can br
 ordinary refactor with zero visible signal.
 
 **Make the anchors the change detector.** Because each anchor is a path plus a token that must still
-resolve, a machine check on every commit tells you exactly which cells a change touched: the ones
+resolve, a machine check on every commit tells you which cells a change touched: at least the ones
 whose anchors broke. Wire it fail-closed, run it in CI, and publish the drift-check result alongside
 any total.
 
@@ -1134,14 +1143,14 @@ applying different unwritten rules** and producing verdicts that cannot be recon
 neither recorded which rule it applied. So partition on both axes.
 
 **One integrator owns every write to the record.** This is the part that held up best under real
-concurrency, and it is worth adopting before anything else here. Workers **read** the record and
-produce **structured verdict files**; they never edit the record itself. A single large record that
-every session wants to edit does not survive parallel work, whatever the merge tooling promises.
+concurrency, and it is worth adopting before the rest of this section. Workers **read** the record
+and produce **structured verdict files**; they never edit the record itself. A single large record
+that every session wants to edit does not survive parallel work, whatever the merge tooling promises.
 
 **Disjoint cells, enforced.** Give each session a set of cells nobody else holds, and make the claim
 atomic rather than advisory-by-convention.
 
-This repository's
+The claude-multisession toolkit's
 [`scripts/coord/claim.ps1`](https://claude-multisession.pages.dev/scripts/coord/claim.ps1) is the working pattern. A claim is taken by
 **exclusively creating** a file, which is an atomic filesystem operation, so two sessions cannot both
 believe they hold the same key. Its free-text key form exists for exactly the case an assessment
@@ -1240,7 +1249,7 @@ opened.
 | 2 | Does the cited mechanism's **verb and subject** match the requirement's? | The adjacent mechanism; reporting-vs-providing |
 | 3 | Is the mechanism **on by default**, or does it refuse when its precondition is missing? | "It can be configured" |
 | 4 | Open the anchor and **read the line**. Does the token resolve, and does that line support the claim? | Decorative citations |
-| 5 | For any absence claim, **run its positive control first** | Vacuous greps |
+| 5 | For any absence claim, **run its positive control first**, then check that its **stated reintroduction still trips the pattern** | Vacuous greps; a pattern blind to what it ruled out |
 | 6 | If `na`: is there a **written rationale about the verb's subject**, and is its strength graded? | `na` as a work-avoidance grade |
 | 7 | Does the cell record **which rule fired**, and **who** set it **when**? | Unresolvable later disputes |
 
@@ -1538,8 +1547,8 @@ Before the first cell is scored:
 - [ ] The **anchor verifier** runs in CI and fails the build -- and you have watched it fail on purpose.
 - [ ] Every anchor's token is **unique in its file** and is the whole normalized logical line, so a
       bypass clause welded into a condition breaks it.
-- [ ] The verifier separates **displacement (advisory)** from gone, ambiguous and missing-path (fatal),
-      and **suggests no target** when a token is gone.
+- [ ] The anchor verifier separates **displacement (advisory)** from gone, ambiguous and missing-path
+      (fatal), and **suggests no target** when a token is gone.
 - [ ] Every recorded commit is written **in full** and is **reachable from the mainline**.
 - [ ] Cell **claims are atomic**, so two sessions cannot score the same cell.
 - [ ] **One integrator** owns every write to the record; workers emit structured verdict files.
@@ -1564,8 +1573,7 @@ Before anything is published:
 - [ ] Every capability the record leans on is **wired to something**, with its adoption number printed.
 - [ ] Every absolute ("the only", "all", "never") was either proved or weakened to "at least".
 - [ ] Impact sentences for undeployed software are in the **conditional tense**, with no score altered.
-- [ ] **Every requirement is reported**, not exceptions only -- an exceptions-only report hides the
-      denominator, and a reader cannot distinguish a thorough assessment from a shallow one.
+- [ ] **Every requirement is reported**, not exceptions only.
 - [ ] Every total carries the **pinned standard version** and the **drift-check result**.
 - [ ] Any movement is reported **with its cause named** -- and if nothing moved, that is **stated as a
       result**, with the reason.
@@ -1576,9 +1584,11 @@ Before anything is published:
 
 ## See also
 
-- [`docs/CASE-STUDY-drift-audit.md`](https://claude-multisession.pages.dev/CASE-STUDY-drift-audit.html) -- the same reasoning applied to this
-  repository's own controls: why an installed copy, not a source file, is the unit of audit, and why
-  that document deliberately contains no status table either.
+These are paths in [claude-multisession](https://claude-multisession.pages.dev), not in the
+assessed tree.
+
+- [`docs/CASE-STUDY-drift-audit.md`](https://claude-multisession.pages.dev/CASE-STUDY-drift-audit.html) -- why an installed copy, not a
+  source file, is the unit of audit.
 - [`bin/ccx-doctor.ps1`](https://claude-multisession.pages.dev/bin/ccx-doctor.ps1) -- prove the control can refuse; never infer that it is
   live.
 - [`docs/COORDINATION.md`](https://claude-multisession.pages.dev/COORDINATION.html) -- claims, locks, presence, and overlap for parallel
