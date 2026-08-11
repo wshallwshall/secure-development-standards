@@ -485,6 +485,14 @@ class TheStatedCensusMatchesTheTable(unittest.TestCase):
 
         Takes TEXT rather than reading the file, so the planted case below can prove this fires on a
         drifted census without editing the page it is checking.
+
+        WHAT THE RESULT COLUMN MEANS, decided rather than inferred, and stated on the rule sheet
+        beside the table: it says WHAT HAPPENS WHEN A RULE FIRES, never how wide the rule is. So a
+        row reading `hard fail` counts as enforced however narrow its scope, and only a qualified
+        result like `hard fail, on those two` counts as half-covered. PD-12 is the case that settles
+        it -- its gate hard-fails over exactly one count -- and the next narrowly scoped gate will
+        land on the same fork. Reading the column as scope instead would move PD-12 into the
+        half-covered bucket and the census to six, which is defensible and is not what this does.
         """
         by_test = by_gate = half = 0
         for fires, rules, result in SUMMARY_ROW.findall(sheet):
