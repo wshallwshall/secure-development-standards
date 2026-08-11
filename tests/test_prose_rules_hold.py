@@ -436,6 +436,135 @@ class TheRuleSheetIsInThisRepository(unittest.TestCase):
         )
 
 
+# The rule sheet's BLUF states a census of what is enforced. This parses it back out and compares it
+# against the table it summarises. See TheStatedCensusMatchesTheTable for why the shape is narrow.
+#
+# EVERY GAP IS `\s+`, NOT A SPACE. HS-14 wraps prose near 100 characters, so this sentence is spread
+# over two lines and a pattern written with literal spaces matches nothing -- which it did, on the
+# first run, against the very sentence it was written for. That is the same defect `paragraphs`
+# exists to prevent, met again one layer up.
+CENSUS = re.compile(
+    r"\b(\w+)\s+(?:are|is)\s+enforced\s+by\s+tests?,\s+(\w+)\s+by\s+a\s+CI\s+gate,"
+    r"\s+and\s+(\w+)\s+(?:is|are)\s+half-covered",
+    re.I,
+)
+SUMMARY_ROW = re.compile(r"^\|\s*(.+?)\s*\|\s*((?:[A-Z]+-\d+(?:,\s*)?)+)\s*\|\s*(.+?)\s*\|\s*$", re.M)
+NUMBER_WORD = {
+    "one": 1, "two": 2, "three": 3, "four": 4, "five": 5, "six": 6, "seven": 7, "eight": 8,
+    "nine": 9, "ten": 10, "eleven": 11, "twelve": 12,
+}
+
+
+class TheStatedCensusMatchesTheTable(unittest.TestCase):
+    """The defect class that escaped every other checker here, pinned at its one checkable point.
+
+    WHAT ESCAPED. An adversarial audit of this session's own work found four counts stated in prose
+    that had drifted from the thing they counted. The worst was this page's own BLUF: it said "Three
+    are enforced by a test" while its table listed six across two test files. It had been wrong since
+    PD-10 landed, and nothing noticed, because a sentence describing a table is prose to every
+    checker in this suite.
+
+    WHY ONLY THIS ONE IS GATED, measured rather than assumed. The general rule -- "a count stated in
+    prose must match the list under it" -- was measured over the corpus and REJECTED. 46 lead-ins
+    carry a spelled cardinal and are immediately followed by a list. 37 already agree. The 9 that
+    disagree are all false positives, every one of them read: `recurred twice inside one week`,
+    `Every one of these`, `the two-lane pattern`, `This section and the three after it`. The cardinal
+    in a lead-in usually counts something other than the list, so the pattern fires nine times and
+    catches nothing -- B-7's shape exactly, and it is recorded on the rule sheet as rejected.
+
+    The census sentence is different because both sides are structured. The claim names a number and
+    a route, and the table names routes and rules. Nothing has to guess what the number refers to.
+    """
+
+    def _sheet(self) -> str:
+        return t.read(t.REPO_ROOT / HOUSE_STYLE)
+
+    @staticmethod
+    def counts_in(sheet: str) -> dict:
+        """(by tests, by the CI gate, half-covered), read off the summary table.
+
+        Takes TEXT rather than reading the file, so the planted case below can prove this fires on a
+        drifted census without editing the page it is checking.
+        """
+        by_test = by_gate = half = 0
+        for fires, rules, result in SUMMARY_ROW.findall(sheet):
+            n = len([r for r in rules.split(",") if r.strip()])
+            if not result.startswith("hard fail"):
+                continue
+            if result != "hard fail":          # "hard fail, on those two" -- the partial row
+                half += n
+            elif "gates.yml" in fires:
+                by_gate += n
+            elif ".py" in fires:
+                by_test += n
+        return {"tests": by_test, "gate": by_gate, "half": half}
+
+    def test_the_bluf_census_agrees_with_the_table(self):
+        sheet = self._sheet()
+        m = CENSUS.search(sheet)
+        self.assertIsNotNone(
+            m,
+            "the BLUF of docs/HOUSE-STYLE.md no longer states its enforcement census in the shape "
+            "this reads. Either the sentence was reworded, in which case update CENSUS here in the "
+            "same commit, or the census was dropped -- which is worse, because the count it carries "
+            "was wrong for two merges before an audit found it.",
+        )
+        said = {
+            "tests": NUMBER_WORD.get(m.group(1).lower()),
+            "gate": NUMBER_WORD.get(m.group(2).lower()),
+            "half": NUMBER_WORD.get(m.group(3).lower()),
+        }
+        self.assertNotIn(
+            None, said.values(), f"a census number is not a word this reads: {m.group(0)!r}"
+        )
+        self.assertEqual(
+            self.counts_in(sheet),
+            said,
+            f"the BLUF says {m.group(0)!r}, and the table below it does not. The table is what "
+            "fires, so the sentence is the defect. This is the exact drift that survived two merges "
+            "unnoticed: a rule gained a gate and the summary of the gates was never recounted.",
+        )
+
+    def test_it_fires_on_a_drifted_census(self):
+        """PLANTED, because a comparison that has only ever agreed proves nothing.
+
+        This is the exact drift that escaped: a rule gains a gate, the table grows a row, and the
+        sentence summarising the table is left saying the old number.
+        """
+        planted = (
+            "Two are enforced by tests, one by a CI gate, and one is half-covered by tests.\n\n"
+            "| What fires | Rules | Result |\n|---|---|---|\n"
+            "| [a.py](x) | B-3, B-5, B-6 | hard fail |\n"
+            "| the ASCII gate in [gates.yml](y) | HS-11 | hard fail |\n"
+            "| [b.py](z), for two of four | PD-8 | hard fail, on those two |\n"
+        )
+        self.assertEqual({"tests": 3, "gate": 1, "half": 1}, self.counts_in(planted))
+        m = CENSUS.search(planted)
+        self.assertIsNotNone(m, "the census pattern failed on its own planted sentence")
+        self.assertNotEqual(
+            NUMBER_WORD[m.group(1).lower()],
+            self.counts_in(planted)["tests"],
+            "the planted census says two where the planted table has three, so this case must "
+            "disagree. If it agrees, the comparison is not comparing.",
+        )
+
+    def test_the_census_pattern_survives_a_wrapped_sentence(self):
+        """It did not, on the first run. HS-14 wraps this sentence and the gaps must be `\\s+`."""
+        wrapped = "Six are enforced by\ntests, one by a CI gate, and one is half-covered by tests."
+        self.assertIsNotNone(CENSUS.search(wrapped))
+
+    def test_the_table_reader_is_not_reading_an_empty_table(self):
+        """The empty-match guard. Two zeroes would agree with a sentence saying zero."""
+        counts = self.counts_in(self._sheet())
+        self.assertGreater(
+            sum(counts.values()),
+            4,
+            f"the summary table parsed to {counts}, which is too few rules to be this page's "
+            "enforcement table. SUMMARY_ROW has probably stopped matching the table's shape, and a "
+            "comparison between two empty readings agrees with anything.",
+        )
+
+
 class AListIsNotOneLongSentence(unittest.TestCase):
     """The rejoin defect this suite already recorded once, in its other half.
 

@@ -2,7 +2,7 @@
 
 ## TLDR/BLUF
 
-**What this is.** The writing rules this repository holds its own pages to. Six are enforced by
+**What this is.** The writing rules this repository holds its own pages to. Seven are enforced by
 tests, one by a CI gate, and one is half-covered by tests written for other purposes. The rest are
 review items and say so. The table below is what fires; this sentence summarises it and loses to it.
 
@@ -40,6 +40,7 @@ identifiers are keyed to their definitions further down, one table per group.
 | the ASCII gate in [gates.yml](https://github.com/wshallwshall/secure-development-standards/blob/main/.github/workflows/gates.yml) | HS-11 | hard fail |
 | [test_a_links_text_never_wraps.py](https://github.com/wshallwshall/secure-development-standards/blob/main/tests/test_a_links_text_never_wraps.py) | HS-16 | hard fail |
 | [test_docs_do_not_drift.py](https://github.com/wshallwshall/secure-development-standards/blob/main/tests/test_docs_do_not_drift.py) | PD-10 | hard fail |
+| [test_prose_rules_hold.py](https://github.com/wshallwshall/secure-development-standards/blob/main/tests/test_prose_rules_hold.py), for the census only | PD-12 | hard fail |
 | [test_rule_ids_are_stable.py](https://github.com/wshallwshall/secure-development-standards/blob/main/tests/test_rule_ids_are_stable.py) and [test_the_selector_matches_the_routing_table.py](https://github.com/wshallwshall/secure-development-standards/blob/main/tests/test_the_selector_matches_the_routing_table.py), for two of the four sections it names | PD-8 | hard fail, on those two |
 | nothing directly. Both shape how the scanners read a page | HS-14, PD-4 | review |
 | nothing. Each was measured against this corpus and rejected as a gate | B-7, B-10, HS-3, HS-19, PD-11 | review |
@@ -232,6 +233,43 @@ normative sentence inside it.
 253 as hits. Stripping them is one mechanical pass with no judgment in it. That is the same trap PD-8
 records for whole sections, one level down. The measurement that produced PD-9 is in the next
 section, and it was rejected as a gate partly for this reason.
+
+---
+
+## A count stated in prose
+
+| Rule | The rule | Enforced |
+|---|---|---|
+| `PD-12` | a count stated in prose must match the thing it counts. Enforced at ONE point, where both sides are structured: this page's own enforcement census against the table beneath it. The general form was measured and rejected, and the measurement is below | at one point |
+
+**This rule exists because the defect escaped everything else here.** An adversarial audit of the
+work that produced HS-20 and PD-10 found four counts that had drifted from what they counted. The
+worst was this page's own summary saying three rules were enforced by a test while the table under
+it listed six. It had been wrong across two merges. A sentence describing a table is prose to every
+checker in this repository, so nothing could see it.
+
+**The general form was measured and does not survive.** "A count in a lead-in must match the list
+under it" fires on 46 lead-ins across this corpus, and 37 already agree. All 9 that disagree are
+false positives, and every one was read. They include `recurred twice inside one week`, `Every one
+of these`, and `This section and the three after it are the argument`. A cardinal in a lead-in
+usually counts something other than the list beneath it. That is B-7's shape at nine hits and zero
+precision, so the wide rule is rejected on the same ground.
+
+**What makes the census checkable is that both sides are structured.** The sentence names a number
+and a route. The table names routes and rules. Nothing has to infer what the number refers to, which
+is the whole of the difference. Where a future count sits against something equally structured, gate
+it and say so in this row. Where it does not, this rule is a review item and reads as one.
+
+**The four that were found are recorded rather than left implicit.** Three were written by the
+session that then falsified them:
+
+* a baseline restated as a fall
+* a proxy figure quoted after it had been read down
+* a per-1,000 rate over a page whose length then grew by half
+* this census
+
+Only the last is gated. The other three are why the page now says the current figure is the one the
+test holds.
 
 ---
 
@@ -438,4 +476,4 @@ the same identifier, and allocate a new one when you change what it demands.
 rule, which is what HS-11 already demands and what the gate already runs. Two names for one rule
 split its citations, which is the defect HS-3 describes. PD-5 is spent the same way: the toolkit
 issues it for something else, and the rule that draft gave it is PD-8 pointing the other way. After
-this page, the next free numbers are B-18, HS-21 and PD-12.
+this page, the next free numbers are B-18, HS-21 and PD-13.
