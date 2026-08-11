@@ -413,9 +413,18 @@ reddened commits is the one that landed this page.
 
 Over 120 commits the in-sentence count rose 21 times, and all 21 are ordinary authoring work. The
 rate fell from 14.15 to 6.60 per 1,000 over that span with nothing enforcing it. There is no drift
-here to arrest. 76 of every 100 spans are structure rather than emphasis: 467 table cells, 381
-paragraph ledes, 322 list ledes and 26 block quotes, PD-9's 254 among them. The remaining 368 were
-read, and they are contrast markers and term definitions in normative sentences.
+here to arrest. 79 of every 100 spans are structure rather than emphasis: 467 table cells, 361 list
+ledes, 360 paragraph ledes and 26 block quotes, PD-9's 254 among them. The remaining 330 were read,
+and they are contrast markers and term definitions in normative sentences.
+
+**That breakdown is re-derived, because the one that stood here did not add up.** Its four components
+summed to 1,196 while the remainder and the ratio beside them both required 1,176. At least one was
+wrong and nothing said which.
+
+Re-measured against the same tree, three figures reproduce exactly: the 1,544 total, the 467 table
+cells and the 26 block quotes. That is what makes the method trustworthy enough to correct the other
+two. A span may wrap across lines, and a lede counts once per paragraph or item, with any further
+span in that unit falling to the remainder.
 
 The gap that made a ratchet tempting is stated here without a claim attached. Markdown this model
 writes to disk runs at 29.18 per 1,000 in the same page-size band, against 16.98 here. Nothing in
