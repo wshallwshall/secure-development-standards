@@ -53,6 +53,15 @@ A third result appears in that table. **Recorded** means the rule was measured a
 both a gate and a review item, and its identifier is spent so nobody reissues it. The evidence sits
 in the section that records what was rejected.
 
+**The Result column says what happens when a rule fires, never how wide the rule is.** PD-12 is the
+case that settles it: its gate hard-fails, and it covers exactly one count on this page. It is a
+`hard fail` row and it counts toward the census, because a reader asking "what stops my commit"
+wants the first fact. Scope belongs in the rule's own text, and PD-12's says "at one point".
+
+Read the other way, PD-12 would join PD-8 as half-covered and the census would read six. That is
+defensible and it is not what this page does. The next narrowly scoped gate lands on the same fork,
+which is why the answer is written here rather than left to be re-derived from the numbers.
+
 Two measured qualities are also ratcheted rather than capped: sentences over 30 words, and table
 cells over 40 words. Neither may get worse than its recorded baseline. Neither is a limit you have to
 write under, and the long tail of this corpus is where the engineering warnings live.
