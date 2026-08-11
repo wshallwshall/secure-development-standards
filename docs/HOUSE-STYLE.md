@@ -2,9 +2,9 @@
 
 ## TLDR/BLUF
 
-**What this is.** The writing rules this repository holds its own pages to. Three are enforced by a
-test, one by a CI gate, one by a link test, and one is half-covered by tests written for other
-purposes. The rest are review items and say so.
+**What this is.** The writing rules this repository holds its own pages to. Six are enforced by
+tests, one by a CI gate, and one is half-covered by tests written for other purposes. The rest are
+review items and say so. The table below is what fires; this sentence summarises it and loses to it.
 
 **Why it matters.** Every rule below states which it is. A rule nothing can fire is a preference,
 and reading it as more than that is how a review turns into an argument about taste.
@@ -55,9 +55,10 @@ Two measured qualities are also ratcheted rather than capped: sentences over 30 
 cells over 40 words. Neither may get worse than its recorded baseline. Neither is a limit you have to
 write under, and the long tail of this corpus is where the engineering warnings live.
 
-**The sentence baseline fell by 137 and no sentence was edited.** Both moves were defects in the
-instrument rather than improvements to the writing. More than a third of the 371 it started at was
-measurement error. The current figure is the one the test holds, not one restated here.
+**The sentence baseline fell by 109 and no sentence was edited.** Both moves were defects in the
+instrument rather than improvements to the writing. 137 of the 371 it started at were miscounted,
+and correcting them removed 109 -- the two differ because splitting a rejoined list still leaves
+some of its items long. The current figure is the one the test holds, not one restated here.
 
 The first was the rejoin. The checker joins wrapped lines before measuring, and it used to join a
 bullet list too, so a run of items measured as one enormous sentence. 60 of the 371 were that. The
@@ -174,9 +175,10 @@ series that should have been a list. So PD-11 is a review item and not a gate, o
 B-7 -- no pattern can tell a series in a cell from a description in a cell, and the corpus gives it
 nothing to catch.
 
-**The finding worth more than the rule.** Of the 248 sentences over 30 words, 109 carry a series of
-three or more. Extraction is the single highest-yield edit available against the long tail, it is
-now measured correctly, and it is not what those 109 sentences have had done to them.
+**The finding worth more than the rule.** A loose proxy put the long sentences carrying a series at
+110. Read, only 50 carry a real three-item series and 20 of those were worth extracting. Doing so
+produced the first fall in the long-sentence figure earned by editing rather than by fixing the
+instrument. A sweep run on the proxy alone would have damaged 90 sentences to improve 20.
 
 ---
 
@@ -223,7 +225,7 @@ Two of these exist today, and both were counted before the rule was written.
 `docs/standards/SECURE-DEVELOPMENT.md` gives the RFC 2119 keywords their force in a legend near the
 top of the file, and then uses them 139 times. Every one is bold and none is left plain, so the
 convention is the only thing telling a reader a requirement from a recommendation. The second is the
-bolded `Rule.` label, 114 uses across four standards, which is how a reader scanning a page finds the
+bolded `Rule.` label, 115 uses across four standards, which is how a reader scanning a page finds the
 normative sentence inside it.
 
 **PD-9 exists because these are the cheapest bold to delete.** A rule capping bold would count all
@@ -286,8 +288,9 @@ remaining 619 have no actor available to front, and inventing one would be a fab
 scanner, format or assessor is named anywhere in the set` names nobody because nobody is named. So
 the wide pattern is wrong 619 times, and the narrow one is wrong 35 times out of 37.
 
-**The rule sheet is the second-heaviest page on that measure**, at 21.56 per 1,000 across 64 hits.
-The one page above it carries four hits and is too short for its rate to say anything. This is
+**The rule sheet was the second-heaviest page on that measure when HS-19 was written**, at 64 hits.
+No rate is restated here. This page has grown by half since that measurement and a per-1,000 figure
+would decay into a false claim, which is the same trap the baseline sentence above refuses. This is
 recorded rather than fixed. HS-19 is a review item, and a page that measures itself and then quietly
 edits to a better number is doing the thing PD-8 warns about.
 

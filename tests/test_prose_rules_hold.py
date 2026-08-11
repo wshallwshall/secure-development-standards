@@ -481,7 +481,7 @@ class AListIsNotOneLongSentence(unittest.TestCase):
         longest = max(
             len(sentence.split())
             for joined, _ in paragraphs(text)
-            for sentence in SENTENCE_SPLIT.split(joined)
+            for sentence in split_sentences(joined)
         )
         self.assertLess(
             longest,
@@ -534,7 +534,7 @@ class NoSentenceRunsPast300RenderedCharacters(unittest.TestCase):
         for relpath in prose_files():
             for joined, spans in paragraphs(t.read(t.REPO_ROOT / relpath)):
                 offset = 0
-                for sentence in SENTENCE_SPLIT.split(joined):
+                for sentence in split_sentences(joined):
                     start = joined.find(sentence, offset)
                     offset = start + len(sentence) if start >= 0 else offset
                     shown = rendered(sentence)
@@ -574,7 +574,7 @@ class NoSentenceRunsPast300RenderedCharacters(unittest.TestCase):
             1
             for relpath in prose_files()
             for joined, _ in paragraphs(t.read(t.REPO_ROOT / relpath))
-            for s in SENTENCE_SPLIT.split(joined)
+            for s in split_sentences(joined)
             if s.strip()
         )
         self.assertGreater(
@@ -598,31 +598,48 @@ class ABoldLedeEndsASentence(unittest.TestCase):
     """
 
     def test_a_bold_lede_and_its_sentence_are_two_sentences(self):
-        got = SENTENCE_SPLIT.split("**Rule.** Pick the source of record for each fact.")
+        got = split_sentences("**Rule.** Pick the source of record for each fact.")
         self.assertEqual(["**Rule.**", "Pick the source of record for each fact."], got)
 
     def test_a_whole_sentence_in_italic_ends_where_it_ends(self):
-        got = SENTENCE_SPLIT.split("*Revised.* The source material said otherwise.")
+        got = split_sentences("*Revised.* The source material said otherwise.")
         self.assertEqual(["*Revised.*", "The source material said otherwise."], got)
 
     def test_a_colon_lede_is_not_a_sentence_boundary(self):
         """38 of these exist. A colon lede introduces what follows rather than closing a thought."""
         text = "**Control not met:** independent review of every change."
-        self.assertEqual([text], SENTENCE_SPLIT.split(text))
+        self.assertEqual([text], split_sentences(text))
 
     def test_an_ordinary_sentence_still_splits(self):
-        got = SENTENCE_SPLIT.split("The gate is advisory. Nothing stops the commit.")
+        got = split_sentences("The gate is advisory. Nothing stops the commit.")
         self.assertEqual(["The gate is advisory.", "Nothing stops the commit."], got)
+
+    def test_the_split_does_not_fire_inside_an_inline_code_span(self):
+        """The defect the widening introduced, and the corpus carried the trigger on day one.
+
+        HOUSE-STYLE.md explains the emphasis fix by QUOTING the shape in backticks. The split fired
+        inside the quotation of the defect it was documenting, which is the fourth instrument defect
+        in this family and the only one caused by fixing an earlier one.
+        """
+        text = "The split could not see one, so `**Rule.** Pick the source` measured as one."
+        self.assertEqual([text], split_sentences(text))
+
+    def test_a_code_span_does_not_swallow_a_real_boundary_after_it(self):
+        """The negative half. Masking must not make the rest of the paragraph invisible."""
+        self.assertEqual(
+            ["Run `a.b` first.", "Then read `x.y` after."],
+            split_sentences("Run `a.b` first. Then read `x.y` after."),
+        )
 
     def test_emphasis_inside_a_sentence_is_not_a_boundary(self):
         text = "A rule the **prose checker** enforces is one a developer can read."
-        self.assertEqual([text], SENTENCE_SPLIT.split(text))
+        self.assertEqual([text], split_sentences(text))
 
     def test_the_fused_pair_is_no_longer_measured_as_one_sentence(self):
         """End to end, at the length the ratchet actually counts."""
         lede = "**A claim stated in a lede that runs to a dozen words or so here.**"
         rest = "The evidence for it, which also runs to about a dozen words here."
-        longest = max(len(s.split()) for s in SENTENCE_SPLIT.split(f"{lede} {rest}"))
+        longest = max(len(s.split()) for s in split_sentences(f"{lede} {rest}"))
         self.assertLess(
             longest,
             31,
@@ -699,6 +716,30 @@ FAT_CELL_SLACK = 6
 # this widened. All 57 distinct forms are lede labels. The corpus has no such abbreviation today.
 SENTENCE_SPLIT = re.compile(r"(?<=[.!?])\s+|(?<=[.!?]\*)\s+|(?<=[.!?]\*\*)\s+")
 
+# THE FOURTH INSTRUMENT DEFECT, and it is the one the widening above introduced. Teaching the split
+# to see a stop inside `**` also taught it to see one inside an inline CODE SPAN, because a code span
+# is where this repository quotes markup at a reader. The corpus already carried the triggering
+# shape when the widening landed: HOUSE-STYLE.md explains the emphasis fix with the literal example
+# `**Rule.** Pick the source`, in backticks, and the split fired inside the quotation of the very
+# defect it was documenting.
+#
+# Masking preserves LENGTH, so every offset in the masked copy addresses the same character in the
+# original and `line_at` keeps working. Splitting the masked text and slicing the original is what
+# makes that true; splitting the masked text and returning its pieces would hand back the filler.
+CODE_SPAN = re.compile(r"`[^`\n]*`")
+
+
+def split_sentences(text: str) -> list[str]:
+    """Sentences, without firing inside an inline code span. Use this, never SENTENCE_SPLIT.split."""
+    masked = CODE_SPAN.sub(lambda m: "x" * len(m.group(0)), text)
+    out: list[str] = []
+    prev = 0
+    for m in SENTENCE_SPLIT.finditer(masked):
+        out.append(text[prev : m.start()])
+        prev = m.end()
+    out.append(text[prev:])
+    return out
+
 
 def _measure() -> tuple[int, int, int]:
     """(sentences over 30 words, table cells over 40 words, words examined)."""
@@ -709,7 +750,7 @@ def _measure() -> tuple[int, int, int]:
         text = t.read(t.REPO_ROOT / relpath)
         for joined, _ in paragraphs(text):
             words += len(joined.split())
-            for sentence in SENTENCE_SPLIT.split(joined):
+            for sentence in split_sentences(joined):
                 if len(sentence.split()) > 30:
                     long_sentences += 1
         for line_no, line in scannable_lines(text):

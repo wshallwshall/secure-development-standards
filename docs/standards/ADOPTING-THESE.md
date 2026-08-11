@@ -226,8 +226,8 @@ with an event that ends the arrangement.
 
 A capability in your stack can eliminate a whole class of defect. What that changes is *which*
 failures you face, and therefore *how* you satisfy a practice. It does not decide *whether* the
-practice applies. Five shapes of the same failure are named across the set. Each produces a document
-that survives accuracy review while describing a practice that does not exist:
+practice applies. At least five shapes of the same failure are named across the set. Each produces a
+document that survives accuracy review while describing a practice that does not exist:
 
 * redefining the pass bar so "it can be configured" counts
 * widening a soft grade until it absorbs everything ambiguous

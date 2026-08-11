@@ -53,7 +53,7 @@ on their own. The last section is the one whose documents govern no one's conduc
 define the terms other documents are written in, so it is named for what they are used for instead.
 Every item appears in exactly one table.
 
-The sections below the tables are
+The argument sits below the tables, in
 [who a document is addressed to](#who-a-document-is-addressed-to),
 [the organization layer is not the software layer](#the-organization-layer-is-not-the-software-layer),
 [how these actually arrive](#how-these-actually-arrive) and
