@@ -42,7 +42,7 @@ identifiers are keyed to their definitions further down, one table per group.
 | [test_docs_do_not_drift.py](https://github.com/wshallwshall/secure-development-standards/blob/main/tests/test_docs_do_not_drift.py) | PD-10 | hard fail |
 | [test_rule_ids_are_stable.py](https://github.com/wshallwshall/secure-development-standards/blob/main/tests/test_rule_ids_are_stable.py) and [test_the_selector_matches_the_routing_table.py](https://github.com/wshallwshall/secure-development-standards/blob/main/tests/test_the_selector_matches_the_routing_table.py), for two of the four sections it names | PD-8 | hard fail, on those two |
 | nothing directly. Both shape how the scanners read a page | HS-14, PD-4 | review |
-| nothing. Each was measured against this corpus and rejected as a gate | B-7, B-10, HS-3, HS-19 | review |
+| nothing. Each was measured against this corpus and rejected as a gate | B-7, B-10, HS-3, HS-19, PD-11 | review |
 | nothing. Each names a defect a reviewer can see and no pattern can | HS-18, PD-9 | review |
 | nothing, and no review item either. Each was measured against this model's own prose and found nothing to catch | B-11, B-12, B-13, B-14, B-15, B-16 | recorded |
 | nothing, and no review item either. Measured against this corpus rather than that one, with the same result | B-17 | recorded |
@@ -136,10 +136,33 @@ never tell a reader who typed it.
 | Rule | The rule | Enforced |
 |---|---|---|
 | `PD-4` | a table row is not prose. Do not convert a table to paragraphs to satisfy a length rule, and do not judge a cell against a sentence rule | no |
+| `PD-11` | where the motive is length, extract a series into a LIST. A table is for data with more than one dimension, and a one-dimensional series put in one is a long sentence wearing pipes: it leaves the sentence measure for the cell measure and PD-4 then forbids the way back | no |
 
 PD-4 is why the sentence-length measure excludes tables, headings and block quotes, and why the fat
 cell count is kept as a separate number. A long cell and a long sentence are different problems. The
 fix for one is not the fix for the other.
+
+**PD-11 exists because the two rules looked like they contradicted each other, and the measurement
+says they do not.** The ordinary advice for a long sentence carrying three or more items is to pull
+the series out. That fix has two destinations and they behave differently here, which is the whole
+of the apparent conflict:
+
+* **A list is safe, and only became so recently.** Each item is measured as its own unit, so the
+  extraction lands where a writer expects. Before that fix the items were rejoined into one blob and
+  the count did not move at all, which is recorded above with the baseline it cost.
+* **A table is the trap.** The words leave the sentence measure and arrive at the 40-word cell
+  ratchet, and PD-4 forbids converting back to paragraphs to escape it. A writer who reaches for a
+  table to shorten a sentence can end up with nowhere legal to go.
+
+**Measured, nobody has fallen in.** All 30 cells over 40 words were read. Every one is a genuine
+row: a document name against its description, or a reference row of five columns. Not one is a
+series that should have been a list. So PD-11 is a review item and not a gate, on the same ground as
+B-7 -- no pattern can tell a series in a cell from a description in a cell, and the corpus gives it
+nothing to catch.
+
+**The finding worth more than the rule.** Of the 248 sentences over 30 words, 109 carry a series of
+three or more. Extraction is the single highest-yield edit available against the long tail, it is
+now measured correctly, and it is not what those 109 sentences have had done to them.
 
 ---
 
@@ -220,7 +243,7 @@ the label is one of five strings and whether the five are in order, which is all
 
 ## What was measured and then rejected
 
-Four rules are stated here and enforced by nobody. That is a decision with evidence behind it, not
+Five rules are stated here and enforced by nobody. That is a decision with evidence behind it, not
 an omission. The design rule for the whole set: hard-fail ONLY where a violation is unambiguous.
 
 A gate that reddens a legitimate editorial choice is a gate people delete. Losing it also loses the
@@ -254,8 +277,8 @@ The one page above it carries four hits and is too short for its rate to say any
 recorded rather than fixed. HS-19 is a review item, and a page that measures itself and then quietly
 edits to a better number is doing the thing PD-8 warns about.
 
-**The candidates below failed a different test.** B-7, B-10 and HS-19 were rejected because no
-pattern can see the distinction they draw. HS-3 was rejected because the fix is an editorial call.
+**The candidates below failed a different test.** B-7, B-10, HS-19 and PD-11 were rejected because
+no pattern can see the distinction they draw. HS-3 was rejected because the fix is an editorial call.
 Each of those is an invitation to write a better pattern. The ones below are not. They were measured
 against a corpus of this model's own output and found to describe nothing that happens here, so a
 better detector would still be detecting nothing wrong. They are recorded rather than reviewed,
@@ -398,4 +421,4 @@ the same identifier, and allocate a new one when you change what it demands.
 rule, which is what HS-11 already demands and what the gate already runs. Two names for one rule
 split its citations, which is the defect HS-3 describes. PD-5 is spent the same way: the toolkit
 issues it for something else, and the rule that draft gave it is PD-8 pointing the other way. After
-this page, the next free numbers are B-18, HS-20 and PD-11.
+this page, the next free numbers are B-18, HS-20 and PD-12.
