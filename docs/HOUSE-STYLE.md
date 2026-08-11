@@ -4,7 +4,8 @@
 
 **What this is.** The writing rules this repository holds its own pages to. Seven are enforced by
 tests, one by a CI gate, and one is half-covered by tests written for other purposes. The rest are
-review items and say so. The table below is what fires; this sentence summarises it and loses to it.
+review items or recorded, and every row says which. The table below is what fires; this sentence
+summarises it and loses to it.
 
 **Why it matters.** Every rule below states which it is. A rule nothing can fire is a preference,
 and reading it as more than that is how a review turns into an argument about taste.
@@ -230,9 +231,10 @@ bolded `Rule.` label, 115 uses across four standards, which is how a reader scan
 normative sentence inside it.
 
 **PD-9 exists because these are the cheapest bold to delete.** A rule capping bold would count all
-253 as hits. Stripping them is one mechanical pass with no judgment in it. That is the same trap PD-8
-records for whole sections, one level down. The measurement that produced PD-9 is in the next
-section, and it was rejected as a gate partly for this reason.
+254 as hits. Stripping them is one mechanical pass with no judgment in it. That is the same trap PD-8
+records for whole sections, one level down. The measurement that produced PD-9 is in
+[what was measured and then rejected](#what-was-measured-and-then-rejected), and it was rejected as
+a gate partly for this reason.
 
 ---
 
@@ -323,7 +325,8 @@ subset a pattern could turn round without judgment. All 37 were read. Two would 
 inverted. The rest already put the right thing first. One reads `a codebase is judged by the
 composite`, another `an advisory measurement that prints to a job log is read by nobody`. The
 remaining 619 have no actor available to front, and inventing one would be a fabrication. `No
-scanner, format or assessor is named anywhere in the set` names nobody because nobody is named. So
+scanner, format or assessor is recommended anywhere in the set` names nobody, because nobody is
+recommended. So
 the wide pattern is wrong 619 times, and the narrow one is wrong 35 times out of 37.
 
 **The rule sheet was the second-heaviest page on that measure when HS-19 was written**, at 64 hits.
@@ -394,7 +397,7 @@ that landed this page.
 Over 120 commits the in-sentence count rose 21 times, and all 21 are ordinary authoring work. The
 rate fell from 14.15 to 6.60 per 1,000 over that span with nothing enforcing it. There is no drift
 here to arrest. 76 of every 100 spans are structure rather than emphasis: 467 table cells, 381
-paragraph ledes, 322 list ledes and 26 block quotes, PD-9's 253 among them. The remaining 368 were
+paragraph ledes, 322 list ledes and 26 block quotes, PD-9's 254 among them. The remaining 368 were
 read, and they are contrast markers and term definitions in normative sentences.
 
 The gap that made a ratchet tempting is stated here without a claim attached. Markdown this model
