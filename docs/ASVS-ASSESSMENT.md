@@ -449,7 +449,10 @@ The sequence, first match wins:
    precondition is absent?**
    Yes -> `pass`.
 5. **Otherwise** -> `partial`.
-6. **If two assessors following 1-5 disagree** -> `needs-review`, with the disagreement recorded.
+
+**`needs-review` is not a branch of the sequence.** Step 5 is a catch-all, so a single assessor
+running 1-5 never reaches it. Apply it after the sequence has run: if two assessors following 1-5
+disagree on a cell, that cell is `needs-review`, with the disagreement recorded.
 
 **The ordering is load-bearing, not cosmetic.** Asking *"is the verb's subject in scope?"* before
 *"does code implement the verb?"* produces a different answer than the reverse. Both orderings are
@@ -618,7 +621,7 @@ Require every non-`unverified` cell to carry at least one anchor of a checkable 
 
 | Anchor kind | Shape | Check |
 |---|---|---|
-| **Presence** | `path` + `line` + an **expected token that must occur exactly once** in the file, resolving within a window around that line | The token still resolves, exactly once, inside the window |
+| **Presence** | `path` + `line` + an **expected token that must occur exactly once** in the file, with a displacement window around that line | The token still resolves, exactly once, in the file -- displacement outside the window is advisory, not fatal |
 | **Absence** | a `pattern` that must return nothing, **plus a `positive_control` pattern that must still match**, **plus a stated reintroduction** the pattern is required to match | Negative returns nothing, positive still matches, and the reintroduction still trips the pattern |
 
 ### Anchor to a token, not to a line number
@@ -779,9 +782,10 @@ This fires constantly in agent work for a structural reason: the agent generates
 and the conclusion in the same breath, from the same guess about naming. A wrong guess produces a
 clean result and a confident paragraph, several times in one session, with no signal anywhere.
 
-So every absence claim ships as a **pair**: the pattern that must return nothing, and a positive
-control of the same class that must still match something. If the positive control goes quiet, the
-absence claim is void regardless of what the negative pattern returned.
+So every absence claim ships as a **triple**. The pattern must return nothing, a positive control of
+the same class must still match something, and a stated reintroduction must still trip the pattern.
+If the positive control goes quiet or the reintroduction stops tripping the pattern, the absence
+claim is void regardless of what the negative pattern returned.
 
 **This repository has a worked example of the same principle applied to guardrails.**
 [`bin/ccx-doctor.ps1`](https://claude-multisession.pages.dev/bin/ccx-doctor.ps1) does not ask whether a control is installed. It fires
@@ -1240,7 +1244,8 @@ opened.
 | 6 | If `na`: is there a **written rationale about the verb's subject**, and is its strength graded? | `na` as a work-avoidance grade |
 | 7 | Does the cell record **which rule fired**, and **who** set it **when**? | Unresolvable later disputes |
 
-Budget roughly a minute per cell for this. It is the highest-yield activity in the entire exercise.
+Time this pass in a pilot section of your own, and budget it as its own line rather than as slack
+inside the scoring. It is the highest-yield activity in the entire exercise.
 
 ### Make the reviewer execute the citation, not read it
 
@@ -1529,7 +1534,7 @@ Before the first cell is scored:
 - [ ] The **verdict vocabulary** is published, with local extensions defined.
 - [ ] The **ordered decision procedure** is written, first-match-wins.
 - [ ] **Scope is declared positively**, and exactly **one posture** is described in prose.
-- [ ] The **scorecard exists as data**, with `rule_fired`, `reviewed_by`, `reviewed_at` fields.
+- [ ] The **scorecard exists as data**, with `rule`, `reviewer`, `scored_at` and `verified_at` fields.
 - [ ] The **anchor verifier** runs in CI and fails the build -- and you have watched it fail on purpose.
 - [ ] Every anchor's token is **unique in its file** and is the whole normalized logical line, so a
       bypass clause welded into a condition breaks it.
