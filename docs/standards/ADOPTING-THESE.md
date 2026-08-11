@@ -371,8 +371,12 @@ from [Code quality](CODE-QUALITY.md), *"Tier 1 -- durable controls, which carry 
 (architecture, types, dependencies, published artifact); the fifth, the secret scan, comes from
 [Secure development](SECURE-DEVELOPMENT.md), SD-6.1. So copying the
 template verbatim leaves two of the six verdict-carrying Tier 1 rows out of your table altogether:
-*tests verify behavior*, and *security scanning plus a threat model* in all three of its parts --
-blocking scanners, a written threat model, and a human review step. The secret scan does not stand
+
+* *tests verify behavior*
+* *security scanning plus a threat model*, in all three of its parts -- blocking scanners, a written
+  threat model, and a human review step
+
+The secret scan does not stand
 in for the scanner part: secret scanning is one of three checks in the unwaivable blocking set, not
 the whole of it ([Secure development](SECURE-DEVELOPMENT.md), SD-5.2 to SD-5.5). Not-built rows
 point at their register entry. What could not be automated appears as a

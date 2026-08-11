@@ -53,11 +53,13 @@ a good answer looks like.
 ## What makes these different from a checklist
 
 One claim runs through every document: **a control that reports success is indistinguishable from a
-control that never ran**, so a claim is worth what its receipt is worth and nothing more. That is why
-[secure development](standards/SECURE-DEVELOPMENT.md) carries permanent rule identifiers you can cite
-in your own deviations register, why every rule has an evidence column, and why
-[automated compliance in CI](standards/CI-ENFORCEMENT.md) turns on one question -- does failing it
-actually stop the change.
+control that never ran**, so a claim is worth what its receipt is worth and nothing more. That is why:
+
+* [secure development](standards/SECURE-DEVELOPMENT.md) carries permanent rule identifiers you can
+  cite in your own deviations register
+* every rule has an evidence column
+* [automated compliance in CI](standards/CI-ENFORCEMENT.md) turns on one question -- does failing it
+  actually stop the change
 
 The set also publishes what did not survive checking. Widely repeated figures about machine-written
 code are named in [code quality](standards/CODE-QUALITY.md) as claims to stop repeating, next to the

@@ -30,11 +30,13 @@ formats. [The CISO summary](docs/standards/CISO-SUMMARY.md) is the argument in t
 ## The claim these share
 
 **A control that reports success is indistinguishable from a control that never ran.** So a claim is
-worth what its receipt is worth and nothing more. That is why
-[secure development](docs/standards/SECURE-DEVELOPMENT.md) carries permanent `SD-` rule identifiers
-you can cite in your own deviations register, why every rule has an evidence column, and why
-[automated compliance in CI](docs/standards/CI-ENFORCEMENT.md) turns on one question: does failing it
-actually stop the change.
+worth what its receipt is worth and nothing more. That is why:
+
+* [secure development](docs/standards/SECURE-DEVELOPMENT.md) carries permanent `SD-` rule
+  identifiers you can cite in your own deviations register
+* every rule has an evidence column
+* [automated compliance in CI](docs/standards/CI-ENFORCEMENT.md) turns on one question: does failing
+  it actually stop the change
 
 The set also publishes what did not survive checking. Widely repeated figures about machine-written
 code are named in [code quality](docs/standards/CODE-QUALITY.md) as claims to stop repeating, beside

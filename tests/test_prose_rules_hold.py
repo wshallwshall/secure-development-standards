@@ -576,7 +576,15 @@ class ABoldLedeEndsASentence(unittest.TestCase):
 # on main while this was in flight, and they were reviewed against an instrument that could not see
 # a stop inside emphasis. This is what the corrected measure reports on the corpus as it now stands,
 # which is the only number a ratchet can honestly hold.
-BASELINE_LONG_SENTENCES = 263       # sentences over 30 words
+#
+# 263 -> 229, AND THIS ONE IS THE WRITING. Twenty sentences carrying a three-or-more item series had
+# the series pulled out into a list, which is the move PD-11 names. It is the first drop on this
+# number earned by editing rather than by fixing the instrument, and it is the largest single one:
+# 34 sentences, or 13%. The candidates were found with a pattern and then READ. A loose proxy
+# claimed 110; only 50 carry a real three-item series, and only 20 of those 50 were worth
+# extracting. The other 30 are compound clauses, rhetorical builds, three-word noun runs and series
+# already sitting inside a list -- all of which a second list would make worse.
+BASELINE_LONG_SENTENCES = 229       # sentences over 30 words
 BASELINE_FAT_TABLE_CELLS = 30       # table cells over 40 words
 
 # How far below baseline a metric may drift before the test asks for the baseline to be lowered.

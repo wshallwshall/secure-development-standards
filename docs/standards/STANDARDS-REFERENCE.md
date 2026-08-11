@@ -223,9 +223,14 @@ ever asked for.
 ## Input you use, not a rule you meet
 
 You cannot conform to any of these, and knowing that ends several arguments. It does not mean skip
-them: a software producer uses every one. A dependency policy is written in vulnerability
-identifiers, a scanner reports in weakness identifiers, an SBOM is emitted in one of two formats,
-and a requirements document borrows the quality vocabulary. What can put you under an obligation is
+them: a software producer uses every one.
+
+* a dependency policy is written in vulnerability identifiers
+* a scanner reports in weakness identifiers
+* an SBOM is emitted in one of two formats
+* a requirements document borrows the quality vocabulary
+
+What can put you under an obligation is
 the policy, the contract or the vulnerability management program that quotes one of these, never the
 document itself -- so use them, and look elsewhere for the demand.
 
@@ -244,9 +249,14 @@ its own purposes.
 ## Who a document is addressed to
 
 **The rows are above. This section and the three after it are the argument, and skipping them costs
-you nothing above.** They cover the cut the tables sort on, the layer distinction that decides what
-an instrument is evidence of, the routes by which any of this arrives, and why a status without a
-date is worthless. If you came here to look one thing up, you are done.
+you nothing above.** They cover:
+
+* the cut the tables sort on
+* the layer distinction that decides what an instrument is evidence of
+* the routes by which any of this arrives
+* why a status without a date is worthless
+
+If you came here to look one thing up, you are done.
 
 The addressee is the most stable fact about a document. Status, trigger and enforcement machinery
 change constantly; the audience almost never does. That is why this page sorts on it, and why the
@@ -272,9 +282,14 @@ routing page puts every such item in its own block, under that label, for exactl
 group is written at anybody: its documents define the terms other documents' sentences are written
 in, rather than governing anyone's conduct. That is what separates it from the other three, and it
 is a fact about normative status rather than about importance -- a producer uses every item in the
-group. A dependency policy is written in vulnerability identifiers, a scanner reports in weakness
-identifiers, an SBOM is emitted in one of two formats, and a requirements document borrows the
-quality vocabulary. Labeling the group by the absence invites a reader to skip it, which is the
+group.
+
+* a dependency policy is written in vulnerability identifiers
+* a scanner reports in weakness identifiers
+* an SBOM is emitted in one of two formats
+* a requirements document borrows the quality vocabulary
+
+Labeling the group by the absence invites a reader to skip it, which is the
 wrong move for material their own policies are written in. Where a demand does exist it comes from
 the policy, the contract or the vulnerability management program that quotes the document, never
 from the document, so each row's trigger cell names that source instead.
@@ -340,8 +355,15 @@ route determines the owner far more reliably than the subject does.
 **Exactly one item on this page takes the first route.** The market-access regulation binds a
 producer with nobody asking: placing a product with digital elements on that market is the trigger,
 so where the product goes decides it and who buys it does not. Everything else arrives because
-somebody asked -- a contracting officer inserted a clause, a prime flowed one down, a customer sent a
-questionnaire, an acquirer set a validation requirement, or you adopted it yourself. So the first
+somebody asked:
+
+* a contracting officer inserted a clause
+* a prime flowed one down
+* a customer sent a questionnaire
+* an acquirer set a validation requirement
+* you adopted it yourself
+
+So the first
 question about any named standard is never "what does it say". It is **who is asking, and in which
 document**.
 

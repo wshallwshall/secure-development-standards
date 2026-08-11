@@ -230,11 +230,14 @@ item is independent of blast radius.
 | **The build tooling itself is vetted** | The tools that build the code are a supply-chain surface no static-analysis or dependency gate inspects |
 
 Three of these are already published in full on this site and are deliberately not restated here.
-For the deny-list-plus-content-scan pairing, everything-is-data, and the explain-it bar, see
-[*"A path deny-list is not a content control"*](../CI-AND-STANDARDS.md#a-path-deny-list-is-not-a-content-control),
-[*"Everything the agent reads is data, never instructions"*](../CI-AND-STANDARDS.md#everything-the-agent-reads-is-data-never-instructions),
-and [CI and standards](../CI-AND-STANDARDS.md), *"Reject code you cannot explain -- assistance in
-reaching the explanation is fine"*.
+See instead:
+
+* the deny-list-plus-content-scan pairing, in
+  [*"A path deny-list is not a content control"*](../CI-AND-STANDARDS.md#a-path-deny-list-is-not-a-content-control)
+* everything-is-data, in
+  [*"Everything the agent reads is data, never instructions"*](../CI-AND-STANDARDS.md#everything-the-agent-reads-is-data-never-instructions)
+* the explain-it bar, in [CI and standards](../CI-AND-STANDARDS.md), *"Reject code you cannot
+  explain -- assistance in reaching the explanation is fine"*
 
 For a working scanner, what it catches, and the class it can never catch, see
 [The leak gate](https://claude-multisession.pages.dev/LEAK-GATE.html).
@@ -488,9 +491,12 @@ standard. The honest response is to record it as one rather than to redefine the
   audit, and no published claim may imply otherwise.
 - **The end condition:** a second maintainer joins.
 
-**The obligation that *is* achievable alone is concrete:** the full gate green, the reviews run and
-triaged, and every change explained-or-discarded -- where you engage with and stand behind the
-explanation rather than rubber-stamping it.
+**The obligation that *is* achievable alone is concrete:**
+
+* the full gate green
+* the reviews run and triaged
+* every change explained-or-discarded, where you engage with and stand behind the explanation
+  rather than rubber-stamping it
 
 The obligation that is *not* achievable alone is independent review. It stays in the register as a
 deviation until it is met.
@@ -544,9 +550,14 @@ near-neighbour.
 Keep a claims register holding the exact approved wording next to its evidence, and let nothing ship
 that is not in it.
 
-The register mechanics, the honesty taxonomy behind it, and the aligned / built-to / self-assessed
-vocabulary are all owned by [CI and standards](../CI-AND-STANDARDS.md#say-which-kind-of-claim-you-are-making) *"Say which kind of claim you
-are making"*. Read that before publishing anything from this document.
+Three things are owned by [CI and standards](../CI-AND-STANDARDS.md#say-which-kind-of-claim-you-are-making) *"Say which kind of claim you
+are making"*:
+
+* the register mechanics
+* the honesty taxonomy behind it
+* the aligned / built-to / self-assessed vocabulary
+
+Read that before publishing anything from this document.
 
 ### The attestation posture
 
