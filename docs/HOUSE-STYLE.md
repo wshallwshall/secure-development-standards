@@ -2,9 +2,9 @@
 
 ## TLDR/BLUF
 
-**What this is.** The writing rules this repository holds its own pages to. Three are enforced by a
-test, one by a CI gate, one by a link test, and one is half-covered by tests written for other
-purposes. The rest are review items and say so.
+**What this is.** The writing rules this repository holds its own pages to. Six are enforced by
+tests, one by a CI gate, and one is half-covered by tests written for other purposes. The rest are
+review items and say so. The table below is what fires; this sentence summarises it and loses to it.
 
 **Why it matters.** Every rule below states which it is. A rule nothing can fire is a preference,
 and reading it as more than that is how a review turns into an argument about taste.
@@ -36,7 +36,7 @@ identifiers are keyed to their definitions further down, one table per group.
 
 | What fires | Rules | Result |
 |---|---|---|
-| [test_prose_rules_hold.py](https://github.com/wshallwshall/secure-development-standards/blob/main/tests/test_prose_rules_hold.py) | B-3, B-5, B-6 | hard fail |
+| [test_prose_rules_hold.py](https://github.com/wshallwshall/secure-development-standards/blob/main/tests/test_prose_rules_hold.py) | B-3, B-5, B-6, HS-20 | hard fail |
 | the ASCII gate in [gates.yml](https://github.com/wshallwshall/secure-development-standards/blob/main/.github/workflows/gates.yml) | HS-11 | hard fail |
 | [test_a_links_text_never_wraps.py](https://github.com/wshallwshall/secure-development-standards/blob/main/tests/test_a_links_text_never_wraps.py) | HS-16 | hard fail |
 | [test_docs_do_not_drift.py](https://github.com/wshallwshall/secure-development-standards/blob/main/tests/test_docs_do_not_drift.py) | PD-10 | hard fail |
@@ -55,9 +55,10 @@ Two measured qualities are also ratcheted rather than capped: sentences over 30 
 cells over 40 words. Neither may get worse than its recorded baseline. Neither is a limit you have to
 write under, and the long tail of this corpus is where the engineering warnings live.
 
-**The sentence baseline fell by 137 and no sentence was edited.** Both moves were defects in the
-instrument rather than improvements to the writing. More than a third of the 371 it started at was
-measurement error. The current figure is the one the test holds, not one restated here.
+**The sentence baseline fell by 109 and no sentence was edited.** Both moves were defects in the
+instrument rather than improvements to the writing. 137 of the 371 it started at were miscounted,
+and correcting them removed 109 -- the two differ because splitting a rejoined list still leaves
+some of its items long. The current figure is the one the test holds, not one restated here.
 
 The first was the rejoin. The checker joins wrapped lines before measuring, and it used to join a
 bullet list too, so a run of items measured as one enormous sentence. 60 of the 371 were that. The
@@ -105,7 +106,21 @@ about who wrote a page.
 | `HS-16` | a markdown link sits on ONE line, even where that pushes the line past HS-14's 100 characters. This is the stated exception to HS-14, and it is the only one | yes |
 | `HS-3` | one fact lives in one place. A second copy is not redundancy, it is the place the two will silently disagree | no |
 | `HS-18` | a lint hit is a prompt to a human reader, never evidence of who wrote a page. No rule on this page may be cited to support a claim about authorship | no |
+| `HS-20` | no sentence runs past 300 characters AS A READER SEES IT. A link's target does not count, because nobody reads it. This is a cap and not a ratchet, and it is the only length rule here that hard-fails | yes |
 | `HS-19` | where a sentence has an actor, put the actor at the front. The case this rule is about is a passive that names its own actor in a trailing "by" phrase, because that one can always be turned round. A passive with no actor to name is not a violation and is often the accurate form | no, and see below |
+
+**Why HS-20 caps where every other length measure here ratchets.** The 30-word figure is ratcheted
+because the long tail of this corpus is where the engineering warnings live. 300 rendered characters
+is roughly twice that, and it stopped being about pace. At the site's 66-character measure it is a
+paragraph-shaped block presented as one sentence, and a reader tracking back to the next line lost
+the subject four lines ago.
+
+**The measure ignores a link's target, and that distinction is the whole rule.** 24 sentences
+exceeded 300 characters of markdown. Only 9 exceeded it as rendered. The other 15 are ordinary
+sentences of thirty-odd words carrying two hundred characters of URL. Failing those would ask an
+author to shorten prose that is already short, or to drop a citation. All nine real ones were
+rewritten rather than split: each was a list wearing semicolons, a citation swallowed into the claim
+it supports, or a subject carrying six items.
 
 **Why HS-16 outranks HS-14.** The site is built by Jekyll, and `jekyll-relative-links` rewrites
 relative links with a regular expression whose `.` excludes a newline. A link whose text wraps is
@@ -160,9 +175,10 @@ series that should have been a list. So PD-11 is a review item and not a gate, o
 B-7 -- no pattern can tell a series in a cell from a description in a cell, and the corpus gives it
 nothing to catch.
 
-**The finding worth more than the rule.** Of the 248 sentences over 30 words, 109 carry a series of
-three or more. Extraction is the single highest-yield edit available against the long tail, it is
-now measured correctly, and it is not what those 109 sentences have had done to them.
+**The finding worth more than the rule.** A loose proxy put the long sentences carrying a series at
+110. Read, only 50 carry a real three-item series and 20 of those were worth extracting. Doing so
+produced the first fall in the long-sentence figure earned by editing rather than by fixing the
+instrument. A sweep run on the proxy alone would have damaged 90 sentences to improve 20.
 
 ---
 
@@ -209,7 +225,7 @@ Two of these exist today, and both were counted before the rule was written.
 `docs/standards/SECURE-DEVELOPMENT.md` gives the RFC 2119 keywords their force in a legend near the
 top of the file, and then uses them 139 times. Every one is bold and none is left plain, so the
 convention is the only thing telling a reader a requirement from a recommendation. The second is the
-bolded `Rule.` label, 114 uses across four standards, which is how a reader scanning a page finds the
+bolded `Rule.` label, 115 uses across four standards, which is how a reader scanning a page finds the
 normative sentence inside it.
 
 **PD-9 exists because these are the cheapest bold to delete.** A rule capping bold would count all
@@ -272,8 +288,9 @@ remaining 619 have no actor available to front, and inventing one would be a fab
 scanner, format or assessor is named anywhere in the set` names nobody because nobody is named. So
 the wide pattern is wrong 619 times, and the narrow one is wrong 35 times out of 37.
 
-**The rule sheet is the second-heaviest page on that measure**, at 21.56 per 1,000 across 64 hits.
-The one page above it carries four hits and is too short for its rate to say anything. This is
+**The rule sheet was the second-heaviest page on that measure when HS-19 was written**, at 64 hits.
+No rate is restated here. This page has grown by half since that measurement and a per-1,000 figure
+would decay into a false claim, which is the same trap the baseline sentence above refuses. This is
 recorded rather than fixed. HS-19 is a review item, and a page that measures itself and then quietly
 edits to a better number is doing the thing PD-8 warns about.
 
@@ -421,4 +438,4 @@ the same identifier, and allocate a new one when you change what it demands.
 rule, which is what HS-11 already demands and what the gate already runs. Two names for one rule
 split its citations, which is the defect HS-3 describes. PD-5 is spent the same way: the toolkit
 issues it for something else, and the rule that draft gave it is PD-8 pointing the other way. After
-this page, the next free numbers are B-18, HS-20 and PD-12.
+this page, the next free numbers are B-18, HS-21 and PD-12.

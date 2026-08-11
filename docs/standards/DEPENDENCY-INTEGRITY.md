@@ -451,9 +451,8 @@ environment:
 A manifest of your source dependencies describes none of it.
 
 This is not a niche reading. A US federal memorandum of 2026-01-23 tells agencies they may adopt a
-contract term requiring a producer to supply an SBOM on request, and attaches a footnote for the
-cloud case: an agency adopting that term should specify that the producer must provide an SBOM "of
-the runtime production environment".
+contract term requiring a producer to supply an SBOM on request. A footnote covers the cloud case:
+an agency adopting that term should specify an SBOM "of the runtime production environment".
 
 **Rule.** If you distribute software, publish the inventory of the released artifact. If you host it,
 publish an inventory of the runtime production environment as well, and label each for what it is. A

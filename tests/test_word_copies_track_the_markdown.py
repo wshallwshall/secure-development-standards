@@ -92,6 +92,44 @@ That block is not decoration. `TheRecipeIsTheOneThisFileRuns` below parses it an
 agreeing with the options these tests build with, or if it stops covering every published standard
 -- so a new standard added without a line here cannot be silently missed by a bulk regeneration.
 
+WHEN TWO BRANCHES COLLIDE ON A STANDARD, AND WHY NO CHECKER CAN HELP YOU THERE. Every .docx here is
+a zip, and git cannot merge one. So any two branches touching the same standard produce a CONFLICT
+on the .docx every time, whatever they changed, and that conflict carries no information. The
+resolution is always the same, and it has an ORDER:
+
+  1. Resolve the MARKDOWN by reading it. Two edits can be compatible in intent and incompatible in
+     text -- one moves a sentence under a new heading while the other rewrites it in place -- and
+     deciding which structure survives and which content applies to it is a judgment.
+  2. THEN regenerate the .docx from the resolved markdown, with the recipe above.
+
+Never resolve the .docx directly: it is generated, so a hand-picked side is wrong even when it opens
+cleanly. And never conclude from a binary-only conflict that the markdown came along for the ride.
+
+Observed on 2026-08-10, when three branches touched `docs/ASVS-ASSESSMENT.md` in one day. One rebase
+conflicted in BOTH the markdown and the .docx; two later rebases of the same file reported only the
+.docx, because their hunks happened to be disjoint. Reading the second case as the rule is the trap:
+it teaches the next session that every conflict here is mechanical, and the first real markdown
+conflict after that gets the mechanical treatment and loses one side's meaning silently. That is an
+instrument answering a narrower question than the one asked, which is the defect
+`docs/ASVS-ASSESSMENT.md` is itself about.
+
+A THIRD SHAPE, AND THE ONE MOST LIKELY TO BITE, because it manufactures conflicts that are not real
+and they resolve as though they were. Squash-merging a branch gives its commit a NEW hash on main.
+Any branch stacked on the pre-squash original then goes CONFLICTING for a reason that is neither
+binary nor semantic: its base was rewritten under it. Plain `git rebase origin/main` replays the
+already-merged commit and produces conflicts in files nobody touched twice. Replay only the branch's
+own commits instead:
+
+    git rebase --onto origin/main <the-old-base-sha> <your-branch>
+
+Observed the same day: #28 was stacked on #27, #27 was squash-merged, and the `--onto` form rebased
+cleanly with no conflict at all -- including the .docx files that had conflicted on every previous
+rebase of that branch. That is the tell. If a rebase suddenly conflicts in files your branch never
+edited, suspect a rewritten base before you start resolving.
+
+This is a note rather than a checker on purpose. Nothing under tests/ runs during a rebase, which is
+the only moment any of these three confusions exists.
+
 WHAT THIS COSTS TO KEEP, stated plainly rather than sold as free. The SET of documents is derived
 from the filesystem, so adding a standard needs no edit in this file. Its OPTIONS are not derivable
 and never will be: `--toc` is an editorial decision per document. So a new standard costs one line

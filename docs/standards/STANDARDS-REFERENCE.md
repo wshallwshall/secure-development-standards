@@ -53,7 +53,7 @@ on their own. The last section is the one whose documents govern no one's conduc
 define the terms other documents are written in, so it is named for what they are used for instead.
 Every item appears in exactly one table.
 
-The sections below the tables are
+The argument sits below the tables, in
 [who a document is addressed to](#who-a-document-is-addressed-to),
 [the organization layer is not the software layer](#the-organization-layer-is-not-the-software-layer),
 [how these actually arrive](#how-these-actually-arrive) and
@@ -281,18 +281,13 @@ routing page puts every such item in its own block, under that label, for exactl
 **The fourth label names a use rather than an audience, and that is deliberate.** Nothing in that
 group is written at anybody: its documents define the terms other documents' sentences are written
 in, rather than governing anyone's conduct. That is what separates it from the other three, and it
-is a fact about normative status rather than about importance -- a producer uses every item in the
-group.
+is a fact about normative status rather than about importance.
 
-* a dependency policy is written in vulnerability identifiers
-* a scanner reports in weakness identifiers
-* an SBOM is emitted in one of two formats
-* a requirements document borrows the quality vocabulary
-
-Labeling the group by the absence invites a reader to skip it, which is the
-wrong move for material their own policies are written in. Where a demand does exist it comes from
-the policy, the contract or the vulnerability management program that quotes the document, never
-from the document, so each row's trigger cell names that source instead.
+Labeling the group by the absence invites a reader to skip it, which is the wrong move for material
+their own policies are written in.
+[Input you use, not a rule you meet](#input-you-use-not-a-rule-you-meet) is where that group's rows
+live. It lists the four ways a producer uses every item in it, and it says where a demand actually
+comes from, which is never the document. Each row's trigger cell names that source instead.
 
 | Makes demands of | What it is describing | The failure when you get it wrong |
 |---|---|---|
@@ -426,13 +421,17 @@ end to end.
 | The tier detail for the validated-assessment program, which rests on secondary sources | Verify anything more specific than the tier names and the scope-variance point at the publisher |
 | The discrepancy between one cloud program's claim of recognition by another and that other program's own published outcome | Left open rather than resolved. Read both programs' own notices before repeating either claim |
 
-**At least these claims rest on secondary analysis rather than a primary source**, each also marked in
-its own cell: the suspension of the defense program phases beyond the first; the standing of the class
-deviation that pins the safeguarding clause to an earlier revision; the audit baseline for the
-law-enforcement-data policy; the certificate transition end date for the 2013 management-system
-edition; the projected date for the pending sector-rule overhaul; the finalization date of the current
-web application ranking; the tier detail for the validated-assessment program; and the model version
-behind the published exploit-probability scores.
+**At least these claims rest on secondary analysis rather than a primary source.** Each is also
+marked in its own cell:
+
+* the suspension of the defense program phases beyond the first
+* the standing of the class deviation that pins the safeguarding clause to an earlier revision
+* the audit baseline for the law-enforcement-data policy
+* the certificate transition end date for the 2013 management-system edition
+* the projected date for the pending sector-rule overhaul
+* the finalization date of the current web application ranking
+* the tier detail for the validated-assessment program
+* the model version behind the published exploit-probability scores
 
 Where a claim on this page could not be confirmed at a primary source it is listed above rather than
 smoothed over, and the page prefers "at least these" to an enumeration everywhere it can.

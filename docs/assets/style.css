@@ -267,7 +267,8 @@ summary:focus-visible,
 }
 
 /* Prose gets a comfortable measure; code blocks and tables are allowed the full column, because
-   squeezing a wide table to 78ch only means scrolling it further. */
+   squeezing a wide table to the measure only means scrolling it further. (This said "78ch" until
+   --measure moved to 66ch, and a stale number in a comment is the defect HS-3 describes.) */
 .page-content > p,
 .page-content > ul,
 .page-content > ol,

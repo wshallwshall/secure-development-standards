@@ -138,10 +138,15 @@ One row filled in, to show the shape. Illustrative only -- it describes no proje
 |---|---|---|---|---|
 | Credentials and key material | No boundary -- the running account resolves this at startup rather than receiving it as input | The secret store, and nowhere else | Encrypted at rest by the secret store; the running account holds no copy in a file. The key material is the operator's, named here rather than claimed | Nothing is retained: rotation replaces the value and is the documented deletion path |
 
-Classes that recur: credentials and key material; data restricted under a regime the adopting
-organization operates under; operational telemetry identifying a person or a site; and the
-published artifact, which is public by construction and belongs in the table so that is written
-down rather than assumed.
+Classes that recur:
+
+* credentials and key material
+* data restricted under a regime the adopting organization operates under
+* operational telemetry identifying a person or a site
+* the published artifact
+
+The artifact belongs in the table precisely because it is public by construction. Writing that down
+is what stops it being assumed.
 
 The third column is what earns the table. "At rest" read as a property of a storage device covers
 the primary store and misses the rotating log file, the crash dump and the support bundle -- same
@@ -566,11 +571,18 @@ while a scheme is nominally in place.
 
 The digest manifest is the lowest-tech verification path and the one route a reviewer on an
 air-gapped network can always run. Make it the documented baseline rather than the afterthought.
-SD-10.15 matters because the archive, the build inputs, the inventories, the attestations, the
-publishing identity configuration and the deviations register typically live in one account at one
-provider -- so an account suspension takes all of it in a single event, at which point every claim
-in [section 17](#17-what-you-may-claim) becomes unevidenced simultaneously. A copy nobody has
-restored from is a claim rather than a backup.
+SD-10.15 matters because six things typically live in one account at one provider:
+
+* the archive
+* the build inputs
+* the inventories
+* the attestations
+* the publishing identity configuration
+* the deviations register
+
+An account suspension takes all of it in a single event. Every claim in
+[section 17](#17-what-you-may-claim) becomes unevidenced at once, and a copy nobody has restored
+from is a claim rather than a backup.
 
 **Limits.** **A component inventory is not tamper detection.** It answers "do we ship component X"
 within minutes of an advisory, detects drift against the intended manifest, and satisfies
@@ -658,8 +670,8 @@ A response program is a process control, not a document.
 | SD-12.5 | **MUST** exercise the machinery end to end at least once as a dry run | A dated dry run |
 
 SD-12.5 is the part usually missing, and the part that finds the broken intake address before a
-real reporter does. On SD-12.2, the two obvious clock starts give very different numbers: measuring
-from your own triage is right for your own defects, and measuring from the point an upstream fixed
+real reporter does. On SD-12.2, the two obvious clock starts give very different numbers. Measuring
+from your own triage is right for your own defects. Measuring from the point an upstream fixed
 version exists is right for a third-party advisory, because a clock started at triage runs against
 something you cannot act on. Pick per finding class, say which, and track the waiting period so an
 unfixable advisory is visible rather than silently blowing a window.
@@ -807,11 +819,16 @@ over-reach for software the producer does not operate; SD-15.3 is the corrected 
 | SD-15.5 | **MUST** agree countersigned rules of engagement before testing commences. **[derived: 800-115 Appendix B]** | The countersigned document |
 | SD-15.6 | **SHOULD** write the scope even if the engagement is never funded | The scope, attached to the SD-15.2 acceptance |
 
-The rules of engagement template that survives: the objective and what is explicitly out of scope;
-the environment and authorized test site; the artifacts you hand over up front, including threat
-models and the deviations register; named contacts on both sides including incident response;
-permitted testing hours; risks and agreed mitigations; what data the tester may encounter and how it
-must be handled and destroyed; and how findings are delivered and disclosed.
+The rules of engagement template that survives:
+
+* the objective, and what is explicitly out of scope
+* the environment and authorized test site
+* the artifacts you hand over up front, including threat models and the deviations register
+* named contacts on both sides, including incident response
+* permitted testing hours
+* risks and agreed mitigations
+* what data the tester may encounter, and how it must be handled and destroyed
+* how findings are delivered and disclosed
 
 The data-handling clause is the one teams skip and the hardest to repair afterwards.
 [Section 1](#1-shared-responsibility-write-the-split-down-first)'s data-class table is what makes it

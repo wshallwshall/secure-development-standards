@@ -30,7 +30,9 @@
 
 - group: Start here
   items:
-    - label: Start here
+    # Labelled "Overview" rather than "Start here": the group heading already says that, and a row
+    # repeating its own group reads as a broken duplicate rather than as a destination.
+    - label: Overview
       title: Security standards for teams building with AI coding assistants
       path: /
     - label: Which standards apply to you
