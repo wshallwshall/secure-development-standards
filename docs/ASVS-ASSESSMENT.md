@@ -214,19 +214,30 @@ Hold the requirement text locally, pinned by version, in a form a machine can re
 verdict can name the requirement it answered and be re-read against it later. The corpus is also
 what lets a later pass detect that the standard moved under you, which a summary cannot do at all.
 
-The full mechanics -- how to pin, what to stamp on every number, and why a section name in the corpus
-is checkable where chapter prose is not -- are in
+The full mechanics are in
 [Never score against a paraphrase](#never-score-against-a-paraphrase) and
-[Pin the corpus](#pin-the-corpus-and-stamp-the-version-on-every-number). Read those two before
-starting, not when something goes wrong.
+[Pin the corpus](#pin-the-corpus-and-stamp-the-version-on-every-number):
+
+* how to pin
+* what to stamp on every number
+* why a section name in the corpus is checkable where chapter prose is not
+
+Read those two before starting, not when something goes wrong.
 
 ---
 
 ## Handing this to Claude Code
 
 **Part 1 ends here.** Everything from this point on is written to be handed to an AI coding assistant
-that will do the bulk of the scoring: the vocabulary, the decision procedure, the partitioning, the
-review pass, and the traps that produce clean-looking wrong answers. It is a working method, not a
+that will do the bulk of the scoring:
+
+* the vocabulary
+* the decision procedure
+* the partitioning
+* the review pass
+* the traps that produce clean-looking wrong answers
+
+It is a working method, not a
 description of one, which is why its register changes from here -- it is addressed to the agent, not
 to you.
 

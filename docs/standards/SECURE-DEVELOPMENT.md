@@ -257,9 +257,14 @@ That is the requirement. Many projects cannot meet it, and the honest response i
 | SD-4.2 | **MUST** record self-review as a deviation naming the control not met, the compensating set actually in force, and the event that ends it -- usually a second maintainer joining | A register entry under [section 13](#13-deviations-and-risk-acceptance) |
 | SD-4.3 | **MUST NOT** let any published claim imply the compensating set is an independent audit | The wording of the claim |
 
-The set is typically blocking static analysis and dependency audit that cannot be waived, AI-run
-review a human arbitrates, branch protection with required checks, and no direct pushes to the
-trunk. List each only where it is actually in force.
+The set is typically:
+
+* blocking static analysis and dependency audit that cannot be waived
+* AI-run review a human arbitrates
+* branch protection with required checks
+* no direct pushes to the trunk
+
+List each only where it is actually in force.
 
 ### The confidence effect bites hardest in self-review
 
@@ -581,8 +586,11 @@ a deployment's data: backups and disaster recovery stay in the operator's column
 | SD-10.17 | **MUST NOT** describe a hardened build as tamper-proof. Position it as raising analysis cost, and keep secrets and authorization decisions out of any artifact an adversary holds | The wording of the claim |
 
 For code whose source is published, obfuscating or compiling the shipped artifact protects nothing
-that matters: there is no confidentiality to preserve, the tamper resistance gained is marginal, and
-where a copyleft license requires corresponding source it creates friction with that obligation.
+that matters:
+
+* there is no confidentiality to preserve
+* the tamper resistance gained is marginal
+* where a copyleft license requires corresponding source, it creates friction with that obligation
 
 The vendors concede the limit themselves. One obfuscation product's documentation states it is not
 good at memory protection or anti-debug, and that its runtime-data protection holds only if the
@@ -741,8 +749,11 @@ ignored and quietly hollow out the document.
 
 Every gate in this document is release-triggered, so a project that ships nothing for a year runs no
 security review in that year. Three ways a control degrades leave no trace a per-change gate would
-see: a suppression added, a job flipped from blocking to advisory, and a deviation whose ending
-trigger fired while its compensating control quietly became permanent.
+see:
+
+* a suppression added
+* a job flipped from blocking to advisory
+* a deviation whose ending trigger fired while its compensating control quietly became permanent
 
 | ID | Requirement | Evidence |
 |---|---|---|
@@ -810,9 +821,15 @@ because there is no agreed original for a confirming run to mirror. Scope is als
 is priced on, so SD-15.6 is the difference between comparable bids and a surprise.
 
 If you are running a formal assessment against a published verification standard, the method is in
-[running a large security-standard assessment with AI agents](../ASVS-ASSESSMENT.md) -- verdict
-vocabulary, why `unverified` must never read as a pass, evidence anchors a machine can re-check,
-corpus pinning, and how to read a movement in a score. Do not build a second procedure beside it.
+[running a large security-standard assessment with AI agents](../ASVS-ASSESSMENT.md). It carries:
+
+* verdict vocabulary
+* why `unverified` must never read as a pass
+* evidence anchors a machine can re-check
+* corpus pinning
+* how to read a movement in a score
+
+Do not build a second procedure beside it.
 
 ---
 

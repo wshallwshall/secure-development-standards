@@ -889,9 +889,14 @@ and a required merge check that rejected it outright. Evidence that does not exi
 on request, and citing it is worse for a reviewer than declaring the gap.
 
 **Rule.** Before citing a convention as evidence, **count it in the actual history**. If the count is
-zero, record it as designed-and-blocked, name the structural blocker, and add a drift test that fails
-if the claim is reinstated while the practice still contradicts it. Anything enforced by convention
-alone is not a control -- it fails silently the moment attention moves.
+zero, do three things:
+
+* record it as designed-and-blocked
+* name the structural blocker
+* add a drift test that fails if the claim is reinstated while the practice still contradicts it
+
+Anything enforced by convention alone is not a control -- it fails silently the moment attention
+moves.
 
 ### Correct a published overclaim visibly
 
@@ -1047,10 +1052,17 @@ has a blind spot that is easy to mistake for coverage. A package that genuinely 
 files, is years old, and is served under its own canonical name still passes every automated check
 **while being a different project than the one you intended**.
 
-**Rule.** Gate on existence, publishing history, an age floor, and canonical-name identity -- failing
-closed when the index is unreachable or when zero distributions were examined (a receipt, exactly as
-in Part 1). Then keep **human verify-before-add** for the intended-identity class, record a dated vet
-note with the dependency, and hash-lock the result. Never install ad hoc: declare it and re-lock.
+**Rule.** Gate on four things:
+
+* existence
+* publishing history
+* an age floor
+* canonical-name identity
+
+Fail closed when the index is unreachable or when zero distributions were examined -- a receipt,
+exactly as in Part 1. Then keep **human verify-before-add** for the intended-identity class, record a
+dated vet note with the dependency, and hash-lock the result. Never install ad hoc: declare it and
+re-lock.
 
 ---
 
