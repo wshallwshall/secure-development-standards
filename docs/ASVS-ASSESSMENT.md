@@ -107,7 +107,7 @@ Most of those fields exist only so that a later reader can disagree with the ver
 rule produced it, so two sessions' verdicts can be compared rather than merely counted. Its domain
 is a step number from the decision procedure, or the name of a rule written outside it. `ships-off`
 above is the second form: a `partial` cell names which of that grade's three shapes fired. A
-`needs-review` cell names the rule that applies after the sequence has run. `reviewer` and
+`needs-review` cell names `assessors-split` or `blocked-on-owner`. `reviewer` and
 `scored_at` make staleness visible. `verified_at` is a commit id and not a time, whatever the `_at`
 suggests. It says which tree was read, which is what every later reconciliation argument turns on.
 A cell carrying only a grade and a file path is not a cheaper version of this. It is a verdict that
@@ -221,15 +221,17 @@ The full mechanics are in
 * why a section name in the corpus is checkable where chapter prose is not
 
 Read those three before starting, not when something goes wrong. All three sit past
-[Handing this to Claude Code](#handing-this-to-claude-code), in the half addressed to the agent.
-Cross it on purpose: the corpus is your work item, and its mechanics are written there.
+[Handing this to Claude Code](#handing-this-to-claude-code), which is the boundary where this page
+stops addressing you and starts addressing the agent. Cross that boundary on purpose: the corpus is
+your work item, and its mechanics are written on the far side of it.
 
 ---
 
 ## Handing this to Claude Code
 
-**Part 1 ends here.** Everything from this point on is written to be handed to an AI coding assistant
-that will do the bulk of the scoring:
+**Part 1 ends here.** The command below hands the agent everything from *The standard supplies no
+verdict rubric* on, so a rule written above that heading never reaches it. What follows is written to
+be handed to an AI coding assistant that will do the bulk of the scoring:
 
 * the vocabulary
 * the decision procedure
@@ -249,7 +251,8 @@ To start, open Claude Code in the repository you want assessed and paste this:
 Read https://secure-development-standards.pages.dev/ASVS-ASSESSMENT.md
 from the heading "The standard supplies no verdict rubric" onward, and use it as the method for
 assessing this repository against OWASP ASVS 5.0. Begin by building the pinned corpus, and
-score nothing until that corpus exists.
+score nothing until that corpus exists. Ask me for the declared scope, the target level and the
+one posture to assess against; do not choose them yourself.
 ```
 
 The first pass will not produce a score, and it should not. It builds the corpus. Anything that
@@ -379,7 +382,7 @@ text -- as its own figure, and say on every verdict total that it covers examine
 **The word itself was the bug.** The state meant *"inherited from an earlier assessment and never
 re-read against the standard's own text"*. It was read as *"nobody has ever looked at this"*.
 
-Those two readings are **re-verification debt** and **unexplored surface**, and they imply completely
+Those two readings are **re-derivation debt** and **unexplored surface**, and they imply completely
 different work: one is a re-derivation against text you already hold, the other is an investigation.
 Everything downstream -- effort estimates, sequencing, what a reader thinks the deficit is -- forks on
 which one the reader assumed.
@@ -459,8 +462,9 @@ The sequence, first match wins:
 5. **Otherwise** -> `partial`.
 
 **`needs-review` is not a branch of the sequence.** Step 5 is a catch-all, so a single assessor
-running 1-5 never reaches it. Apply it after the sequence has run: if two assessors following 1-5
-disagree on a cell, that cell is `needs-review`, with the disagreement recorded.
+running 1-5 never reaches it. Apply `assessors-split` after the sequence has run: if two assessors
+following 1-5 disagree on a cell, that cell is `needs-review`, with the disagreement recorded. A
+cell blocked on a decision only its owner can make takes the same grade under `blocked-on-owner`.
 
 **The ordering is load-bearing, not cosmetic.** Asking *"is the verb's subject in scope?"* before
 *"does code implement the verb?"* produces a different answer than the reverse. Both orderings are
@@ -1076,7 +1080,7 @@ means the system got safer:
 | The count moved because... | Did the posture improve? | What actually happened |
 |---|---|---|
 | A control was **built, or turned on by default** | **Yes** | The verb is now satisfied by shipped code |
-| A cell was **re-verified against the requirement text** for the first time (`unverified` -> anything) | No | The survey advanced. A cell moving `unverified` -> `pass` is a *discovery*, or a paraphrase-based grade being corrected -- never an improvement |
+| A cell was **re-derived against the requirement text** for the first time (`unverified` -> anything) | No | The survey advanced. A cell moving `unverified` -> `pass` is a *discovery*, or a paraphrase-based grade being corrected -- never an improvement |
 | A **scope boundary was stated** (-> `na`) | No | The requirement left the denominator. Identical code, smaller question |
 | A **rule was applied more carefully** (re-grade in either direction) | No | The assessment got more accurate. Some of these move *down* |
 | **The standard moved** (a new release changes text, levels, or the requirement count) | No | The denominator changed. Zero code changed, zero assessment work happened -- and this is the cause most easily mistaken for progress |
@@ -1251,7 +1255,7 @@ opened.
 | 4 | Open the anchor and **read the line**. Does the token resolve, and does that line support the claim? | Decorative citations |
 | 5 | For any absence claim, **run its positive control first**, then check that its **stated reintroduction still trips the pattern** | Vacuous greps; a pattern blind to what it ruled out |
 | 6 | If `na`: is there a **written rationale about the verb's subject**, and is its strength graded? | `na` as a work-avoidance grade |
-| 7 | Does the cell record **which rule fired**, and **who** set it **when**? | Unresolvable later disputes |
+| 7 | Does the cell record **which rule fired**, **who** set it **when**, and **which tree was read**? | Unresolvable later disputes |
 
 Time this pass in a pilot section of your own, and budget it as its own line rather than as slack
 inside the scoring. It is the highest-yield activity in the entire exercise.
@@ -1353,7 +1357,7 @@ Ordered roughly by cost. The first is the most common defect of the lot.
 | Restating the requirement as evidence | "The system enforces X" in the evidence field | Evidence must be a resolvable path + token |
 | Citing a file that does not support the claim | Real code, right area, wrong verb | Verb-and-subject check before opening code |
 | Scoring a paraphrase | Confident reasoning, requirement text never quoted | Quote the pinned text into the cell |
-| Vacuous absence proof | A grep that returns nothing because the token never existed | Mandatory positive control |
+| Vacuous absence proof | A grep that returns nothing because the token never existed | Mandatory positive control and stated reintroduction |
 | Vacuous verification | A green check against an instrument blind to the claim | Name the question and what the tool returns |
 | Silent `na` creep | Sensible-sounding exclusions accumulating | Mandatory rationale on the verb's subject; graded strength |
 | Inherited verdicts laundered into passes | A total that merges derived and inherited grades | `unverified` is its own bucket, excluded from pass |
