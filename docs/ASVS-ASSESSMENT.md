@@ -39,8 +39,8 @@ and carries a paste-ready command. Build the pinned corpus first, and score noth
 
 ## Why a fluent verdict is the defect
 
-**Almost every defect this method exists to catch is an instrument answering a narrower question
-than the one you asked, and looking clean while it does it.**
+**Almost every defect this method exists to catch has one shape: the question that got answered was
+narrower than the question you asked.**
 
 We scored a batch of requirements against condensed wording. A requirement carrying two conditions
 had become a summary carrying one. Every cell under it was honestly reasoned and still wrong, and
