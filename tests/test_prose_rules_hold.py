@@ -496,6 +496,94 @@ class AListIsNotOneLongSentence(unittest.TestCase):
         self.assertEqual(["the first check", "the second check"], units)
 
 
+HS_20_CAP = 300
+
+# A link's TARGET is not read by anybody, and counting it is how this measure lies. Measured before
+# the cap was set: 24 sentences exceed 300 characters of markdown and only 9 exceed 300 characters
+# as rendered. The other 15 are ordinary sentences of 30-odd words carrying 200 characters of URL --
+# `[the 2026 SBOM minimum elements](https://www.cisa.gov/sites/default/files/2026-...)`. Failing
+# those would ask an author to shorten prose that is already short, or to drop a citation.
+LINK = re.compile(r"\[([^\]]*)\]\([^)]*\)")
+BARE_URL = re.compile(r"<https?://[^>]*>")
+
+
+def rendered(sentence: str) -> str:
+    """What a reader sees: link text without its target, and no emphasis markers."""
+    text = BARE_URL.sub("link", LINK.sub(r"\1", sentence))
+    return text.replace("**", "").replace("`", "").replace("*", "")
+
+
+class NoSentenceRunsPast300RenderedCharacters(unittest.TestCase):
+    """HS-20. A hard fail, which the other length measures deliberately are not.
+
+    WHY THIS ONE CAN BE A GATE WHEN THE 30-WORD MEASURE CANNOT. The 30-word figure is a ratchet
+    because the long tail of this corpus is where the engineering warnings live, and a cap there
+    would redden sentences doing real work. 300 rendered characters is roughly twice that, and it is
+    not a preference about pace: at the site's 66ch measure it is a paragraph-shaped block of text
+    presented as one sentence, and a reader tracking back to the start of the next line has lost the
+    subject four lines ago. Every one of the nine that existed was a semicolon list, a citation
+    swallowed into its own claim, or a subject with six items in it.
+
+    The corpus is at ZERO, which is what makes a hard fail legitimate under this suite's design rule.
+    The measure is mechanical, so there is no judgment for it to get wrong -- unlike B-7, it cannot
+    misread what a sentence is about, because it does not look.
+    """
+
+    def test_no_sentence_exceeds_the_cap(self):
+        offenders = []
+        for relpath in prose_files():
+            for joined, spans in paragraphs(t.read(t.REPO_ROOT / relpath)):
+                offset = 0
+                for sentence in SENTENCE_SPLIT.split(joined):
+                    start = joined.find(sentence, offset)
+                    offset = start + len(sentence) if start >= 0 else offset
+                    shown = rendered(sentence)
+                    if len(shown) > HS_20_CAP:
+                        line = line_at(spans, start if start >= 0 else 0)
+                        offenders.append(f"{relpath}:{line}: {len(shown)} chars -- {shown[:90]}...")
+        self.assertEqual(
+            [],
+            offenders,
+            "these sentences run past 300 characters as a reader sees them:\n  "
+            + "\n  ".join(offenders)
+            + "\nRewrite rather than splitting on the nearest comma. Every one of the nine this cap "
+            "was set against was a list wearing semicolons, a citation swallowed into the claim it "
+            "supports, or a subject carrying six items -- and each had a structure already waiting "
+            "for it. PD-11 says where a series goes.",
+        )
+
+    def test_the_measure_ignores_a_link_target_but_not_its_text(self):
+        """The whole reason this is measured on rendered text. Planted, both directions."""
+        long_url = "https://example.invalid/" + "x" * 400
+        self.assertLess(
+            len(rendered(f"See [the memorandum]({long_url}) for the wording.")),
+            HS_20_CAP,
+            "a short sentence carrying a long URL was measured as slop. 15 of the 24 raw hits were "
+            "exactly this shape, and failing them asks an author to drop a citation.",
+        )
+        self.assertGreater(
+            len(rendered("[" + "word " * 70 + "](/x)")),
+            HS_20_CAP,
+            "link TEXT is read and must count. Stripping the whole link would let a sentence hide "
+            "inside one.",
+        )
+
+    def test_the_scan_read_the_corpus(self):
+        """The empty-match guard. An absence scan passes trivially against no sentences."""
+        counted = sum(
+            1
+            for relpath in prose_files()
+            for joined, _ in paragraphs(t.read(t.REPO_ROOT / relpath))
+            for s in SENTENCE_SPLIT.split(joined)
+            if s.strip()
+        )
+        self.assertGreater(
+            counted,
+            3_000,
+            f"the cap examined {counted} sentences, which is too few to have read the corpus.",
+        )
+
+
 class ABoldLedeEndsASentence(unittest.TestCase):
     """The third instrument defect in the same family, and the largest of them.
 
@@ -584,7 +672,9 @@ class ABoldLedeEndsASentence(unittest.TestCase):
 # claimed 110; only 50 carry a real three-item series, and only 20 of those 50 were worth
 # extracting. The other 30 are compound clauses, rhetorical builds, three-word noun runs and series
 # already sitting inside a list -- all of which a second list would make worse.
-BASELINE_LONG_SENTENCES = 229       # sentences over 30 words
+#
+# 229 -> 219 when the nine sentences over 300 rendered characters were rewritten for HS-20.
+BASELINE_LONG_SENTENCES = 219       # sentences over 30 words
 BASELINE_FAT_TABLE_CELLS = 30       # table cells over 40 words
 
 # How far below baseline a metric may drift before the test asks for the baseline to be lowered.

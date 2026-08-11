@@ -36,7 +36,7 @@ identifiers are keyed to their definitions further down, one table per group.
 
 | What fires | Rules | Result |
 |---|---|---|
-| [test_prose_rules_hold.py](https://github.com/wshallwshall/secure-development-standards/blob/main/tests/test_prose_rules_hold.py) | B-3, B-5, B-6 | hard fail |
+| [test_prose_rules_hold.py](https://github.com/wshallwshall/secure-development-standards/blob/main/tests/test_prose_rules_hold.py) | B-3, B-5, B-6, HS-20 | hard fail |
 | the ASCII gate in [gates.yml](https://github.com/wshallwshall/secure-development-standards/blob/main/.github/workflows/gates.yml) | HS-11 | hard fail |
 | [test_a_links_text_never_wraps.py](https://github.com/wshallwshall/secure-development-standards/blob/main/tests/test_a_links_text_never_wraps.py) | HS-16 | hard fail |
 | [test_docs_do_not_drift.py](https://github.com/wshallwshall/secure-development-standards/blob/main/tests/test_docs_do_not_drift.py) | PD-10 | hard fail |
@@ -105,7 +105,21 @@ about who wrote a page.
 | `HS-16` | a markdown link sits on ONE line, even where that pushes the line past HS-14's 100 characters. This is the stated exception to HS-14, and it is the only one | yes |
 | `HS-3` | one fact lives in one place. A second copy is not redundancy, it is the place the two will silently disagree | no |
 | `HS-18` | a lint hit is a prompt to a human reader, never evidence of who wrote a page. No rule on this page may be cited to support a claim about authorship | no |
+| `HS-20` | no sentence runs past 300 characters AS A READER SEES IT. A link's target does not count, because nobody reads it. This is a cap and not a ratchet, and it is the only length rule here that hard-fails | yes |
 | `HS-19` | where a sentence has an actor, put the actor at the front. The case this rule is about is a passive that names its own actor in a trailing "by" phrase, because that one can always be turned round. A passive with no actor to name is not a violation and is often the accurate form | no, and see below |
+
+**Why HS-20 caps where every other length measure here ratchets.** The 30-word figure is ratcheted
+because the long tail of this corpus is where the engineering warnings live. 300 rendered characters
+is roughly twice that, and it stopped being about pace. At the site's 66-character measure it is a
+paragraph-shaped block presented as one sentence, and a reader tracking back to the next line lost
+the subject four lines ago.
+
+**The measure ignores a link's target, and that distinction is the whole rule.** 24 sentences
+exceeded 300 characters of markdown. Only 9 exceeded it as rendered. The other 15 are ordinary
+sentences of thirty-odd words carrying two hundred characters of URL. Failing those would ask an
+author to shorten prose that is already short, or to drop a citation. All nine real ones were
+rewritten rather than split: each was a list wearing semicolons, a citation swallowed into the claim
+it supports, or a subject carrying six items.
 
 **Why HS-16 outranks HS-14.** The site is built by Jekyll, and `jekyll-relative-links` rewrites
 relative links with a regular expression whose `.` excludes a newline. A link whose text wraps is
@@ -421,4 +435,4 @@ the same identifier, and allocate a new one when you change what it demands.
 rule, which is what HS-11 already demands and what the gate already runs. Two names for one rule
 split its citations, which is the defect HS-3 describes. PD-5 is spent the same way: the toolkit
 issues it for something else, and the rule that draft gave it is PD-8 pointing the other way. After
-this page, the next free numbers are B-18, HS-20 and PD-12.
+this page, the next free numbers are B-18, HS-21 and PD-12.

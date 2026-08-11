@@ -132,15 +132,15 @@ own reasoning.*
   makes reviewer attention the binding constraint.
 - **Your reviewers stop doing machine work.** Where mechanical findings are produced automatically
   and attached to the change, review comments move off mechanical matters and onto design and
-  intent **[external]** (Sadowski et al., *Communications of the ACM*, 2018; Bacchelli and Bird,
-  ICSE 2013 -- evidence that attention moves, not that review gets better).
+  intent **[external]**. What the evidence shows is that attention moves, not that review gets
+  better (Sadowski et al., *Communications of the ACM*, 2018; Bacchelli and Bird, ICSE 2013).
 - **Fixing it before it merges takes fewer steps than fixing it after release.** That is a claim
   about steps, not about cost: caught after release, the same problem costs a release, possibly a
   rollback, possibly a conversation with people outside your team. The ratio you have heard -- ten
-  times, a hundred times -- traces to a study nobody has ever produced, and the largest attempt to
-  test the effect, across 171 projects, did not find it **[external]** (Menzies, Nichols et al.,
-  *Empirical Software Engineering*, 2016, measuring effort on the issue itself, not the release
-  work around it).
+  times, a hundred times -- traces to a study nobody has ever produced. The largest attempt to test
+  the effect, across 171 projects, did not find it **[external]**. That attempt measured effort on
+  the issue itself rather than the release work around it (Menzies, Nichols et al., *Empirical
+  Software Engineering*, 2016).
 - **It takes the decision out of the moment.** A blocking check resolves "is this good enough"
   against structure rather than against whoever argues hardest or ranks highest, and it makes no
   exception late on a Friday. That is also the argument to make to your own engineers: the check
