@@ -26,9 +26,9 @@ is explicit about both.
 **Not for you** if you want hooks, prompts, configuration or a product name. This page ships none of
 them, confers no certification, and makes no speed claim.
 
-**Where to start.** One question classifies most changes: does any code path in it touch or protect
-restricted data in production? If you cannot yet prove it never will, the answer is yes, and that
-resolves to the strictest tier on its own.
+**Where to start.** One question classifies most changes: is the code itself a protective control,
+or does the deployed system carry restricted data at runtime? If you cannot yet prove it does not,
+the answer is yes, and that resolves to the strictest tier on its own.
 
 ## What this costs you, and where it does not apply
 
@@ -110,10 +110,12 @@ Nothing here is always-on except a short floor. Everything else is a dial set by
 
 ### Classify in one question first
 
-> **Does any code path in this change touch -- or protect -- regulated or otherwise restricted data
-> in production, or can you not yet prove that it never will?**
+> **Is the code in this change itself a protective control, or does the deployed system carry
+> regulated or otherwise restricted data at runtime -- or can you not yet prove that it does not?**
 
-If yes, or if you cannot prove it, the change is **T3**. Only on a confident no does the reach axis
+If yes, or if you cannot prove it, the change is **T3**. That is D2 or D3, and reach cannot clamp it
+down. A change whose production path carries restricted data while development and test stay
+synthetic is **D1**, which floors at T2 rather than T3. Only on a confident D0 does the reach axis
 become the tiebreaker between the lower tiers.
 
 Most day-to-day work in a system that carries sensitive data resolves on this question alone. The
@@ -183,8 +185,9 @@ stricter, never laxer, so no cell can accidentally be more permissive than a cel
 
 Three ordered rules.
 
-1. **The sensitivity ratchet dominates.** Touches or protects restricted data, so at least T3. Reach
-   never clamps this down.
+1. **The sensitivity ratchet dominates.** D2 or D3 -- the code is a protective control, or the
+   deployed system carries restricted data at runtime -- so at least T3. D1 floors at T2. Reach
+   never clamps either down.
 2. **Reach sets the floor** among the remaining cells.
 3. **Fail closed.** When either axis is unknown or unresolvable -- a new repository, an undecided
    data flow, a "might touch it later" -- or when the change touches a production or
@@ -714,7 +717,7 @@ to is owned by [Sequence allocation](https://claude-multisession.pages.dev/SEQUE
 | When | Rule |
 |---|---|
 | Proposing a control | Name which of the five failure modes it neutralizes. None means decoration |
-| Classifying a change | One question first: does any path touch or protect restricted data in production |
+| Classifying a change | One question first: is the code a protective control, or does the deployed system carry restricted data at runtime |
 | Classifying a change | Sensitivity ratchets up and dominates reach; reach only scales the low-sensitivity cells |
 | Classifying a change | Unknown, unresolvable, or production-facing: clamp up to the strictest tier |
 | Classifying a change | Emit a recorded one-line reason, or it was assumed, not classified |
