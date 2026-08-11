@@ -93,9 +93,10 @@ information, and each says what to write in its place.
 **What a corpus of this model's own prose says about B-3.** The openers in B-3's row run at 0.05 per
 1,000 words across 6.98 million words of assistant chat. In 1.6 million words of markdown the model
 wrote to disk they run at 0.01 per 1,000, which is nine hits. The construction barely reaches a
-written file, which is why B-3 is cheap to enforce. It also says the risk is text pasted in from a
-chat window rather than text composed in one. Read that as a statement about where to look, never
-about who wrote a page.
+written file, which is why B-3 is cheap to enforce.
+
+It also says the risk is text pasted in from a chat window rather than text composed in one. Read
+that as a statement about where to look, never about who wrote a page.
 
 ---
 
@@ -120,9 +121,10 @@ the subject four lines ago.
 **The measure ignores a link's target, and that distinction is the whole rule.** 24 sentences
 exceeded 300 characters of markdown. Only 9 exceeded it as rendered. The other 15 are ordinary
 sentences of thirty-odd words carrying two hundred characters of URL. Failing those would ask an
-author to shorten prose that is already short, or to drop a citation. All nine real ones were
-rewritten rather than split: each was a list wearing semicolons, a citation swallowed into the claim
-it supports, or a subject carrying six items.
+author to shorten prose that is already short, or to drop a citation.
+
+All nine real ones were rewritten rather than split: each was a list wearing semicolons, a citation
+swallowed into the claim it supports, or a subject carrying six items.
 
 **Why HS-16 outranks HS-14.** The site is built by Jekyll, and `jekyll-relative-links` rewrites
 relative links with a regular expression whose `.` excludes a newline. A link whose text wraps is
@@ -134,17 +136,20 @@ correctly, which is the surface the change gets reviewed on.
 above. The numbers only say the gate is cheap and still has work to do. This corpus holds 1,175
 double hyphens and no em dash at all, and 253 distinct prose blobs across this repository's history
 carry zero non-ASCII bytes. Against that, the em dash runs at 12.51 per 1,000 words in 1.6 million
-words of markdown this model wrote to disk. So the gate costs the house nothing and still catches
-pasted-in text. It is not a detector, and HS-18 forbids reading it as one.
+words of markdown this model wrote to disk.
 
-**Why HS-18 is a rule and not a footnote.** The evidence for it is the strongest on this page, and it
-cuts against the page itself. The control corpus behind every ratio measured here turned out to be
-94% prompts written by another instance of the same model. Cleaning the control did not rescue it.
-The turns a person actually typed are terse instructions rather than prose, so the comparison never
-had a matched register to begin with. Published detector work fails the same way. Seven tools once
-flagged 61% of essays by non-native English writers as machine-written, and a 2026 re-run of a modern
-tool still reports 23%. A pattern on this page can tell a writer that a sentence is padded. It can
-never tell a reader who typed it.
+So the gate costs the house nothing and still catches pasted-in text. It is not a detector, and
+HS-18 forbids reading it as one.
+
+**Why HS-18 is a rule and not a footnote.** The evidence for it is the strongest on this page, and
+it cuts against the page itself. The control corpus behind every ratio measured here turned out to
+be 94% prompts written by another instance of the same model. Cleaning the control did not rescue
+it. The turns a person actually typed are terse instructions rather than prose, so the comparison
+never had a matched register to begin with.
+
+Published detector work fails the same way. Seven tools once flagged 61% of essays by non-native
+English writers as machine-written, and a 2026 re-run of a modern tool still reports 23%. A pattern
+on this page can tell a writer that a sentence is padded. It can never tell a reader who typed it.
 
 ---
 
@@ -253,14 +258,17 @@ checker in this repository, so nothing could see it.
 **The general form was measured and does not survive.** "A count in a lead-in must match the list
 under it" fires on 46 lead-ins across this corpus, and 37 already agree. All 9 that disagree are
 false positives, and every one was read. They include `recurred twice inside one week`, `Every one
-of these`, and `This section and the three after it are the argument`. A cardinal in a lead-in
-usually counts something other than the list beneath it. That is B-7's shape at nine hits and zero
-precision, so the wide rule is rejected on the same ground.
+of these`, and `This section and the three after it are the argument`.
+
+A cardinal in a lead-in usually counts something other than the list beneath it. That is B-7's shape
+at nine hits and zero precision, so the wide rule is rejected on the same ground.
 
 **What makes the census checkable is that both sides are structured.** The sentence names a number
 and a route. The table names routes and rules. Nothing has to infer what the number refers to, which
-is the whole of the difference. Where a future count sits against something equally structured, gate
-it and say so in this row. Where it does not, this rule is a review item and reads as one.
+is the whole of the difference.
+
+Where a future count sits against something equally structured, gate it and say so in this row.
+Where it does not, this rule is a review item and reads as one.
 
 **The four that were found are recorded rather than left implicit.** Three were written by the
 session that then falsified them:
@@ -308,8 +316,10 @@ rules it was enforcing correctly, so the cost of a bad gate is not limited to th
 **B-7 is the instructive one.** Every candidate pattern was run over this corpus and every hit was
 read. "cleanly" and its siblings fired 16 times, and not one was the self-praise the rule bans. The
 hits were ordinary technical vocabulary: `git merges both cleanly`, `a session that exits cleanly`,
-`an alias stub that resolves cleanly`. The rule turns on WHAT IS BEING DESCRIBED, which no pattern
-over the text can see. Enforcing it would redden sixteen correct sentences to catch nothing.
+`an alias stub that resolves cleanly`.
+
+The rule turns on WHAT IS BEING DESCRIBED, which no pattern over the text can see. Enforcing it
+would redden sixteen correct sentences to catch nothing.
 
 **B-10 went the same way on its single hit.** That hit was `## The one question: does failing it stop
 the change?`, which the section immediately answers. It is not the rhetorical opener the rule exists
@@ -322,12 +332,13 @@ left to a human.
 **HS-19 arrived from an outside checklist and lands where B-7 landed.** Passive constructions run to
 656 here, or 10.89 per 1,000 words. Only 37 name their actor in a trailing "by" phrase, which is the
 subset a pattern could turn round without judgment. All 37 were read. Two would read better
-inverted. The rest already put the right thing first. One reads `a codebase is judged by the
-composite`, another `an advisory measurement that prints to a job log is read by nobody`. The
-remaining 619 have no actor available to front, and inventing one would be a fabrication. `No
-scanner, format or assessor is recommended anywhere in the set` names nobody, because nobody is
-recommended. So
-the wide pattern is wrong 619 times, and the narrow one is wrong 35 times out of 37.
+inverted.
+
+The rest already put the right thing first. One reads `a codebase is judged by the composite`,
+another `an advisory measurement that prints to a job log is read by nobody`. The remaining 619 have
+no actor available to front, and inventing one would be a fabrication. `No scanner, format or
+assessor is recommended anywhere in the set` names nobody, because nobody is recommended. So the
+wide pattern is wrong 619 times, and the narrow one is wrong 35 times out of 37.
 
 **The rule sheet was the second-heaviest page on that measure when HS-19 was written**, at 64 hits.
 No rate is restated here. This page has grown by half since that measurement and a per-1,000 figure
@@ -336,12 +347,13 @@ recorded rather than fixed. HS-19 is a review item, and a page that measures its
 edits to a better number is doing the thing PD-8 warns about.
 
 **The candidates below failed a different test.** B-7, B-10, HS-19 and PD-11 were rejected because
-no pattern can see the distinction they draw. HS-3 was rejected because the fix is an editorial call.
-Each of those is an invitation to write a better pattern. The ones below are not. They were measured
-against a corpus of this model's own output and found to describe nothing that happens here, so a
-better detector would still be detecting nothing wrong. They are recorded rather than reviewed,
-because a review item a reviewer would be wrong to raise is the argument about taste this page opens
-by refusing.
+no pattern can see the distinction they draw. HS-3 was rejected because the fix is an editorial
+call. Each of those is an invitation to write a better pattern. The ones below are not.
+
+They were measured against a corpus of this model's own output and found to describe nothing that
+happens here, so a better detector would still be detecting nothing wrong. They are recorded rather
+than reviewed, because a review item a reviewer would be wrong to raise is the argument about taste
+this page opens by refusing.
 
 **B-17 is the exception to that sourcing, and it reached the same place.** It came from an outside
 editing checklist rather than this model's habits, and was measured here. The same checklist named
@@ -358,13 +370,17 @@ two forms already held here: one is B-5 and enforced, the other is B-15 and alre
 | `B-17` | "very", "just" and "really" deleted as filler, and "that" deleted wherever it can go | the first three fire 18 times across 60,831 words. Every hit was read and every one is load-bearing, as in `the very next re-run passed` and `not just the pointer`. The third has no hits at all. "that" fires 992 times. 12 have the shape of a deletable complementizer, and reading those 12 leaves 4: the rest are demonstratives and subject relatives the proxy miscaught, as in `recorded that judgment once` |
 
 **Why the vocabulary rules were dropped rather than narrowed.** The cost case for them is real: they
-fire on nothing, so a gate would be free. The design rule above says hard-fail ONLY where a violation
-is unambiguous, which is a filter on gates and not a warrant for one. Cleanliness alone does not earn
-enforcement, and treating it as if it did is how those six rules came to be written. The reading
-settles it. In 1.6 million words of markdown this model wrote to disk, these patterns fire 28 times.
-27 of those are the draft sheet quoting its own ban list, and the 28th is correct prose. B-7 is the
-same shape and it fires 1,462 times in chat, the highest rate of any candidate here. Base rate is not
-what separates a good gate from a bad one. Precision when it fires is, and these measure zero.
+fire on nothing, so a gate would be free. The design rule above says hard-fail ONLY where a
+violation is unambiguous, which is a filter on gates and not a warrant for one. Cleanliness alone
+does not earn enforcement, and treating it as if it did is how those six rules came to be written.
+
+The reading settles it. In 1.6 million words of markdown this model wrote to disk, these patterns
+fire 28 times. 27 of those are the draft sheet quoting its own ban list, and the 28th is correct
+prose.
+
+B-7 is the same shape and it fires 1,462 times in chat, the highest rate of any candidate here. Base
+rate is not what separates a good gate from a bad one. Precision when it fires is, and these measure
+zero.
 
 **The record above is a table for a reason.** An evidence paragraph naming those words in prose takes
 13 hits from the patterns proposed for them. Backticks do not help, because the scanner strips fences
@@ -389,10 +405,11 @@ would exist to detect. A hard fail is closed on the same ground that closed B-7,
 the scale.
 
 **A ratchet was the serious proposal, and this history refuses it.** Take the baseline at the commit
-that added the prose checker. That is where a baseline would have been taken. Every one of the eight
-commits after it is above that line, on all bold and on the narrow in-sentence count alike. The
-sentence ratchet held green across the same eight commits. One of the reddened commits is the one
-that landed this page.
+that added the prose checker. That is where a baseline would have been taken.
+
+Every one of the eight commits after it is above that line, on all bold and on the narrow
+in-sentence count alike. The sentence ratchet held green across the same eight commits. One of the
+reddened commits is the one that landed this page.
 
 Over 120 commits the in-sentence count rose 21 times, and all 21 are ordinary authoring work. The
 rate fell from 14.15 to 6.60 per 1,000 over that span with nothing enforcing it. There is no drift
@@ -405,19 +422,21 @@ writes to disk runs at 29.18 per 1,000 in the same page-size band, against 16.98
 that says 17 is better than 29 for a reader, and this page does not enforce a preference under a
 measurement's colours.
 
-**The word "honest" was measured and left alone.** It fires 31 times across 9 of the 18 files, and 83
-times across this repository's history. Every hit is load-bearing in a document set whose subject is
-stating limits truthfully, as in `an honest scorecard says so out loud`. It also runs at 0.35 per
-1,000 in this model's chat and 0.44 in the files it writes, so the file register is the higher one.
-That is B-7's case at twice the scale. It is recorded so the next reader who finds the word on an
-imported list does not measure it again.
+**The word "honest" was measured and left alone.** It fires 31 times across 9 of the 18 files, and
+83 times across this repository's history. Every hit is load-bearing in a document set whose subject
+is stating limits truthfully, as in `an honest scorecard says so out loud`.
 
-**One number this section does not print.** Every candidate above was first scored as a ratio against
-a control corpus of user turns. That control was 94% prompts written by another instance of the same
-model, because the scan never filtered the flag that marks them. Removing them leaves 1.67 million
-words against 26.7 million, and what remains is terse instruction rather than prose. The ratios are
-withdrawn and only absolute counts are quoted above. The finding is worth more than the ratios were,
-and HS-18 is where it is written as a rule.
+It also runs at 0.35 per 1,000 in this model's chat and 0.44 in the files it writes, so the file
+register is the higher one. That is B-7's case at twice the scale. It is recorded so the next reader
+who finds the word on an imported list does not measure it again.
+
+**One number this section does not print.** Every candidate above was first scored as a ratio
+against a control corpus of user turns. That control was 94% prompts written by another instance of
+the same model, because the scan never filtered the flag that marks them. Removing them leaves 1.67
+million words against 26.7 million, and what remains is terse instruction rather than prose.
+
+The ratios are withdrawn and only absolute counts are quoted above. The finding is worth more than
+the ratios were, and HS-18 is where it is written as a rule.
 
 ---
 
@@ -470,10 +489,11 @@ HS-16, the running check is the definition of record. The words here describe wh
 
 **The gaps were checked against the toolkit, and they are occupied.** The toolkit repository this
 numbering came from was read directly rather than inferred from this page. Its sheet issues B-1 to
-B-10, HS-1 to HS-16, PD-1 to PD-8 and OPEN-1 to OPEN-6, with no gaps of its own. So the next free
-number is the one above the highest issued, never the lowest unused. The gaps here are inherited
-names rather than vacancies. Its PD-6 states the rule this page follows: reword a rule freely under
-the same identifier, and allocate a new one when you change what it demands.
+B-10, HS-1 to HS-16, PD-1 to PD-8 and OPEN-1 to OPEN-6, with no gaps of its own.
+
+So the next free number is the one above the highest issued, never the lowest unused. The gaps here
+are inherited names rather than vacancies. Its PD-6 states the rule this page follows: reword a rule
+freely under the same identifier, and allocate a new one when you change what it demands.
 
 **HS-17 is spent and must not be issued.** A superseded branch defines it as the ASCII punctuation
 rule, which is what HS-11 already demands and what the gate already runs. Two names for one rule
