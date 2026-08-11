@@ -220,9 +220,9 @@ The full mechanics are in
 * what to stamp on every number
 * why a section name in the corpus is checkable where chapter prose is not
 
-Read those three before starting, not when something goes wrong. All three sit past the Part 1
-boundary, in the half addressed to the agent. Cross it on purpose: the corpus is your work item,
-and its mechanics are written there.
+Read those three before starting, not when something goes wrong. All three sit past
+[Handing this to Claude Code](#handing-this-to-claude-code), in the half addressed to the agent.
+Cross it on purpose: the corpus is your work item, and its mechanics are written there.
 
 ---
 
