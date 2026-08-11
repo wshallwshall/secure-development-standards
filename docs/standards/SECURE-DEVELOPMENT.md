@@ -339,7 +339,7 @@ long it ran. The harness does not reach authorization decisions, business logic,
 or state held across requests. Those stay in [section 15](#15-independent-external-verification)'s
 gap however green this is.
 
-### Three additions specific to a security posture
+### Four additions specific to a security posture
 
 | ID | Requirement | Evidence |
 |---|---|---|

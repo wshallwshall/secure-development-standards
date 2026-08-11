@@ -4,7 +4,7 @@ Security standards for teams building with AI coding assistants. Written to be c
 own repository and edited, which is why each one ships as markdown and as a Word file.
 
 **Read them on the site:**
-<https://wshallwshall.github.io/secure-development-standards/>
+<https://secure-development-standards.pages.dev/>
 
 ## TLDR/BLUF
 
@@ -20,7 +20,8 @@ own repository and edited, which is why each one ships as markdown and as a Word
 [The claim these share](#the-claim-these-share) is the argument the whole set rests on.
 
 **Not for you** if you want a certification, a maturity score, or a tool recommendation. These set a
-bar to hold, not a badge to present, and no scanner, format or assessor is named anywhere in the set.
+bar to hold, not a badge to present, and no scanner, format or assessor is recommended anywhere in
+the set.
 
 **Where to start.** [Which security standards actually apply to you](docs/standards/WHICH-STANDARDS-APPLY.md)
 routes on your situation rather than on the documents.

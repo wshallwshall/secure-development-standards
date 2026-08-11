@@ -42,7 +42,7 @@ has one row each. [The CISO summary](standards/CISO-SUMMARY.md) is the argument 
 **No certification, and no attestation.** None is offered and none is implied. These set a bar to
 hold, not a badge to present, and no maturity score comes with them.
 
-**No tool recommendation.** No scanner, format or assessor is named anywhere in the set.
+**No tool recommendation.** No scanner, format or assessor is recommended anywhere in the set.
 
 **No legal force.** Whether any of this binds your organization is decided by a clause number and by
 counsel, never by a web page. What these documents do is tell you which questions are real and what

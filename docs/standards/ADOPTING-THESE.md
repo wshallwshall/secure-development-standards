@@ -31,17 +31,6 @@ purpose.
 
 ---
 
-## Two things that hold at every step
-
-**A blocking row nobody has watched refuse anything is indistinguishable from one that cannot refuse
-anything.** That is why instrumentation comes before ranking: with no receipts, every severity
-ranking is unfalsifiable.
-
-**Tailoring is expected where silent tailoring is not.** A control that quietly left the set reads
-exactly like a control nobody got to.
-
----
-
 ## If you only have an afternoon
 
 Five things, all read-and-write, none of them a build. Each is somebody else's designated first step,
@@ -83,7 +72,7 @@ corpus, and stamp the version on every number"*).
 - **Adopting these confers nothing.** No certification, no attainment, no badge, for you or for
   anyone adopting your software. The available vocabulary is built to, aligned with, and
   self-assessed against. See [What these are not](OVERVIEW.md#what-these-are-not).
-- **An exception register is for your own use.** It records decisions you made. It is not evidence
+- **A deviations register is for your own use.** It records decisions you made. It is not evidence
   of compliance with anything, and not an attestation to anyone else.
 - **The worksheet carries at least these controls, and is not a complete account.** Your setting
   will add rows nothing here mentions.
@@ -636,8 +625,8 @@ lagging its current headings rather than as a complete account of them.
 | A comprehension bar the reviewer must meet | [*The comprehension bar, and two additions to it*](SECURE-DEVELOPMENT.md#the-comprehension-bar-and-two-additions-to-it) | Written | Per change | Partial |
 | Every nominally-security job classified blocking or advisory, and the classification written down | [*Scanner posture: what blocks, what advises, what may never be waived*](SECURE-DEVELOPMENT.md#5-scanner-posture-what-blocks-what-advises-what-may-never-be-waived) | Written | Sitting | New |
 | An unwaivable blocking set: static analysis, dependency vulnerability analysis, and secret scanning over the full history | [*What must block, and may not be waived*](SECURE-DEVELOPMENT.md#what-must-block-and-may-not-be-waived) | Blocking | Days | Partial |
-| Each gate fired with the failure class it exists to catch, and watched going red, before its green is credited | [*Three additions specific to a security posture*](SECURE-DEVELOPMENT.md#three-additions-specific-to-a-security-posture) | Written | Afternoon per gate | New |
-| Rigor and scope recorded as two separate values against each blocking check | [*Three additions specific to a security posture*](SECURE-DEVELOPMENT.md#three-additions-specific-to-a-security-posture) | Written | Sitting | New |
+| Each gate fired with the failure class it exists to catch, and watched going red, before its green is credited | [*Three additions specific to a security posture*](SECURE-DEVELOPMENT.md#four-additions-specific-to-a-security-posture) | Written | Afternoon per gate | New |
+| Rigor and scope recorded as two separate values against each blocking check | [*Three additions specific to a security posture*](SECURE-DEVELOPMENT.md#four-additions-specific-to-a-security-posture) | Written | Sitting | New |
 | The security anti-metrics kept out of any pass-or-fail decision | [*The security anti-metrics*](SECURE-DEVELOPMENT.md#the-security-anti-metrics) | Written | Sitting | New |
 | No secrets, keys, credentials or restricted data in the repository, with the full history clean and not only the current tree | [*Secrets and repository hygiene*](SECURE-DEVELOPMENT.md#6-secrets-and-repository-hygiene) | Blocking | Days | Partial |
 | Secure by default, with every insecure posture a named, documented, audited, fail-closed opt-in | [*Secure defaults, and the opt-in that must be explicit*](SECURE-DEVELOPMENT.md#7-secure-defaults-and-the-opt-in-that-must-be-explicit) | Written | Weeks | Partial |
