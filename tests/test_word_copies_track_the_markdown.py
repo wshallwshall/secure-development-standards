@@ -113,8 +113,22 @@ conflict after that gets the mechanical treatment and loses one side's meaning s
 instrument answering a narrower question than the one asked, which is the defect
 `docs/ASVS-ASSESSMENT.md` is itself about.
 
+A THIRD SHAPE, AND THE ONE MOST LIKELY TO BITE, because it manufactures conflicts that are not real
+and they resolve as though they were. Squash-merging a branch gives its commit a NEW hash on main.
+Any branch stacked on the pre-squash original then goes CONFLICTING for a reason that is neither
+binary nor semantic: its base was rewritten under it. Plain `git rebase origin/main` replays the
+already-merged commit and produces conflicts in files nobody touched twice. Replay only the branch's
+own commits instead:
+
+    git rebase --onto origin/main <the-old-base-sha> <your-branch>
+
+Observed the same day: #28 was stacked on #27, #27 was squash-merged, and the `--onto` form rebased
+cleanly with no conflict at all -- including the .docx files that had conflicted on every previous
+rebase of that branch. That is the tell. If a rebase suddenly conflicts in files your branch never
+edited, suspect a rewritten base before you start resolving.
+
 This is a note rather than a checker on purpose. Nothing under tests/ runs during a rebase, which is
-the only moment the confusion exists.
+the only moment any of these three confusions exists.
 
 WHAT THIS COSTS TO KEEP, stated plainly rather than sold as free. The SET of documents is derived
 from the filesystem, so adding a standard needs no edit in this file. Its OPTIONS are not derivable
