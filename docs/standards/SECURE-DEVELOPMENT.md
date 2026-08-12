@@ -17,9 +17,14 @@ publish the result under your own name.
 every change and no author can waive, a written threat model per trust boundary before the code, and
 every unmet requirement dated, signed and carrying the event that ends it.
 
-**What it costs you.** Calendar time, controls you must not claim because you do not own them, and
-two gaps no internal pipeline closes: third-party source review and
-[penetration testing](#15-independent-external-verification). No code ships with this.
+**Benefits.** A release an adopter can verify without contacting you, and claims that point at a
+named rule identifier rather than at a publication. Both are checkable by somebody who trusts
+nothing you say about your own process.
+
+**Costs.** Calendar time, controls you must not claim because you do not own them, and two gaps no
+internal pipeline closes: third-party source review and
+[penetration testing](#15-independent-external-verification). Each gap stays open under a dated
+signed acceptance carrying the order of magnitude it would cost. No code ships with this.
 
 **Not for you** on throwaway work, or on anything you operate rather than produce. Building to this
 confers nothing on you or on an adopter.

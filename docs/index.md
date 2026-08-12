@@ -8,8 +8,13 @@ as a Word file, written to be copied whole into your own repository and edited.
 **Why it matters.** A control you claim has to be one you can show firing. Several of these
 documents exist to make that difference visible.
 
-**What it costs you.** Adoption is per document and each says its own price. Nothing here is a
-product, a scanner, or a service, and nothing is sold.
+**Benefits.** Adoption hands you a drafted standard rather than a blank page, MIT licensed, yours
+to rename and edit. The set also publishes the figures that did not survive checking, named as
+claims to stop repeating next to the ones that held.
+
+**Costs.** Adoption is per document and each says its own price; nothing here is a product, a
+scanner, or a service, and nothing is sold. You end up maintaining the text yourself, and citing
+the model document's permanent rule identifiers in your own deviations register.
 
 **Not for you** if you want a certification, an attestation, a maturity score or a tool
 recommendation. [What these are not](#what-these-are-not) says why none is offered.

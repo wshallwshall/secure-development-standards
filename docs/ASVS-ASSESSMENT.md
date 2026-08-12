@@ -25,8 +25,15 @@ agents doing the bulk of the scoring, and leaving every verdict re-checkable.
 clean-looking one that has to be re-run cell by cell, weeks later, once the first verdict is found
 not to hold.
 
-**What it costs you.** A pinned corpus before any scoring, a verdict vocabulary settled in advance,
-and a review pass that is the first thing cut when the schedule slips.
+**Benefits.** The method buys auditability and verdicts that survive being challenged. Every
+verdict carries the requirement's own words, the rule that produced it, and the tree it was read
+at. A later disagreement is then a one-question argument rather than one about the verdict as a
+whole.
+
+**Costs.** A pinned corpus before any scoring, a verdict vocabulary settled in advance, and a
+review pass that is the first thing cut when the schedule slips. Per-cell verification is expensive
+enough to shock whoever is paying for it, so time a pilot section of your own and say the number
+early. Nothing here is measured as a productivity gain.
 
 **Not for you** if you want a scoring rubric. This is a set of forcing functions that tell a real
 verdict from a fluent one mechanically, and it reports no results of its own.
@@ -118,7 +125,7 @@ displacement, which is advisory. The reason is the most expensive thing this met
 second time round:
 [a tolerance below a uniqueness check](#a-tolerance-below-a-uniqueness-check-is-a-decaying-budget).
 
-## What this costs you, and where it does not apply
+## Costs, and where it does not apply
 
 - **This document contains no results, and that is deliberate.** An assessment's findings are a map
   of where a system is weak: which control is off, which surface is uncovered, which item nobody has
