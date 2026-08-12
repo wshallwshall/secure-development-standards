@@ -296,7 +296,7 @@ test holds.
 
 | Rule | The rule | Enforced |
 |---|---|---|
-| `PD-10` | a `## TLDR/BLUF` section labels its blocks from a fixed, ordered vocabulary: "What this is", "Why it matters", "Cost/Benefit", "Not for you", "Where to start". The first and last are required and the middle three are optional. A block that is none of these is not a summary, and belongs below the section under its own heading | yes |
+| `PD-10` | a `## TLDR/BLUF` section labels its blocks from a fixed, ordered vocabulary: "What this is", "Why it matters", "Benefits", "Costs", "Not for you", "Where to start". The first and last are required and the middle four are optional. A block that is none of these is not a summary, and belongs below the section under its own heading | yes |
 
 **This is the heading rule one level down, and the drift had already happened.** Fifteen pages
 answered the same five questions in three vocabularies. SECURE-DEVELOPMENT said "What it demands"
@@ -308,16 +308,21 @@ see it. The only instrument that could was a reader who had read all fifteen.
 `TheBlufConventionHasOneSpelling`, which records why a test is the wrong place to make that call.
 PD-10 governs the labels of a section that exists, never whether it exists.
 
-**A `Cost/Benefit` block owes the reader both halves.** The slot was called "What it costs you"
-until 2026-08-11 and asked for one. Renaming it without rewriting the eleven blocks under it would
-have left every page naming a benefit in the label and delivering only a price in the prose, which
-is the drift PD-10 exists to stop, arriving by a new route. So each block now states what adoption
-costs and what the cost buys, and the benefit half is the document's own claim rather than a
-restatement of "Why it matters" -- if the two blocks say the same thing, the second one is padding.
+**`Benefits` and `Costs` are two blocks, and benefits leads.** The slot was "What it costs you"
+until 2026-08-11, then briefly "Cost/Benefit", and is now split. A reader scanning for what a
+document gives them finds it under its own label rather than inside a clause. Each block states
+the document's own claim rather than restating "Why it matters" -- if they say the same thing, the
+second is padding -- and `Costs` keeps every concrete price the combined block named. A split is
+not permission to soften the half that was harder to write.
+
+**Benefits before costs inverts the order this set used before, and the objection is recorded here
+rather than answered.** Benefit-then-price is the shape of a pitch followed by fine print, and this
+corpus is built to read as the opposite. Nothing measured decides the order. What holds it honest
+is `Not for you`, which still follows both and disqualifies the reader outright.
 
 **The prose inside a block is not checked, and that is PD-4's reasoning.** A rule that could not
 tell a good block from a merely short one would be a rule about taste. What is checkable is whether
-the label is one of five strings and whether the five are in order, which is all this fires on.
+the label is one of six strings and whether the six are in order, which is all this fires on.
 
 ---
 

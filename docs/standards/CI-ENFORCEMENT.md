@@ -20,11 +20,15 @@ it stop the change?
 being done. None of them is a rule being enforced. Which checks can stop a change is a setting in
 your pipeline, and it is routinely different from what the people accountable for it believe.
 
-**Cost/Benefit.** Pipeline time, charged to the people it was meant to help, and a first day on
-which the new gate fails on everything it inherits. What automation buys is narrower than the
-pitch: a class of failure stops recurring, and reviewer hours move off mechanical findings onto
-judgment. Fund it on those two, and on the arithmetic in
-[Cost/Benefit](#costbenefit).
+**Benefits.** A class of failure stops recurring, and reviewer hours move off mechanical findings
+onto judgment. Fund automation on those two, and on the arithmetic in
+[Benefits](#benefits) and [Costs](#costs).
+
+**Costs.** Pipeline time, charged to the people the automation was meant to help. Every check adds
+waiting between written and shipped, and a broken blocking check stops everyone, not only the
+change that broke it. The first day of a new gate is a wall of findings you already had: a blocking
+check applied to existing code fails on everything it inherits. What automation buys is narrower
+than the pitch, and it does not make code better.
 
 **Not for you** if you want the cost-avoidance multiple or the delivery-speed claim. Neither
 survives contact with its sources, and this page says so rather than repeating them.
@@ -51,7 +55,7 @@ nobody has wired to a block.
 Two ways through the rest of this page. Accountable for security:
 [the one question](#the-one-question-does-failing-it-stop-the-change), then
 [what to ask](#what-to-ask-and-what-a-good-answer-sounds-like). Running the team and justifying the
-spend: start with [Cost/Benefit](#costbenefit).
+spend: start with [Benefits](#benefits), then [Costs](#costs).
 
 ---
 
@@ -123,7 +127,7 @@ transfers, not the count. No row describes any organization's pipeline.*
 
 ---
 
-## Cost/Benefit
+## Benefits
 
 *Marked **[external]** is published research, with its limitation attached. The rest is this page's
 own reasoning.*
@@ -149,7 +153,12 @@ own reasoning.*
   keeps the deadline from being negotiated out of their work. It holds only as far as the people
   who can override it -- the third question below.
 
-What it costs:
+---
+
+## Costs
+
+*Marked **[external]** is published research, with its limitation attached. The rest is this page's
+own reasoning.*
 
 - **Pipeline time, charged to the people it was meant to help.** Every check adds waiting between
   written and shipped, and a broken blocking check stops everyone, not only the change that broke

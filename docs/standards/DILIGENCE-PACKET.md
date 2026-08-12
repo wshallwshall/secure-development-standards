@@ -20,10 +20,14 @@ answer about the product. Those instruments never open your code. You can hold a
 report, ship software with an authorization flaw, and have said nothing false. Offer it as product
 evidence and you have said something false.
 
-**Cost/Benefit.** Three artifacts before the first call, each of which is a document, a date or a
-name. None can be answered with an adjective, and a buyer who accepts one is not the buyer whose
-approval is worth having. In return, every item here comes with what it proves, what it will not
-carry, and what you must be able to say about it before you are asked.
+**Benefits.** Every item here comes with what it proves, what it will not carry, and what you must
+be able to say about it before you are asked. That is enough to state a boundary or an exception
+yourself, before a buyer finds it.
+
+**Costs.** Three artifacts before the first call, each of which is a document, a date or a name.
+None can be answered with an adjective, and a buyer who accepts one is not the buyer whose approval
+is worth having. The dates among them cannot be produced retrospectively: your last dynamic test
+and your last incident response exercise must already have happened.
 
 **Not for you** as legal advice. Nothing here has been reviewed by counsel, and
 [what this page does not do](#what-this-page-does-not-do) marks the rest of the boundary.

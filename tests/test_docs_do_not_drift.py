@@ -98,22 +98,29 @@ SUPERSEDED_BLUF = (
 # heading spelling suffered, one level down. A reader moving between fifteen documents learns the
 # shape once or not at all.
 #
-# The first and last are REQUIRED and the middle three are optional, because a router page has no
+# The first and last are REQUIRED and the middle four are optional, because a router page has no
 # adoption price and saying so in an empty block is worse than omitting it. "Not for you" carries no
 # stop inside the emphasis, deliberately: it runs on into its sentence.
 #
-# THE THIRD SLOT WAS RENAMED on 2026-08-11, from "What it costs you" to "Cost/Benefit", and the
-# eleven blocks under it were REWRITTEN rather than relabelled. A slot that names both sides has to
-# carry both, so each block now states the price and what the price buys. Relabelling alone would
-# have left eleven pages promising a benefit in the label and delivering only a cost in the prose,
-# and no test here can see that -- PD-4 is why the prose inside a block is not checked.
+# THE THIRD SLOT MOVED TWICE ON 2026-08-11 and the second move changed the shape. It began as "What
+# it costs you", asking for the price alone. It became "Cost/Benefit", asking for both sides, and
+# the eleven blocks under it were rewritten rather than relabelled. It is now TWO slots, "Benefits"
+# then "Costs", on the owner's call: a reader scanning for what a document gives them finds it under
+# its own label instead of inside a clause.
 #
-# The old spelling still appears in the drift history above. That is a fact about what the landing
-# page used to say, not a label in use, and it stays.
+# BENEFITS LEADING INVERTS THE ORDER THIS SET USED BEFORE, and the objection is recorded here rather
+# than answered. Benefit-then-price is the shape of a pitch followed by fine print, which is the
+# register this corpus is built against. What holds it honest is that "Not for you" still follows
+# both and disqualifies the reader outright, and that "Costs" keeps every concrete price the single
+# block named -- a split is not permission to soften the half that was harder to write.
+#
+# The old spellings still appear in the drift history above. Those are facts about what the landing
+# page used to say, not labels in use, and they stay.
 BLUF_SLOTS = (
     "**What this is.**",
     "**Why it matters.**",
-    "**Cost/Benefit.**",
+    "**Benefits.**",
+    "**Costs.**",
     "**Not for you**",
     "**Where to start.**",
 )

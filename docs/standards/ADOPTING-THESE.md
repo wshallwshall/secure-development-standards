@@ -18,10 +18,13 @@ five artifacts, not five documents read, and each one either exists or it does n
 same two controls by risk and neither can be shown wrong, so such a ranking can only be overruled,
 never reviewed. What-enables-what is checkable.
 
-**Cost/Benefit.** Less at the start than you expect. A team that reviews changes, runs a linter,
-keeps secrets out of the repository and pins some dependencies already satisfies parts of four of
-these documents. Finished, the five artifacts keep three things apart that a record usually blurs:
-a control you run, one you dropped on purpose, and one nobody has reached.
+**Benefits.** The five artifacts, once finished, keep three things apart that a record usually
+blurs: a control you run, one you dropped on purpose, and one nobody has reached.
+
+**Costs.** Less at the start than you expect. A team that reviews changes, runs a linter, keeps
+secrets out of the repository and pins some dependencies already satisfies parts of four of these
+documents. Nothing here ships as code: every control these documents name is one you would build.
+At least five of those controls can never be automated, and stay with a person.
 
 **Not for you** as evidence of compliance. None of it confers anything, for you or for anyone
 adopting your software. A deviations register records decisions you made.
