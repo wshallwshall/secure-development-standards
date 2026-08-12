@@ -20,9 +20,11 @@ it stop the change?
 being done. None of them is a rule being enforced. Which checks can stop a change is a setting in
 your pipeline, and it is routinely different from what the people accountable for it believe.
 
-**What it costs you.** What automation buys is narrower than the pitch: a class of failure stops
-recurring, and reviewer hours move off mechanical findings onto judgment. Fund it on those two, and
-on the arithmetic in [what it buys you, and what it costs](#what-it-buys-you-and-what-it-costs).
+**Cost/Benefit.** Pipeline time, charged to the people it was meant to help, and a first day on
+which the new gate fails on everything it inherits. What automation buys is narrower than the
+pitch: a class of failure stops recurring, and reviewer hours move off mechanical findings onto
+judgment. Fund it on those two, and on the arithmetic in
+[Cost/Benefit](#costbenefit).
 
 **Not for you** if you want the cost-avoidance multiple or the delivery-speed claim. Neither
 survives contact with its sources, and this page says so rather than repeating them.
@@ -49,7 +51,7 @@ nobody has wired to a block.
 Two ways through the rest of this page. Accountable for security:
 [the one question](#the-one-question-does-failing-it-stop-the-change), then
 [what to ask](#what-to-ask-and-what-a-good-answer-sounds-like). Running the team and justifying the
-spend: start with [what it buys you, and what it costs](#what-it-buys-you-and-what-it-costs).
+spend: start with [Cost/Benefit](#costbenefit).
 
 ---
 
@@ -121,7 +123,7 @@ transfers, not the count. No row describes any organization's pipeline.*
 
 ---
 
-## What it buys you, and what it costs
+## Cost/Benefit
 
 *Marked **[external]** is published research, with its limitation attached. The rest is this page's
 own reasoning.*

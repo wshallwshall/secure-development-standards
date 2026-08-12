@@ -18,10 +18,11 @@ floor. Everything else is a dial that the change's risk tier sets.
 the model never certifies its own output.** An AI-run review is advisory input a human arbitrates,
 and the moment it counts as a gate the rest of the structure is decorative.
 
-**What it costs you.** The tier resolver is a human checklist with no automatic detector, and the
+**Cost/Benefit.** The tier resolver is a human checklist with no automatic detector, and the
 adversarial pass is wrong for most work.
-[What this costs you, and where it does not apply](#what-this-costs-you-and-where-it-does-not-apply)
-is explicit about both.
+[What this costs, and where it does not apply](#costbenefit-and-where-it-does-not-apply)
+names the rest of the price. Against that price: every rule traces to one of five named failure
+modes, every tier carries the reason it was set, every unmet control is a dated deviation.
 
 **Not for you** if you want hooks, prompts, configuration or a product name. This page ships none of
 them, confers no certification, and makes no speed claim.
@@ -30,7 +31,7 @@ them, confers no certification, and makes no speed claim.
 or does the deployed system carry restricted data at runtime? If you cannot yet prove it does not,
 the answer is yes, and that resolves to the strictest tier on its own.
 
-## What this costs you, and where it does not apply
+## Cost/Benefit, and where it does not apply
 
 - **This page ships nothing** -- no hooks, no prompts, no configuration, no workflow. It is a standard
   and a set of rules, and everything it references as a mechanism lives in another page of this site

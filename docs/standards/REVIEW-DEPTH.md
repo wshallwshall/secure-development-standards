@@ -19,10 +19,10 @@ code exists rather than as a share of the codebase.
 the change in front of you, so "review 30 percent" means the easy 30 percent, and no evidence
 separates a team that did it from one that says it did.
 
-**What it costs you.** A tier resolved for every change before work starts, and a floor that has to
-survive every other dial being turned down under deadline pressure.
-[What this costs you, and where it does not apply](#what-this-costs-you-and-where-it-does-not-apply)
-is explicit.
+**Cost/Benefit.** A tier resolved for every change before work starts, and a floor that has to
+survive every other dial being turned down under deadline pressure. You get back a deep read that
+lands only where it earns its cost, and a depth someone can check by asking, without reading code.
+[What it costs, and where it does not apply](#costbenefit-and-where-it-does-not-apply) is explicit.
 
 **Not for you** as an attestation. None of it certifies anything. This is a bar to set and hold, not
 something to present.
@@ -33,7 +33,7 @@ one-line-change review.
 
 ---
 
-## What this costs you, and where it does not apply
+## Cost/Benefit, and where it does not apply
 
 - **It focuses your effort rather than reducing it.** Deciding the tier takes judgment at the start
   of each change, and that judgment is not free. What you get back is a deep read that lands only

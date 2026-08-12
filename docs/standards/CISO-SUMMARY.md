@@ -18,9 +18,10 @@ the five questions to ask them, and what to fund.
 **Why it matters.** Nothing new is going wrong with your code. There is far more of it, arriving
 faster, and looking finished before anyone has checked it. The categories have not moved.
 
-**What it costs you.** Structural controls, a human arbiter who cannot be skipped, and measurement
-last, in that order. [What to fund first](#what-to-fund-first) says why reversing it leaves you a
-dashboard and no controls.
+**Cost/Benefit.** Structural controls first, then a human arbiter who cannot be skipped, then
+measurement. [What to fund first](#what-to-fund-first) says why reversing that leaves you a
+dashboard and no controls. Funded in that order, enforcement holds as output rises rather than
+review effort rising with it, and the five questions tell a control from the process around it.
 
 **Not for you** if you want a certification, an audit or a pass mark.
 [What this is not](#what-this-is-not) carries the four limits, including that no outside party has

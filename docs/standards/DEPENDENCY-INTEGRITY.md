@@ -19,11 +19,11 @@ need some way to know is the thing you meant to send.
 machine-enforced controls, plus human attention spent at two or three specific moments rather than
 spread thin across everything.
 
-**What it costs you.** A few minutes of diligence per new dependency, a review per version bump, and
-one wiring exercise per manifest.
-[What this costs you, and where it does not apply](#what-this-costs-you-and-where-it-does-not-apply)
-carries the limit that matters most: none of this detects a malicious release from a legitimate
-maintainer.
+**Cost/Benefit.** A few minutes of diligence per new dependency, a review per version bump, and one
+wiring exercise per manifest. Inbound, every change arrives pinned, surveilled and reviewable
+rather than silent. Outbound, the release carries its own inventory and provenance, so an adopter
+checks what you shipped instead of emailing you for it. None of this detects a
+[malicious release from a legitimate maintainer](#costbenefit-and-where-it-does-not-apply).
 
 **Not for you** if you publish nothing, which makes the outbound half moot, or if nobody else runs
 your software on their own host, which makes the runtime section moot as well.
@@ -34,7 +34,7 @@ names a routine hazard. The second is each version bump.
 
 ---
 
-## What this costs you, and where it does not apply
+## Cost/Benefit, and where it does not apply
 
 - **This document ships no configuration.** No workflow, no lockfile, no publishing pipeline. It is
   a set of rules and the failure each one answers.

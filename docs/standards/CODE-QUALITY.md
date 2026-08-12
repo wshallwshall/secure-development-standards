@@ -19,8 +19,10 @@ rubric judges the artifact, so nothing in it turns on who typed the lines.
 not line coverage, not lines of code, not cyclomatic complexity, not static-analysis severity
 counts. The verdict is the composite, never one row.
 
-**What it costs you.** Pipeline minutes, and the attention to read advisory output nobody is obliged
-to act on. Three of the eleven rows are owned by a companion document rather than restated here.
+**Cost/Benefit.** Pipeline minutes, and the attention to read advisory output nobody is obliged to
+act on. Three of the eleven rows are owned by a companion document rather than restated here. The
+scorecard that results survives being argued with. Each row names the document that owns it, no row
+is built without a receipt, and every figure is quoted with its hedge beside the ones refuted.
 
 **Not for you** if you want thresholds or a grade. It validates no cutoff, confers no certification,
 and where merges cannot be blocked Tier 1 degrades from a set of controls to a checklist.
@@ -31,7 +33,7 @@ conversations.
 
 ---
 
-## What this costs you, and where it does not apply
+## Cost/Benefit, and where it does not apply
 
 - **It confers no certification.** There is no badge, no pass mark, and no grade. A completed
   scorecard is an argued position with pointers, nothing more.

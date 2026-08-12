@@ -101,10 +101,19 @@ SUPERSEDED_BLUF = (
 # The first and last are REQUIRED and the middle three are optional, because a router page has no
 # adoption price and saying so in an empty block is worse than omitting it. "Not for you" carries no
 # stop inside the emphasis, deliberately: it runs on into its sentence.
+#
+# THE THIRD SLOT WAS RENAMED on 2026-08-11, from "What it costs you" to "Cost/Benefit", and the
+# eleven blocks under it were REWRITTEN rather than relabelled. A slot that names both sides has to
+# carry both, so each block now states the price and what the price buys. Relabelling alone would
+# have left eleven pages promising a benefit in the label and delivering only a cost in the prose,
+# and no test here can see that -- PD-4 is why the prose inside a block is not checked.
+#
+# The old spelling still appears in the drift history above. That is a fact about what the landing
+# page used to say, not a label in use, and it stays.
 BLUF_SLOTS = (
     "**What this is.**",
     "**Why it matters.**",
-    "**What it costs you.**",
+    "**Cost/Benefit.**",
     "**Not for you**",
     "**Where to start.**",
 )

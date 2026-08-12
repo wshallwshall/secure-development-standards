@@ -20,9 +20,10 @@ answer about the product. Those instruments never open your code. You can hold a
 report, ship software with an authorization flaw, and have said nothing false. Offer it as product
 evidence and you have said something false.
 
-**What it costs you.** Three artifacts before the first call, each of which is a document, a date or
-a name. None can be answered with an adjective, and a buyer who accepts one is not the buyer whose
-approval is worth having.
+**Cost/Benefit.** Three artifacts before the first call, each of which is a document, a date or a
+name. None can be answered with an adjective, and a buyer who accepts one is not the buyer whose
+approval is worth having. In return, every item here comes with what it proves, what it will not
+carry, and what you must be able to say about it before you are asked.
 
 **Not for you** as legal advice. Nothing here has been reviewed by counsel, and
 [what this page does not do](#what-this-page-does-not-do) marks the rest of the boundary.
